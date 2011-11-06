@@ -1,0 +1,91 @@
+_____________________________________________________________________________________________________________________________________________________________________________
+__________________________________________________________________ IDEA DI BASE PER AFFRONTARE IL PROGETTO __________________________________________________________________
+_____________________________________________________________________________________________________________________________________________________________________________
+
+--------------------------------------------------------------------------------
+------------------------------- DATABASE MINIMO --------------------------------
+--------------------------------------------------------------------------------
+MEDICI -> id, nome, cognome, password
+PAZIENTI -> id, nome, cognome, dataDiNascita, foto, password
+VACCINAZIONI -> idPaziente, idMedico, dataDiAvvenutaVaccinazione
+--> Nota: le password sono in chiaro e insieme ai dati solo per semplicità
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+-------------------------------- REGISTRAZIONE ---------------------------------
+--------------------------------------------------------------------------------
+// ?la registrazione, per semplificare le cose, dovrebbe essere effettuata su pool di utenti già registrati prima (perché???)?
+utente   ____
+password ____
+conferma password ____
+<CAPTCHA>
+<REGISTRAMI Button>
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+------------------------------- PAGINA DI LOGIN --------------------------------
+--------------------------------------------------------------------------------
+utente   ____
+password ____
+o medico    o paziente // <radiobutton> che indicano se è medico o paziente 
+                                  <SUBMIT>
+                                      |
+                                      V
+---------------------------- SERVLET CORRISPONDENTE -----------------------------
+richiami // link statico a PAG1
+visualizza vaccinazioni // link statico a PAG2
+logout // link statico a PAGINA DI LOGIN
+
+--------------------------------------------------------------------------------
+------------------------------------- PAG1 -------------------------------------
+--------------------------------------------------------------------------------
+Visualizza Voce Prima di <textfield> giorni // fa la SELECT sul database sulla tabella delle vaccinazioni (dato medico e data massima)
+                                    <GO>
+                                      |
+                                      V
+------------------------------ SELEZIONA PAZIENTI -------------------------------
+{nome cognome dataDiNascita foto <checkbox>}+
+                                  <CONFERMA>
+                                      |
+                                      V
+------------------------------ PAGINA DI CONFERMA -------------------------------
+{nome cognome dataDiNascita foto}+ // elementi selezionati nella pagina precedente
+                                  <CONFERMA>
+                                      |
+                                      V
+----------------------------- GENERAZIONE DEL PDF ------------------------------
+Caro Paziente Nome Cognome,
+bla, bla, bla
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+------------------------------------ PAG2 --------------------------------------
+--------------------------------------------------------------------------------
+Inserire ?data? <textField>
+                                  <OKButton>
+                                      |
+                                      V
+----------------------------- LISTA VACCINAZIONI ------------------------------
+?"Lista di tue Vaccinazioni del giorno DAY"?
+{nome cognome dataDiNascita foto}+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+NOTA: LA PARTE DEL PAZIENTE È PIÙ O MENO ANALOGA A QUELLA DEL MEDICO (con meno possibilità e meno permessi, comunque più semplice)
+
+
+_____________________________________________________________________________________________________________________________________________________________________________
+NOTA1: prima di utilizzare css e puttanate varie cercare di scrivere le pagine prima in semplice HTML brutale, quando funziona, cambiare.
+NOTA2: cercare di fare prima (dopo aver scritto il database) la sequenza di 3 pagine PAG1, SELEZIONA PAZIENTI e PAGINA DI CONFERMA, poi il resto.
+       Il filtro viene dopo. Deve separare il fatto che l'utente sia medico o paziente (il modo più comodo è avere cartelle separate per gli uni e gli altri
+       e mettere l'if solo sull'ID -> medici/pazienti possono accedere solo alle proprie informazioni).
+NOTA 3: organizzare tutto bene in cartelle (css, foto, download(pdf-s), ...) e le servlet che sono da utilizzare devono essere mappate nelle cartelle di medico e paziente
+        (ad esempio) perché di default verrebbero messe nel project path tipo -> MODIFICARE url pattern ALLA CREAZIONE DELLA SERVLET (che crea una specie
+        di cartella virtuale, scritta nel web.xml e sopra il quale può essere poi applicato il filtro)
+NOTA4: avvenuto il richiamo si assume che avvenga anche la vaccinazione contemporaneamente
+NOTA5: le popodate non sono richieste essere gestite troppo
+NOTA6: naturalmente le date in formato DATE o TIMESTAMP nel database
+NOTA7: usare bene log4J e non println
+NOTA8: le url naturalmente dovrebbero essere relative (indipendenti dal FileSystem)
+_____________________________________________________________________________________________________________________________________________________________________________
+_____________________________________________________________________________________________________________________________________________________________________________
