@@ -4,8 +4,12 @@
  */
 package core;
 
+import com.mysql.jdbc.ResultSet;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -28,17 +32,21 @@ public class Login extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        
         try {
-            /* TODO output your page here
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Login</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet Login at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-             */
+            String usr = request.getParameter("user");
+            String psw = request.getParameter("password");
+            boolean doc = request.getParameter("type").equals("medico");
+            
+            ResultSet res = null; //RICEVERE RISULTATI DA FUNZIONE LORIS
+            if (res.getString(1)!=null){
+                
+            }
+            /*PARSING E SALVATAGGIO UTENTE NELLA SESSIONE*/
+            /*SALVATAGGIO COOKIE*/
+            
+        } catch (SQLException ex) {
+            //SCRIVERE ERRORE IN LOG4J
         } finally {            
             out.close();
         }
