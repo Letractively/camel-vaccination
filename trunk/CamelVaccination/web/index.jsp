@@ -19,8 +19,8 @@
             <input type="radio" name="type" value="paziente" />paziente
             <input type="submit" name="ok" value="Login" />
         </form>
-        Hai dimenticato la password? <a href="recupera.htm" title="Registrati">Recupero password</a><BR>
-        Sei un nuovo utente? <a href="registrati.htm" title="Registrati">Registrati</a><BR>
+        Hai dimenticato la password? <a href="recupera.jsp" title="Registrati">Recupero password</a><BR>
+        Sei un nuovo utente? <a href="registrati.jsp" title="Registrati">Registrati</a><BR>
         
     </body>
 </html>
