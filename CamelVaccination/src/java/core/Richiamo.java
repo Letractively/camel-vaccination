@@ -68,7 +68,9 @@ public class Richiamo extends HttpServlet {
                     //STAMPA CON LOG4J
                 }
                 out.println("</TABLE>");
-                //PULSANTI DI STAMPA PDF E ANNULLA
+                //PULSANTI DI STAMPA PDF
+                
+                //PULSANTE ANNULLA (CHIEDERE ABI PER JAVASCRIPT)
             }
         } finally {            
             out.close();
