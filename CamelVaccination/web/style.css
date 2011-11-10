@@ -1,0 +1,77 @@
+/* 
+    Document   : style
+    Created on : 10-nov-2011, 15.39.19
+    Author     : Lorenzo
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+div.container 
+{
+    width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    padding: 30px;
+}
+
+fieldset
+{
+    border: 1px dashed;
+    width: 19em;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 10px;
+    padding-bottom: 0px;
+}
+
+div#login
+{
+    width: 19em;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 10px;
+    padding-bottom: 0px;
+}
+legend
+{
+    border: 1px solid;
+    padding: 2px 6px;
+    margin-left: 70%;
+}
+
+label
+{
+    width: 8em;
+    float: left;
+    text-align: right;
+    margin-right: 0.5em;
+    display: block  
+}
+
+label.radios
+{
+    width: auto;
+    margin-left: 2em;
+}
+
+input.radios
+{
+    float:left;
+}
+
+p.form
+{
+    margin-top: 8px;
+    margin-bottom: 0px;
+}
+
+.submit input 
+{
+    margin-left: 80%;
+}

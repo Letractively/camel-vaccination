@@ -9,18 +9,27 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type ="text/css" href="style.css" />
         <title>JSP Page</title>
     </head>
     <body>
-        <form action="servlet" method="POST">
-            Username: <input type="text" name="user" value="" /><BR>
-            Password: <input type="password" name="password" value="" /><BR>
-            <input type="radio" name="type" value="medico" />medico 
-            <input type="radio" name="type" value="paziente" />paziente
-            <input type="submit" name="ok" value="Login" />
-        </form>
-        Hai dimenticato la password? <a href="recupera.jsp" title="Registrati">Recupero password</a><BR>
-        Sei un nuovo utente? <a href="registrati.jsp" title="Registrati">Registrati</a><BR>
-        
+        <fieldset>
+            <legend>Login</legend>
+            <form action="servlet" method="POST">
+                <p class="form"><label for="user">Username: </label>
+                    <input type="text" id="user" name="user" value="" /></p>
+                <p class="form"><label for="password">Password: </label>
+                    <input type="password" id="password" name="password" value="" /></p>
+                <p class="form"><label for="medico">Medico</label>
+                    <input type="radio" class="radios" name="type" id="medico" value="medico" />
+                <label for="paziente" class="radios">Paziente</label>
+                    <input type="radio" class="radios" name="type" id="paziente" value="paziente" /></p>
+                <p class="submit"><input type="submit" name="ok" value="Login" /></p>
+            </form>
+        </fieldset>
+        <div id="login">
+        <p>Hai dimenticato la password? <a href="recupera.jsp" title="Registrati">Recupero password</a></p>
+        <p>Sei un nuovo utente? <a href="registrati.jsp" title="Registrati">Registrati</a></p>
+        </div>
     </body>
 </html>
