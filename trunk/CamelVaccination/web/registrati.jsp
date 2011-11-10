@@ -9,18 +9,25 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type ="text/css" href="style.css" />
         <title>Registrazione</title>
     </head>
     <body>
-        <form action="Registrati" method="POST">
-            Username:<input type="text" name="user" value="" /><BR>
-            Password<input type="password" name="password1" value="" /><BR>
-            Re-enter Password<input type="password" name="password2" value="" /><BR>
-        
-            <img src="/core/captcha.jpg" />
-            <input type="text" name="captcha" value="" />
-                
-            <input type="submit" value="Registrami" /><BR>
-        </form>
+        <fieldset>
+            <legend>Registrati</legend>
+            <form action="Registrati" method="POST">
+                <p class="form"><label for="user">Username: </label>
+                    <input type="text" id="user" name="user" value="" /></p>
+                <p class="form"><label for="password">Password: </label>
+                    <input type="password" id="password" name="password" value="" /></p>
+                <p class="form"><label for="confirm_password">Re-enter Password:</label>
+                    <input type="password" id="confirm_password" name="confirm_password" value="" /></p>
+                <%--
+                <img src="/core/captcha.jpg" />
+                <input type="text" name="captcha" value="" />
+                --%>
+                <p class="submit"><input type="submit" value="Invia" /></p>
+            </form>
+        </fieldset>
     </body>
 </html>
