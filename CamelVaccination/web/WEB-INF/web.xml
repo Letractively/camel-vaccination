@@ -16,6 +16,10 @@
         <servlet-name>captcha</servlet-name>
         <servlet-class>com.octo.captcha.module.servlet.image.SimpleImageCaptchaServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Wellcome</servlet-name>
+        <servlet-class>core.Welcome</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Registrati</servlet-name>
         <url-pattern>/Registrati</url-pattern>
@@ -30,7 +34,11 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>captcha</servlet-name>
-        <url-pattern>/captcha.jpg</url-pattern>        
+        <url-pattern>/captcha.jpg</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Wellcome</servlet-name>
+        <url-pattern>/Wellcome</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

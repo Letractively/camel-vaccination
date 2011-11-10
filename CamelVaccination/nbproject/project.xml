@@ -38,6 +38,10 @@
                     <file>${file.reference.jcaptcha-integration-simple-servlet-2.0-alpha-1-SNAPSHOT.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
+                <library dirs="200">
+                    <file>${file.reference.MySQL_JDBC_Library.jar}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
             </web-module-libraries>
             <web-module-additional-libraries/>
             <source-roots>
