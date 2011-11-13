@@ -13,7 +13,7 @@
         <servlet-class>core.Recupera</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>captcha</servlet-name>
+        <servlet-name>jcaptcha</servlet-name>
         <servlet-class>com.octo.captcha.module.servlet.image.SimpleImageCaptchaServlet</servlet-class>
     </servlet>
     <servlet>
@@ -33,8 +33,8 @@
         <url-pattern>/Recupera</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>captcha</servlet-name>
-        <url-pattern>/captcha.jpg</url-pattern>
+        <servlet-name>jcaptcha</servlet-name>
+        <url-pattern>/jcaptcha.jpg</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Wellcome</servlet-name>

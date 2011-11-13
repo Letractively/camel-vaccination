@@ -14,15 +14,16 @@ import java.util.logging.Logger;
  * it has package visibility
  */
 class dbConnector{
-    private final String host = "localhost";
+    private final String host = "localhost:3306";
     private final int port = 3306;
     private final String dbName = "medical_db";
     private final String user = "DBuzzer";
-    private final String psw = "campanello";
+    private final String psw = "user";
     private Connection conn = null;
 
     dbConnector() {
         try {
+            System.out.print("jdbc:mysql://" + host + "/" + dbName);
             String dbString = null;
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             dbString = "jdbc:mysql://" + host + "/" + dbName;
