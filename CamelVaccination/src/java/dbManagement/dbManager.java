@@ -96,8 +96,8 @@ public class dbManager{
         ResultSet res;
         String userKind = ((isDoctor) ? "doctor" : "patient");
         String command = "SELECT * FROM " + userKind + "s WHERE "
-                + "username = " + userName + " AND "
-                + "password = " + pwd + " AND "
+                + "username = '" + userName + "' AND "
+                + "password = '" + pwd + "' AND "
                 + ((isDoctor) ? " TRUE" : "registered");
         res = dbConn.executeQuery(command);        
         return res;

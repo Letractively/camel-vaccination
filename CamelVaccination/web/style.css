@@ -38,13 +38,19 @@ div#login
     padding-top: 10px;
     padding-bottom: 0px;
 }
+
+img#captcha
+{
+    margin-right: auto;
+    margin-left: auto;
+    display: block;
+}
 legend
 {
     border: 1px solid;
     padding: 2px 6px;
     margin-left: 70%;
 }
-
 label
 {
     width: 8em;

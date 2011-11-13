@@ -32,10 +32,10 @@ public class Registrati extends HttpServlet {
             
             htmlPage += htmlIntro;
             
-            String userCaptchaResponse = request.getParameter("captcha");
+            String userCaptchaResponse = request.getParameter("jcaptcha");
             boolean captchaPassed = SimpleImageCaptchaServlet.validateResponse(request, userCaptchaResponse);
             
-            htmlPage += userCaptchaResponse + "  TANTECOCCOLE";
+            htmlPage += userCaptchaResponse;
             if (captchaPassed) {
                 htmlPage += "OK it matches";
                 // proceed to submit action

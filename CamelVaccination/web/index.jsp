@@ -15,7 +15,7 @@
     <body>
         <fieldset>
             <legend>Login</legend>
-            <form action="servlet" method="POST">
+            <form action="Login" method="POST">
                 <p class="form"><label for="user">Username: </label>
                     <input type="text" id="user" name="user" value="" /></p>
                 <p class="form"><label for="password">Password: </label>

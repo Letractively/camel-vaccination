@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import dbManagement.*;
 
 /**
  *
@@ -32,21 +33,22 @@ public class Login extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        dbManager dbM = new dbManager();
         
         try {
             String usr = request.getParameter("user");
             String psw = request.getParameter("password");
             boolean doc = request.getParameter("type").equals("medico");
             
-            ResultSet res = null; //RICEVERE RISULTATI DA FUNZIONE LORIS
-            if (res.getString(1)!=null){
-                
-            }
+            ResultSet res = dbM.userMatches(usr, psw, doc); //RICEVERE RISULTATI DA FUNZIONE LORIS
+            //Non arrivano risultati
+            out.print(res.first()); //da false!!
+
             /*PARSING E SALVATAGGIO UTENTE NELLA SESSIONE*/
             /*SALVATAGGIO COOKIE*/
             
-        } catch (SQLException ex) {
-            //SCRIVERE ERRORE IN LOG4J
+        } catch (Exception ex) {
+            out.print("Error");
         } finally {            
             out.close();
         }
