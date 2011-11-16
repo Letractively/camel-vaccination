@@ -32,6 +32,9 @@ public class Richiamo extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        
+        out.println("<HTML><HEAD><title>Richiamo</title></HEAD><BODY>");
+        
         try {
             if(request.getParameter("seconds")==null){
                 out.println("<form action=\"Richiamo\" method=\"POST\">");
@@ -75,6 +78,8 @@ public class Richiamo extends HttpServlet {
         } finally {            
             out.close();
         }
+        
+        out.println("</BODY></HTML>");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
