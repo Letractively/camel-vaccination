@@ -19,7 +19,7 @@ public class Log4k {
     public static org.apache.log4j.Logger log = Logger.getLogger(Log4k.class);
     private static boolean hasInit=false;
     
-    public static void init() {        
+    private static void init() {        
         if (!hasInit){
             PropertyConfigurator.configure (
                     Log4k.class.getClassLoader().getResource(logPropertiesFile));
@@ -27,19 +27,19 @@ public class Log4k {
         }
     }
     
-    public static void debug (String msg){
+    public static void debug (String className, String msg){
         if(!hasInit) init();
-        log.debug(msg);
+        log.debug(className+": "+msg);
     }
     
-    public static void warn (String msg){
+    public static void warn (String className, String msg){
         if(!hasInit) init();
-        log.warn(msg);
+        log.warn(className+": "+msg);
     }
     
-    public static void error (String msg){
+    public static void error (String className, String msg){
         if(!hasInit) init();
-        log.error(msg);
+        log.error(className+": "+msg);
     }
     
     
