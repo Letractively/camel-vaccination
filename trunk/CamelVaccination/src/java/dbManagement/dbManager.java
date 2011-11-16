@@ -4,6 +4,7 @@ import com.mysql.jdbc.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import logManagement.Log4k;
 
 /**
  *
@@ -31,7 +32,7 @@ public class dbManager{
             command = "SELECT name, surname, vaccination_date FROM " + set1.getCursorName() + " JOIN " + set2.getCursorName();
             res = dbConn.executeQuery(command);
         } catch (SQLException ex) {
-            Logger.getLogger(dbManager.class.getName()).log(Level.SEVERE, null, ex);
+            Log4k.error(dbManager.class.getName(), ex.getMessage());
         }
         return res;
     }
@@ -48,7 +49,7 @@ public class dbManager{
             res = dbConn.executeQuery(command);
             return res;
         } catch (SQLException ex) {
-            Logger.getLogger(dbManager.class.getName()).log(Level.SEVERE, null, ex);
+            Log4k.error(dbManager.class.getName(), ex.getMessage());
         }
         return res;
     }
@@ -60,7 +61,7 @@ public class dbManager{
             ResultSet set = dbConn.executeQuery(command);
             res = set.getString(1);
         } catch (SQLException ex) {
-            Logger.getLogger(dbManager.class.getName()).log(Level.SEVERE, null, ex);
+            Log4k.error(dbManager.class.getName(), ex.getMessage());
         }
         return res;
     }
@@ -72,7 +73,7 @@ public class dbManager{
             ResultSet set = dbConn.executeQuery(command);
             res = set.getString(0);
         } catch (SQLException ex) {
-            Logger.getLogger(dbManager.class.getName()).log(Level.SEVERE, null, ex);
+            Log4k.error(dbManager.class.getName(), ex.getMessage());
         }
         return res;
     }
@@ -87,7 +88,7 @@ public class dbManager{
             command = "SELECT * FROM patients WHERE patient_id = " + set1.getString("patient_id");
             res = dbConn.executeQuery(command);
         } catch (SQLException ex) {
-            Logger.getLogger(dbManager.class.getName()).log(Level.SEVERE, null, ex);
+            Log4k.error(dbManager.class.getName(), ex.getMessage());
         }
         return res;
     }
