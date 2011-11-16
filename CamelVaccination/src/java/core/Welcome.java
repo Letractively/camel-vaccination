@@ -30,6 +30,9 @@ public class Welcome extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        
+        out.println("<HTML><HEAD><title>Welcome</title></HEAD><BODY>");
+        
         try {
             String kind = request.getParameter("kind");
             if(kind.equals("medico")){
@@ -76,6 +79,8 @@ public class Welcome extends HttpServlet {
         } finally {
             out.close();
         }
+        
+        out.println("</BODY></HTML>");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
