@@ -6,22 +6,19 @@ package core;
 
 import com.mysql.jdbc.ResultSet;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 import dbManagement.*;
+import logManagement.*;
+import java.io.PrintWriter;
+import userManagement.User;
 
 /**
  *
  * @author administrator
  */
 public class Login extends HttpServlet {
-
+    private final int secsBeforeRefresh = 4;
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -36,17 +33,41 @@ public class Login extends HttpServlet {
         dbManager dbM = new dbManager();
         
         try {
+            String htmlPage = "";
+            String title = "Login result";
+            String htmlIntro = "<HTML><HEAD><title>" + title + "</title></HEAD><BODY>";
+            String htmlOutro = "</BODY></HTML>";
+            
+            htmlPage += htmlIntro;
+
             String usr = request.getParameter("user");
             String psw = request.getParameter("password");
-            boolean doc = request.getParameter("type").equals("medico");
+            boolean isDoc = request.getParameter("type").equals("medico");
             
-            ResultSet res = dbM.userMatches(usr, psw, doc); //RICEVERE RISULTATI DA FUNZIONE LORIS
-            //Non arrivano risultati
-            out.print(res.first()); //da false!!
-
-            /*PARSING E SALVATAGGIO UTENTE NELLA SESSIONE*/
-            /*SALVATAGGIO COOKIE*/
-            
+            ResultSet res = dbM.userMatches(usr, psw, isDoc);
+                     
+            if (res.first()){
+                HttpSession session = request.getSession();                
+                User loggedUser = (User) session.getAttribute("loggedUser");
+                if (loggedUser == null){
+                    loggedUser = new User(res, isDoc);
+                    session.setAttribute("loggedUser", loggedUser);
+                htmlPage += "Benvenuto " + ((loggedUser.getIsDoctor()) ? "dr. " + loggedUser.getSurname() : loggedUser.getName()) + "<br>";
+                htmlPage += "Verrai a breve reindirizzato alla tua pagina personale";
+                htmlPage += htmlOutro;
+                out.print(htmlPage);
+                response.setHeader("Refresh", secsBeforeRefresh + "; url=Welcome");    
+                } else {
+                    Log4k.warn(Login.class.getName(), "un utente gia' loggato non dovrebbe essere qui\n");                    
+                }
+            }
+            else {
+                htmlPage += "Hai inserito un nome utente o una password sbagliati<br>";
+                htmlPage += "Verrai a breve reindirizzato alla pagina di login";
+                htmlPage += htmlOutro;
+                out.print(htmlPage);                
+                response.setHeader("Refresh", secsBeforeRefresh + "; url=index.jsp");                
+            }
         } catch (Exception ex) {
             out.print("Error");
         } finally {            
