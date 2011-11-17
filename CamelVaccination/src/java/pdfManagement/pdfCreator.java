@@ -25,9 +25,9 @@ public class pdfCreator {
     
     public static String letter(String name, String surname, String doctorSign){
         return ""
-                + "Gentile signor/a "+name+" "+surname+" \n"
+                + "Gentile signor/a "+name+" "+surname+", \n"
                 + "con la presente la informiamo che in data odierna dovrà presentarsi presso il nostro"
-                + "centro medico il richiamo della vaccinazione.\n\n"
+                + "centro medico per il richiamo della vaccinazione.\n\n"
                 + "Distinti saluti\n"
                 + "dr. "+doctorSign+"\n";
     }

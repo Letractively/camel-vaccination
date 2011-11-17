@@ -9,13 +9,15 @@ import dbManagement.dbManager;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.LinkedList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import logManagement.Log4k;
-import userManagement.User;
+import userManagement.*;
+
 
 /**
  *
@@ -40,6 +42,8 @@ public class Richiamo extends HttpServlet {
         
                
         try {
+            LinkedList <Paziente> arrayPazienti = new LinkedList();
+            
             String seconds = "";
                     
             if(request.getParameter("date")!=null)
@@ -59,27 +63,38 @@ public class Richiamo extends HttpServlet {
                 
                 out.println("<TABLE>");
                 out.println("<TR>");
+                out.println("<TD>ID</TD>");
+                out.println("<TD>Username</TD>");
                 out.println("<TD>Paziente</TD>");
-                out.println("<TD>Foto</TD>");
+                out.println("<TD>M/F</TD>");
                 out.println("<TD>Data di vaccinazione</TD>");
+                out.println("<TD>Foto</TD>");
+                out.println("<TD>Medico</TD>");
                 out.println("</TR>");
                 try {
                     if(r.first()){
                         while (!r.isAfterLast()) {
                             String checkboxname = "patients";
-                            String id = r.getString("id");
-                            String nome = r.getString("name");
-                            String cognome = r.getString("surname");
-                            String foto = r.getString("picture");
-                            String vacc = ((r.getString("vaccination_date")!=null) ? r.getString("vaccination_date"): "Mai Vaccinato");
-
+                            /*
+                             *Creo un nuovo paziente ad ogni ciclo e gli passo r
+                             *Una volta creato lo inserisco in un array
+                             *Usare dal package userManagement
+                             */
+                            
+                            Paziente p = new Paziente(r);
+                            
+                            if (!arrayPazienti.add(p)) 
+                                Log4k.warn(Richiamo.class.getName(), "il paziente non e` stato inserito nel'array");
+                            
                             out.println("<TR>");
-                            out.println("<TD>"+id+"</TD>");
-                            out.println("<TD>"+nome+cognome+"</TD>");
-                            out.println("<TD>"+nome+cognome+"</TD>");
-                            out.println("<TD>"+"<img src=\"photo/"+foto+"\" height=\"50\" width=\"50\" alt=\"Foto Paziente\" /></TD>");
-                            out.println("<TD>"+vacc+"</TD>");
-                            out.println("<TD><input type=\"checkbox\" name=\""+checkboxname+"\" value=\""+id+"\" /></TD>");
+                            out.println("<TD>"+p.getId()+"</TD>");
+                            out.println("<TD>"+p.getUsername()+"</TD>");
+                            out.println("<TD>"+p.getName()+" "+p.getSurname()+"</TD>");
+                            out.println("<TD>"+p.getGender()+"<TD>");
+                            out.println("<TD>"+p.getVaccination_date()+"<TD>");
+                            out.println("<TD>"+"<img src=\"photo/"+p.getPicture()+"\" height=\"50\" width=\"50\" alt=\"Foto Paziente\" /></TD>");
+                            out.println("<TD>"+p.getDoctor_id()+"</TD>");
+                            out.println("<TD><input type=\"checkbox\" name=\""+checkboxname+"\" value=\""+p.getId()+"\" /></TD>");
                             out.println("</TR>");
                             r.next();
                         } 

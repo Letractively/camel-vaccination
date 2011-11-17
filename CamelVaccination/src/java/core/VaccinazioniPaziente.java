@@ -54,16 +54,18 @@ public class VaccinazioniPaziente extends HttpServlet {
                     out.println("<TD>Data di vaccinazione</TD>");
                     out.println("</TR>");
                     
-                    ResultSet res = null; //DA IMPLEMENTARE
-                    try{
-                        while(res.next()){
-                            String med = ""+res.getString("name")+" "+res.getString("surname");
-                            String date = res.getString("vaccination_date");                            
-                            out.println("<TR>");
-                            out.println("<TD>"+med+"</TD>");
-                            out.println("<TD>"+date+"</TD>");
-                            out.println("</TR>");
-                        }
+                    
+                    
+                    ResultSet res = null;
+                            try{
+                                while(res.next()){
+                                    String med = ""+res.getString("name")+" "+res.getString("surname");
+                                    String date = res.getString("vaccination_date");                            
+                                    out.println("<TR>");
+                                    out.println("<TD>"+med+"</TD>");
+                                    out.println("<TD>"+date+"</TD>");
+                                    out.println("</TR>");
+                                }
                     }
                     catch(SQLException e){
                         Log4k.error(Welcome.class.getName(), e.getMessage());
