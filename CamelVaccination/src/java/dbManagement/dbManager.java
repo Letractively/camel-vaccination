@@ -76,18 +76,16 @@ public class dbManager{
         return res;
     }
 
-    public ResultSet getPreviousVaccinationsPatients(int doctorID, String sec){
+    public ResultSet getPreviousVaccinationsPatients(String sec){
         ResultSet res = null;
         try {
             String command;
-            command = "SELECT patient_id FROM patients LEFT JOIN vaccinations" +
-                    " ON patients.patient_id = vaccinations.patient_id" +
-                    " AND doctor_id = " + doctorID +
-                    " AND vaccination_date <= " + getDBdiffTime(sec);
-            ResultSet set1 = dbConn.executeQuery(command);
-            command = "SELECT * FROM patients WHERE patient_id = " + set1.getString("patient_id");
+            command = "SELECT * FROM patients LEFT JOIN vaccinations" +
+                    " ON patients.id = vaccinations.patient_id" +
+                    " AND (vaccination_date <= '" + getDBdiffTime(sec) +
+                    "' OR vaccination_date = NULL)";
             res = dbConn.executeQuery(command);
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             Log4k.error(dbManager.class.getName(), ex.getMessage());
         }
         return res;

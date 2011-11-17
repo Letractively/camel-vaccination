@@ -41,24 +41,19 @@ public class Richiamo extends HttpServlet {
                
         try {
             String seconds = "";
-            String date = "date";
                     
-            if(request.getParameter(date)!=null)
-                 seconds = request.getParameter(date);
+            if(request.getParameter("date")!=null)
+                seconds = request.getParameter("date");
             
-            out.println("<form action=\"Richiamo\" method=\"GET\">");
+            out.println("<form action=\"?action=list&\" method=\"GET\">");
             out.println("<label for=\"date\">Vaccinazioni effettuate prima di (secondi)</label>"
-                    + "<input type=\"text\" id=\"date\" name=\""+date+"\" value=\""+seconds+"\" />");
+                    + "<input type=\"text\" id=\"date\" name=\"date\" value=\""+seconds+"\" />");
             out.println("<input type=\"submit\" name=\"Submit\" value=\"Cerca\" />");
             out.println("</form>");
             
-            if(request.getParameter(date)!=null){
-                
-                String s = request.getParameter(date);
-                User loggedUser = (User) request.getSession().getAttribute("loggedUser");
-                int doctorID = loggedUser.getId();
+            if(request.getParameter("date")!=null){
                 dbManager db = new dbManager();
-                ResultSet r = db.getPreviousVaccinationsPatients(doctorID, s);
+                ResultSet r = db.getPreviousVaccinationsPatients(seconds);
                 
                 out.println("<form action=\"Conferma\" method=\"POST\">");
                 
@@ -69,29 +64,31 @@ public class Richiamo extends HttpServlet {
                 out.println("<TD>Data di vaccinazione</TD>");
                 out.println("</TR>");
                 try {
-                    while(r.next()){
-                        String checkboxname = "patients";
-                        String id = r.getString("ID"); //CONTROLLARE NOME COL DATABASE
-                        String nome = r.getString("name");
-                        String cognome = r.getString("surname");
-                        String foto = r.getString("pictures");
-                        String vacc = r.getString("vaccination_date");
-                        
-                        out.println("<TR>");
-                        out.println("<TD>"+id+"</TD>");
-                        out.println("<TD>"+nome+cognome+"</TD>");
-                        out.println("<TD>"+nome+cognome+"</TD>");
-                        out.println("<TD>"+"<img src=\""+foto+"\" height=\"50\" width=\"50\" alt=\"Foto Paziente\" /></TD>");
-                        out.println("<TD>"+vacc+"</TD>");
-                        out.println("<TD><input type=\"checkbox\" name=\""+checkboxname+"\" value=\""+id+"\" /></TD>");
-                        out.println("</TR>");
-                        
+                    if(r.first()){
+                        while (!r.isAfterLast()) {
+                            String checkboxname = "patients";
+                            String id = r.getString("id");
+                            String nome = r.getString("name");
+                            String cognome = r.getString("surname");
+                            String foto = r.getString("picture");
+                            String vacc = ((r.getString("vaccination_date")!=null) ? r.getString("vaccination_date"): "Mai Vaccinato");
+
+                            out.println("<TR>");
+                            out.println("<TD>"+id+"</TD>");
+                            out.println("<TD>"+nome+cognome+"</TD>");
+                            out.println("<TD>"+nome+cognome+"</TD>");
+                            out.println("<TD>"+"<img src=\"photo/"+foto+"\" height=\"50\" width=\"50\" alt=\"Foto Paziente\" /></TD>");
+                            out.println("<TD>"+vacc+"</TD>");
+                            out.println("<TD><input type=\"checkbox\" name=\""+checkboxname+"\" value=\""+id+"\" /></TD>");
+                            out.println("</TR>");
+                            r.next();
+                        } 
                     }
                 } catch (SQLException ex) {
                     out.println("</BODY></HTML>");
                     String className = "Richiamo";
                     Log4k.error(className, ex.getMessage());
-                    
+                   
                 }
                 out.println("</TABLE>");
                 
