@@ -45,7 +45,7 @@ public class Richiamo extends HttpServlet {
             if(request.getParameter("seconds")!=null)
                  seconds = request.getParameter("seconds");
             
-            out.println("<form action=\"Richiamo\" method=\"POST\">");
+            out.println("<form action=\"Richiamo\" method=\"GET\">");
             out.println("<label for=\"date\">Vaccinazioni effettuate prima di (secondi)</label>"
                     + "<input type=\"text\" id=\"date\" name=\"date\" value=\""+seconds+"\" />");
             out.println("<input type=\"submit\" name=\"Submit\" value=\"Cerca\" />");
