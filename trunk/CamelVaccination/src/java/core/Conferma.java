@@ -44,7 +44,9 @@ public class Conferma extends HttpServlet {
                 String paramName = param.nextElement();
                 String id = request.getParameter(paramName);
                 out.println("Parametro: "+paramName+" ID: "+id+"<BR>");
-                
+               /*
+                 * 
+                 */ 
                
             }
           
