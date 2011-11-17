@@ -32,6 +32,10 @@
         <servlet-name>Richiamo</servlet-name>
         <servlet-class>core.Richiamo</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Conferma</servlet-name>
+        <servlet-class>core.Conferma</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Registrati</servlet-name>
         <url-pattern>/Registrati</url-pattern>
@@ -66,6 +70,10 @@
     <servlet-mapping>
         <servlet-name>VaccinazioniPaziente</servlet-name>
         <url-pattern>/patientFiles/VaccinazioniPaziente</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Conferma</servlet-name>
+        <url-pattern>/doctorFiles/Conferma</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
