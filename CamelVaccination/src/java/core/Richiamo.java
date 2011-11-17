@@ -43,8 +43,8 @@ public class Richiamo extends HttpServlet {
             String seconds = "";
             String date = "date";
                     
-            if(request.getParameter("seconds")!=null)
-                 seconds = request.getParameter("seconds");
+            if(request.getParameter(date)!=null)
+                 seconds = request.getParameter(date);
             
             out.println("<form action=\"Richiamo\" method=\"GET\">");
             out.println("<label for=\"date\">Vaccinazioni effettuate prima di (secondi)</label>"
@@ -54,7 +54,7 @@ public class Richiamo extends HttpServlet {
             
             if(request.getParameter(date)!=null){
                 
-                String s = request.getParameter("seconds");
+                String s = request.getParameter(date);
                 User loggedUser = (User) request.getSession().getAttribute("loggedUser");
                 int doctorID = loggedUser.getId();
                 dbManager db = new dbManager();
