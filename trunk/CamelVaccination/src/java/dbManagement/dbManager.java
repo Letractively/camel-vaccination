@@ -2,8 +2,6 @@ package dbManagement;
 
 import com.mysql.jdbc.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import logManagement.Log4k;
 
 /**
@@ -82,7 +80,9 @@ public class dbManager{
         ResultSet res = null;
         try {
             String command;
-            command = "SELECT patient_id FROM vaccinations WHERE doctor_id = " + doctorID +
+            command = "SELECT patient_id FROM patients LEFT JOIN vaccinations" +
+                    " ON patients.patient_id = vaccinations.patient_id" +
+                    " AND doctor_id = " + doctorID +
                     " AND vaccination_date <= " + getDBdiffTime(sec);
             ResultSet set1 = dbConn.executeQuery(command);
             command = "SELECT * FROM patients WHERE patient_id = " + set1.getString("patient_id");
