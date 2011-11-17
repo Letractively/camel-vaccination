@@ -9,14 +9,11 @@ import dbManagement.dbManager;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import logManagement.Log4k;
 import userManagement.User;
 
@@ -39,65 +36,75 @@ public class Richiamo extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         
+        out.println("<HTML><HEAD><title>Richiamo</title></HEAD><BODY>");
+        
+               
         try {
-            HttpSession session = request.getSession();
-            User loggedUser = (User) session.getAttribute("loggedUser");
-            if (loggedUser == null){
-                Log4k.warn(Richiamo.class.getName(), "un utente non loggato non dovrebbe essere qui");
-            } else if (!loggedUser.getIsDoctor()){
-                Log4k.warn(Welcome.class.getName(), "un paziente non dovrebbe essere qui");
-            } else {
+            String seconds = "";
+                    
+            if(request.getParameter("seconds")!=null)
+                 seconds = request.getParameter("seconds");
+            
+            out.println("<form action=\"Richiamo\" method=\"POST\">");
+            out.println("<label for=\"date\">Vaccinazioni effettuate prima di (secondi)</label>"
+                    + "<input type=\"text\" id=\"date\" name=\"date\" value=\""+seconds+"\" />");
+            out.println("<input type=\"submit\" name=\"Submit\" value=\"Cerca\" />");
+            out.println("</form>");
+            
+            if(request.getParameter("seconds")!=null){
                 
-                out.println("<HTML><HEAD><title>Richiamo</title></HEAD><BODY>");
-                if(request.getParameter("date")==null){
-                    out.println("<form action=\"Richiamo\" method=\"GET\">");
-                    out.println("<label for=\"Vaccinazioni effettuate prima di (giorni)\"></label><input type=\"text\" name=\"date\" value=\"\" />");
-                    out.println("<input type=\"submit\" name=\"Submit\" value=\"Cerca\" />");
-                    out.println("</form>");
-                }
-                else{
-                    int doctorID = loggedUser.getId();
-                    dbManager dbMan = new dbManager();
-                    String s = request.getParameter("date");
-                    ResultSet r = dbMan.getPreviousVaccinationsPatients(doctorID, s);
-                    
-                    //dobbiamo gestire il caso in cui r sia vuoto!!!!!
-                    
-                    out.println("<TABLE>");
-                    out.println("<TR>");
-                    out.println("<TD>Paziente</TD>");
-                    out.println("<TD>Foto</TD>");
-                    out.println("<TD>Data di vaccinazione</TD>");
-                    out.println("</TR>");
-                    
+                String s = request.getParameter("seconds");
+                User loggedUser = (User) request.getSession().getAttribute("loggedUser");
+                int doctorID = loggedUser.getId();
+                dbManager db = new dbManager();
+                ResultSet r = db.getPreviousVaccinationsPatients(doctorID, s);
+                
+                out.println("<form action=\"\" method=\"POST\">");
+                
+                out.println("<TABLE>");
+                out.println("<TR>");
+                out.println("<TD>Paziente</TD>");
+                out.println("<TD>Foto</TD>");
+                out.println("<TD>Data di vaccinazione</TD>");
+                out.println("</TR>");
+                try {
                     while(r.next()){
+                        String checkboxname = "patients";
+                        String id = r.getString("ID"); //CONTROLLARE NOME COL DATABASE
                         String nome = r.getString("name");
                         String cognome = r.getString("surname");
                         String foto = r.getString("pictures");
                         String vacc = r.getString("vaccination_date");
                         
                         out.println("<TR>");
+                        out.println("<TD>"+id+"</TD>");
+                        out.println("<TD>"+nome+cognome+"</TD>");
                         out.println("<TD>"+nome+cognome+"</TD>");
                         out.println("<TD>"+"<img src=\""+foto+"\" height=\"50\" width=\"50\" alt=\"Foto Paziente\" /></TD>");
                         out.println("<TD>"+vacc+"</TD>");
+                        out.println("<TD><input type=\"checkbox\" name=\""+checkboxname+"\" value=\""+id+"\" /></TD>");
                         out.println("</TR>");
                         
                     }
-                    
-                    out.println("</TABLE>");
-                    //PULSANTI DI STAMPA PDF
-                    
-                    //PULSANTE ANNULLA (CHIEDERE ABI PER JAVASCRIPT)
+                } catch (SQLException ex) {
                     out.println("</BODY></HTML>");
+                    String className = "Richiamo";
+                    Log4k.error(className, ex.getMessage());
+                    
                 }
+                out.println("</TABLE>");
+                //PULSANTI DI STAMPA PDF
+                out.println("<input type=\"submit\" name=\"Conferma\" value=\"Conferma\" />");
+                out.println("</form>");
+                
+                //PULSANTE ANNULLA (CHIEDERE ABI PER JAVASCRIPT)
             }
-        } catch (SQLException ex) {
-            Log4k.error(Richiamo.class.getName(), ex.getMessage());
         } finally {
+            out.println("</BODY></HTML>");
             out.close();
         }
         
-        
+        out.println("</BODY></HTML>");
     }
     
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
