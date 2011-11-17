@@ -59,7 +59,7 @@ public class Richiamo extends HttpServlet {
                 dbManager db = new dbManager();
                 ResultSet r = db.getPreviousVaccinationsPatients(doctorID, s);
                 
-                out.println("<form action=\"\" method=\"POST\">");
+                out.println("<form action=\"Conferma\" method=\"POST\">");
                 
                 out.println("<TABLE>");
                 out.println("<TR>");
@@ -93,11 +93,11 @@ public class Richiamo extends HttpServlet {
                     
                 }
                 out.println("</TABLE>");
-                //PULSANTI DI STAMPA PDF
-                out.println("<input type=\"submit\" name=\"Conferma\" value=\"Conferma\" />");
+                
+                out.println("<BR><input type=\"submit\" name=\"Conferma\" value=\"Conferma\" />");
                 out.println("</form>");
                 
-                //PULSANTE ANNULLA (CHIEDERE ABI PER JAVASCRIPT)
+                out.println("<a href=\"Welcome\" title=\"Home\">Torna alla Home</a>");
             }
         } finally {
             out.println("</BODY></HTML>");
