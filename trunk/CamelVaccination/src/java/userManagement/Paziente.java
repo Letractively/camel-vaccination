@@ -20,8 +20,8 @@ public class Paziente {
             this.username = userData.getString("username");
             this.name = userData.getString("name");
             this.surname = userData.getString("surname");
-            this.vaccination_date = userData.getDate("vaccination_date");
-            this.doctor_id = userData.getString("doctor_id");
+            this.vaccination_date = ((userData.getString("vaccination_date")!=null) ? userData.getString("vaccination_date"): "Mai Vaccinato");
+            this.doctor_id = ((userData.getString("doctor_id")!=null) ? userData.getString("doctor_id"): "-");
             this.gender = userData.getString("gender");
             this.birthdate = userData.getDate("birthdate");
             this.picture = userData.getString("picture");
@@ -94,11 +94,11 @@ public class Paziente {
         this.username = username;
     }
 
-    public Date getVaccination_date() {
+    public String getVaccination_date() {
         return vaccination_date;
     }
 
-    public void setVaccination_date(Date vaccination_date) {
+    public void setVaccination_date(String vaccination_date) {
         this.vaccination_date = vaccination_date;
     }
     //User Parameters
@@ -109,6 +109,6 @@ public class Paziente {
     private String gender;
     private Date birthdate;
     private String picture;
-    private Date vaccination_date;
+    private String vaccination_date;
     private String doctor_id;
 }
