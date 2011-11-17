@@ -5,8 +5,7 @@ import com.mysql.jdbc.ResultSet;
 import com.mysql.jdbc.Statement;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import logManagement.Log4k;
 
 /**
  *
@@ -29,13 +28,13 @@ class dbConnector{
             dbString = "jdbc:mysql://" + host + "/" + dbName;
             conn = (Connection) DriverManager.getConnection(dbString, user, psw);
         } catch (SQLException ex) {
-            Logger.getLogger(dbConnector.class.getName()).log(Level.SEVERE, null, ex);
+            Log4k.error(dbConnector.class.getName(), ex.getMessage());
         } catch (InstantiationException ex) {
-            Logger.getLogger(dbConnector.class.getName()).log(Level.SEVERE, null, ex);
+            Log4k.error(dbConnector.class.getName(), ex.getMessage());
         } catch (IllegalAccessException ex) {
-            Logger.getLogger(dbConnector.class.getName()).log(Level.SEVERE, null, ex);
+            Log4k.error(dbConnector.class.getName(), ex.getMessage());
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(dbConnector.class.getName()).log(Level.SEVERE, null, ex);
+            Log4k.error(dbConnector.class.getName(), ex.getMessage());
         }
     }
 
@@ -43,7 +42,7 @@ class dbConnector{
         try {
             conn.close();
         } catch (SQLException ex) {
-            Logger.getLogger(dbConnector.class.getName()).log(Level.SEVERE, null, ex);
+            Log4k.error(dbConnector.class.getName(), ex.getMessage());
         }
     }
 
@@ -53,7 +52,7 @@ class dbConnector{
             statement.execute(command);
             statement.close();
         } catch (SQLException ex) {
-            Logger.getLogger(dbConnector.class.getName()).log(Level.SEVERE, null, ex);
+            Log4k.error(dbConnector.class.getName(), ex.getMessage());
         }
     }
 
@@ -64,7 +63,7 @@ class dbConnector{
             res = (ResultSet) statement.executeQuery(query);
             /* we must not close the statement here, otherwise res drops */
         } catch (SQLException ex) {
-            Logger.getLogger(dbConnector.class.getName()).log(Level.SEVERE, null, ex);
+            Log4k.error(dbConnector.class.getName(), ex.getMessage());
         }
         return res;
     }
