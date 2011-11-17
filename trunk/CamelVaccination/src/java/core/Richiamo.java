@@ -41,17 +41,18 @@ public class Richiamo extends HttpServlet {
                
         try {
             String seconds = "";
+            String date = "date";
                     
             if(request.getParameter("seconds")!=null)
                  seconds = request.getParameter("seconds");
             
             out.println("<form action=\"Richiamo\" method=\"GET\">");
             out.println("<label for=\"date\">Vaccinazioni effettuate prima di (secondi)</label>"
-                    + "<input type=\"text\" id=\"date\" name=\"date\" value=\""+seconds+"\" />");
+                    + "<input type=\"text\" id=\"date\" name=\""+date+"\" value=\""+seconds+"\" />");
             out.println("<input type=\"submit\" name=\"Submit\" value=\"Cerca\" />");
             out.println("</form>");
             
-            if(request.getParameter("seconds")!=null){
+            if(request.getParameter(date)!=null){
                 
                 String s = request.getParameter("seconds");
                 User loggedUser = (User) request.getSession().getAttribute("loggedUser");
