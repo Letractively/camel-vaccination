@@ -11,11 +11,11 @@ package pdfManagement;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
-import com.mysql.jdbc.ResultSet;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.sql.SQLException;
+import java.util.LinkedList;
 import logManagement.Log4k;
+import userManagement.Paziente;
 
 public class pdfCreator {
     
@@ -23,7 +23,7 @@ public class pdfCreator {
     private static final float size = 14;
     private static final int align = Element.ALIGN_LEFT; 
     
-    public static String letter(String name, String surname, String doctorSign){
+    private static String letter(String name, String surname, String doctorSign){
         return ""
                 + "Gentile signor/a "+name+" "+surname+", \n"
                 + "con la presente la informiamo che in data odierna dovrà presentarsi presso il nostro"
@@ -32,7 +32,7 @@ public class pdfCreator {
                 + "dr. "+doctorSign+"\n";
     }
     
-    public static void createPage(Document doc, String text){
+    private static void createPage(Document doc, String text){
         
         Paragraph p = new Paragraph(text,FontFactory.getFont(font, size));
         p.setAlignment(align);
@@ -46,31 +46,28 @@ public class pdfCreator {
         
     }
     
-    public static void createLecters(String documentName, ResultSet patients, String docSign){
+    public static void createLetters(String documentName, LinkedList <Paziente> patients, String docSign){
         Document document = new Document();
         
         try {
             PdfWriter.getInstance(document, new FileOutputStream(documentName+".pdf"));
             document.open();
-            
-            try {
-                while(patients.next()){
-                    String name = patients.getString("name");
-                    String surname = patients.getString("surname");
+
+                while(patients.isEmpty()){
+                    Paziente p = patients.remove();
+                    String name = p.getName();
+                    String surname = p.getSurname();
                     
                     String l = letter(name, surname, docSign);
                     createPage(document,l);                
                 }
-            } catch (SQLException ex) {
+            } catch (DocumentException ex) {
+                Log4k.error(pdfCreator.class.getName(), ex.getMessage());
+            }
+            catch  (FileNotFoundException ex){
                 Log4k.error(pdfCreator.class.getName(), ex.getMessage());
             }
             
-            document.close();
-            
-        } catch (FileNotFoundException ex) {
-            Log4k.error(pdfCreator.class.getName(), ex.getMessage());
-        }catch (DocumentException ex) {
-            Log4k.error(pdfCreator.class.getName(), ex.getMessage());
-        }
+            document.close();       
     } 
 }
