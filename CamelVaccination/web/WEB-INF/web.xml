@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+    <filter>
+        <filter-name>DoctorFilter</filter-name>
+        <filter-class>filtersManagement.DoctorFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>PatientFilter</filter-name>
+        <filter-class>filtersManagement.PatientFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>PatientFilter</filter-name>
+        <url-pattern>patientFiles/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>DoctorFilter</filter-name>
+        <url-pattern>/doctorFiles/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
     <servlet>
         <servlet-name>Registrati</servlet-name>
         <servlet-class>core.Registrati</servlet-class>
