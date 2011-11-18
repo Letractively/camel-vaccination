@@ -84,6 +84,19 @@ public class dbManager{
                     " ON patients.id = vaccinations.patient_id" +
                     " AND (vaccination_date <= '" + getDBdiffTime(sec) +
                     "' OR vaccination_date = NULL)";
+
+            /* Select the last vaccination of each vaccinated patient */
+            String MAXes_TABLE = "" +
+                    "SELECT DISTINCT MAX(vaccination_date) AS 'vaccination_date', patient_id" +
+                    "FROM vaccinations" +
+                    "GROUP BY patient_id";
+            String JOINED_TABLE = "SELECT * FROM vaccinations " +
+                    "WHERE patient_id IN (SELECT patient_id FROM " + MAXes_TABLE + ")";
+            command = "SELECT * FROM patients LEFT JOIN " + JOINED_TABLE + " JT" +
+                    " ON patients.id = JT.patient_id" +
+                    " AND (vaccination_date <= '" + getDBdiffTime(sec) + "'" +
+                    " OR vaccination_date = NULL)";
+
             res = dbConn.executeQuery(command);
         } catch (Exception ex) {
             Log4k.error(dbManager.class.getName(), ex.getMessage());
