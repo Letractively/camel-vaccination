@@ -11,6 +11,7 @@ import javax.servlet.http.*;
 import dbManagement.*;
 import logManagement.*;
 import java.io.PrintWriter;
+import java.util.Calendar;
 import userManagement.User;
 
 /**
@@ -56,7 +57,18 @@ public class Login extends HttpServlet {
                     htmlPage += "Verrai a breve reindirizzato alla tua pagina personale";
                     htmlPage += htmlOutro;
                     out.print(htmlPage);
-                    response.setHeader("Refresh", secsBeforeRefresh + "; url=Welcome");    
+                    response.setHeader("Refresh", secsBeforeRefresh + "; url=Welcome");
+                    
+                    /*INIZIO SETTAGGIO COOKIE*/
+                    String cookieName = "vaccination";//cambiare anche in welcome
+                    Calendar cal = Calendar.getInstance();
+                    String cookieValue = cal.getTime().toString();
+                    int cookieExpire = 3600*24*7;//una settimana
+                    
+                    Cookie cookie = new Cookie(cookieName, cookieValue);
+                    cookie.setMaxAge(cookieExpire);
+                    /*FINE SETTAGGIO COOKIE*/
+                    
                 } else {
                     Log4k.warn(Login.class.getName(), "un utente gia' loggato non dovrebbe essere qui\n");                    
                 }
