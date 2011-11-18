@@ -6,12 +6,16 @@ package core;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Enumeration;
+import java.util.LinkedList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import logManagement.Log4k;
+import pdfManagement.pdfCreator;
+import userManagement.Paziente;
+import userManagement.User;
 
 /**
  *
@@ -31,24 +35,40 @@ public class Conferma extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        
         try {
             String checkboxname = "patients";
-            String arrayName = ""; //DA SETTARE IN BASE ALLA FUNZIONE PRECEDENTE
-            String nomeFile = request.getSession().getId();
+            String arrayName = "retrivedPatiens"; //DA SETTARE IN BASE ALLA FUNZIONE PRECEDENTE
+            int i = 0;
             
-            Enumeration<String> param = request.getParameterNames();
+            LinkedList <Paziente> choosedPatients = new LinkedList();
+            LinkedList <Paziente> allPatients = 
+                    (LinkedList <Paziente>) request.getSession().getAttribute(arrayName);//recupero i pazienti dalla sessione
+
+            String nomeFile = request.getSession().getId();//il nome del pd sarà <IDsessione>.pdf
+            User doctor = (User) request.getSession().getAttribute("loggedUser");//recupero il profilo del medico
             
-            String[] patients = (String[])request.getSession().getAttribute(arrayName); 
+            String[] patientsList = request.getParameterValues(checkboxname);//recupero gli id passati per POST
             
-            while(param.hasMoreElements()){
-                String paramName = param.nextElement();
-                String id = request.getParameter(paramName);
-                out.println("Parametro: "+paramName+" ID: "+id+"<BR>");
-               /*
-                 * 
-                 */ 
-               
+            /*Salvo i pazienti selezionati, dato che dovrei fare delle assunzioni su 
+             * come vengono estratti e/o trasmetti i nomi dei pazienti faccio una doppia scansione
+             * utilizzando l'id paziente per identificarli
+             */
+            while(i < patientsList.length){
+                int k = 0;
+                while(k<allPatients.size()){
+                    Paziente p = allPatients.get(k);
+                    String id = p.getId().toString();
+                   if(id.equals(patientsList[i]))
+                       if (choosedPatients.add(p))//se l'id nella lista è uguale a quello recuperato dal post lo aggiungo e controllo il buon esito
+                           Log4k.warn(Conferma.class.getName(), 
+                                   "Il paziente selezionato non è stato aggiunto alla lista");
+               }
             }
+            
+            //Passo l'array di pazienti selezionati alla stampante PDF
+            String signature = doctor.getName()+" "+doctor.getSurname();
+            pdfCreator.createLetters(nomeFile, choosedPatients, signature);
           
             
         } finally {            

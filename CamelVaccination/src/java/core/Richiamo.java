@@ -15,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import logManagement.Log4k;
 import userManagement.*;
 
@@ -38,6 +39,9 @@ public class Richiamo extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         
+        String checkboxname = "patients";//Assicurarsi che sia uguale anche in Conferma
+        String arrayPatientsName = "retrivedPatiens"; //idem sopra
+        
         out.println("<HTML><HEAD><title>Richiamo</title></HEAD><BODY>");
         
                
@@ -45,22 +49,25 @@ public class Richiamo extends HttpServlet {
             LinkedList <Paziente> arrayPazienti = new LinkedList();
             
             String seconds = "";
-                    
-            if(request.getParameter("date")!=null)
+                                
+            if(request.getParameter("date")!=null) //rileva se è già stata effettuata una ricerca
                 seconds = request.getParameter("date");
             
+            //Form di ricerca vaccinazioni
             out.println("<form action=\"?action=list&\" method=\"GET\">");
             out.println("<label for=\"date\">Vaccinazioni effettuate prima di (secondi)</label>"
                     + "<input type=\"text\" id=\"date\" name=\"date\" value=\""+seconds+"\" />");
             out.println("<input type=\"submit\" name=\"Submit\" value=\"Cerca\" />");
             out.println("</form>");
             
+            //Stampa risultato ricerca
             if(request.getParameter("date")!=null){
                 dbManager db = new dbManager();
                 ResultSet r = db.getPreviousVaccinationsPatients(seconds);
                 
                 out.println("<form action=\"Conferma\" method=\"POST\">");
                 
+                //Prima riga della tabella
                 out.println("<TABLE>");
                 out.println("<TR>");
                 out.println("<TD>ID</TD>");
@@ -70,17 +77,14 @@ public class Richiamo extends HttpServlet {
                 out.println("<TD>Data di vaccinazione</TD>");
                 out.println("<TD>Foto</TD>");
                 out.println("<TD>Medico</TD>");
+                out.println("<TD>Seleziona</TD>");
                 out.println("</TR>");
+                
                 try {
+  
                     if(r.first()){
                         while (!r.isAfterLast()) {
-                            String checkboxname = "patients";
-                            /*
-                             *Creo un nuovo paziente ad ogni ciclo e gli passo r
-                             *Una volta creato lo inserisco in un array
-                             *Usare dal package userManagement
-                             */
-                            
+                           
                             Paziente p = new Paziente(r);
                             
                             if (!arrayPazienti.add(p)) 
@@ -101,15 +105,16 @@ public class Richiamo extends HttpServlet {
                     }
                 } catch (SQLException ex) {
                     out.println("</BODY></HTML>");
-                    String className = "Richiamo";
-                    Log4k.error(className, ex.getMessage());
-                   
+                    Log4k.error(Richiamo.class.getName(), ex.getMessage());
                 }
                 out.println("</TABLE>");
                 
+                //Salvo la lista di pazienti nella sessione
+                HttpSession session = request.getSession();
+                session.setAttribute(arrayPatientsName, arrayPazienti);//Assicurarsi che il nome sia uguale anceh in Conferma
+                
                 out.println("<BR><input type=\"submit\" name=\"Conferma\" value=\"Conferma\" />");
                 out.println("</form>");
-                
                 out.println("<a href=\"Welcome\" title=\"Home\">Torna alla Home</a>");
             }
         } finally {
