@@ -63,7 +63,7 @@ public class Richiamo extends HttpServlet {
             //Stampa risultato ricerca
             if(request.getParameter("date")!=null){
                 dbManager db = new dbManager();
-                ResultSet r = db.getPreviousVaccinationsPatients(seconds);
+                ResultSet r = db.getPreviousVaccinationsPatients(new Integer(seconds));
                 
                 out.println("<form action=\"Conferma\" method=\"POST\">");
                 
@@ -94,8 +94,8 @@ public class Richiamo extends HttpServlet {
                             out.println("<TD>"+p.getId()+"</TD>");
                             out.println("<TD>"+p.getUsername()+"</TD>");
                             out.println("<TD>"+p.getName()+" "+p.getSurname()+"</TD>");
-                            out.println("<TD>"+p.getGender()+"<TD>");
-                            out.println("<TD>"+p.getVaccination_date()+"<TD>");
+                            out.println("<TD>"+p.getGender()+"</TD>");
+                            out.println("<TD>"+p.getVaccination_date()+"</TD>");
                             out.println("<TD>"+"<img src=\"photo/"+p.getPicture()+"\" height=\"50\" width=\"50\" alt=\"Foto Paziente\" /></TD>");
                             out.println("<TD>"+p.getDoctor_id()+"</TD>");
                             out.println("<TD><input type=\"checkbox\" name=\""+checkboxname+"\" value=\""+p.getId()+"\" /></TD>");

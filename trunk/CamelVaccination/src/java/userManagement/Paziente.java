@@ -20,7 +20,7 @@ public class Paziente {
             this.username = userData.getString("username");
             this.name = userData.getString("name");
             this.surname = userData.getString("surname");
-            this.vaccination_date = ((userData.getString("vaccination_date")!=null) ? userData.getString("vaccination_date"): "Mai Vaccinato");
+            this.vaccination_date = ((userData.getString("max")!=null) ? userData.getString("max"): "Mai Vaccinato");
             this.doctor_id = ((userData.getString("doctor_id")!=null) ? userData.getString("doctor_id"): "-");
             this.gender = userData.getString("gender");
             this.birthdate = userData.getDate("birthdate");
