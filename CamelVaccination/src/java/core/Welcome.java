@@ -43,7 +43,7 @@ public class Welcome extends HttpServlet {
             HttpSession session = request.getSession();  
             
             /*INIZIO RECUPERO COOKIE*/
-            String cookieName = "vaccination";
+            /*String cookieName = "vaccination";
             
             Cookie[] cookieArray = request.getCookies(); 
             
@@ -58,7 +58,7 @@ public class Welcome extends HttpServlet {
                 String message = c.getValue();
                 /*Stampa del valore del cookie da qualche parte*/
                 
-            }
+            //}
             /*FINE RECUPERO COOKIE*/
             
             /*INIZIO LINK AL PDF*/
