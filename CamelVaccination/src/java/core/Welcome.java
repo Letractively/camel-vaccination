@@ -92,7 +92,7 @@ public class Welcome extends HttpServlet {
                 
                 if(loggedUser.getIsDoctor()){
                     htmlPage += "<a href=\"doctorFiles/Richiamo\"> Procedura richiamo paziente </a><BR>";
-                    htmlPage += "<a href=\"doctorFiles/Visualizza\"> Visualizza pazienti richiamati </a><BR>";
+                    htmlPage += "<a href=\"doctorFiles/VisualizzaVaccinazioni\"> Visualizza pazienti richiamati </a><BR>";
                 } else {
                     htmlPage += "<a href=\"patientFiles/VaccinazioniPaziente\"> Visualizza dettagli vaccinazioni </a><BR>";
                 }
