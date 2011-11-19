@@ -77,7 +77,7 @@ public class Welcome extends HttpServlet {
             } else {
                 if(loggedUser.getIsDoctor()){                    
                     out.println("<a href=\"doctorFiles/Richiamo\"> Procedura richiamo paziente </a><BR>");
-                    out.println("<a href=\"doctorFiles/Visualizza\"> Visualizza pazienti richiamati </a><BR>");                    
+                    out.println("<a href=\"doctorFiles/VisualizzaVaccinazioni\"> Visualizza pazienti richiamati </a><BR>");                    
                 } else {
                     out.println("<a href=\"patientFiles/VaccinazioniPaziente\"> Visualizza dettagli vaccinazioni </a><BR>");
                 }
