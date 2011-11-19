@@ -64,39 +64,36 @@ public class dbManager{
         return res;
     }
 
-    private String getDBdiffTime(String sec) {
+    private String getDBdiffTime(int sec) {
         String res = null;
         try {
-            String command = "SELECT NOW() - INTERVAL " + sec + " SECOND";
+            String command = "SELECT NOW() - INTERVAL " + sec + " SECOND AS C";
+            System.out.println(command);
             ResultSet set = dbConn.executeQuery(command);
-            res = set.getString(0);
+            set.next();
+            res = set.getString("C");
+            System.out.println(res);
         } catch (SQLException ex) {
             Log4k.error(dbManager.class.getName(), ex.getMessage());
         }
         return res;
     }
 
-    public ResultSet getPreviousVaccinationsPatients(String sec){
+    public ResultSet getPreviousVaccinationsPatients(int sec){
         ResultSet res = null;
         try {
             String command;
-            command = "SELECT * FROM patients LEFT JOIN vaccinations" +
-                    " ON patients.id = vaccinations.patient_id" +
-                    " AND (vaccination_date <= '" + getDBdiffTime(sec) +
-                    "' OR vaccination_date = NULL)";
-
             /* Select the last vaccination of each vaccinated patient */
-            String MAXes_TABLE = "" +
-                    "SELECT DISTINCT MAX(vaccination_date) AS 'vaccination_date', patient_id" +
-                    "FROM vaccinations" +
-                    "GROUP BY patient_id";
-            String JOINED_TABLE = "SELECT * FROM vaccinations " +
-                    "WHERE patient_id IN (SELECT patient_id FROM " + MAXes_TABLE + ")";
-            command = "SELECT * FROM patients LEFT JOIN " + JOINED_TABLE + " JT" +
-                    " ON patients.id = JT.patient_id" +
-                    " AND (vaccination_date <= '" + getDBdiffTime(sec) + "'" +
-                    " OR vaccination_date = NULL)";
-
+            command = "SELECT * FROM " +
+                    "(SELECT P.*, V.doctor_id FROM " +
+                    "(SELECT * FROM patients LEFT JOIN " +
+                    "(SELECT DISTINCT MAX(vaccination_date) AS 'max', patient_id AS 'pid' FROM vaccinations GROUP BY patient_id) AS X "+
+                    "ON patients.id = X.pid) AS P "+
+                    "LEFT JOIN vaccinations AS V "+
+                    "ON P.id = V.patient_id AND P.max = V.vaccination_date) AS Z "+
+                    "WHERE (max <= '" + getDBdiffTime(sec) + "' OR max IS NULL) ";
+            
+            System.out.println(command);
             res = dbConn.executeQuery(command);
         } catch (Exception ex) {
             Log4k.error(dbManager.class.getName(), ex.getMessage());

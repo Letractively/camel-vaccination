@@ -37,6 +37,7 @@ public class Logout extends HttpServlet {
                 String htmlOutro = "</BODY></HTML>";
 
                 htmlPage += htmlIntro;
+                /* Cancellare anche i cookie */
                 
                 request.getSession().invalidate();                
                 htmlPage += "Sei stato sloggato con successo. <br />";
