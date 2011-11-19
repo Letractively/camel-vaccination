@@ -18,18 +18,26 @@ public class dbManager{
     public void releaseConnection(){
         dbConn.closeConnection();
     }
+    
+    public ResultSet getPatient(int patientID){
+        ResultSet res = null;
+        try {
+            String command;
+            command = "SELECT * FROM patients WHERE patient = "+ patientID;
+            res = dbConn.executeQuery(command);
+        } catch (Exception ex) {
+            Log4k.error(dbManager.class.getName(), ex.getMessage());
+        }
+        return res;
+    }
 
     public ResultSet getPatientVaccinations(int patientID){
         ResultSet res = null;
         try {
             String command;
             command = "SELECT doctor_id, vaccination_date FROM vaccinations WHERE patient_id = " + patientID;
-            ResultSet set1 = dbConn.executeQuery(command);
-            command = "SELECT name, surname FROM doctors WHERE doctor_id = " + set1.getString("doctor_id");
-            ResultSet set2 = dbConn.executeQuery(command);
-            command = "SELECT name, surname, vaccination_date FROM " + set1.getCursorName() + " JOIN " + set2.getCursorName();
             res = dbConn.executeQuery(command);
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             Log4k.error(dbManager.class.getName(), ex.getMessage());
         }
         return res;
