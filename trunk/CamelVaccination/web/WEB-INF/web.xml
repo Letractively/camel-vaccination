@@ -54,6 +54,14 @@
         <servlet-name>Conferma</servlet-name>
         <servlet-class>core.Conferma</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>VisualizzaVaccinazioni</servlet-name>
+        <servlet-class>core.VisualizzaVaccinazioni</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Profilo</servlet-name>
+        <servlet-class>core.Profilo</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Registrati</servlet-name>
         <url-pattern>/Registrati</url-pattern>
@@ -93,10 +101,16 @@
         <servlet-name>Conferma</servlet-name>
         <url-pattern>/doctorFiles/Conferma</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VisualizzaVaccinazioni</servlet-name>
+        <url-pattern>/doctorFiles/VisualizzaVaccinazioni</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Profilo</servlet-name>
+        <url-pattern>/doctorFiles/Profilo</url-pattern>
+    </servlet-mapping>
     <session-config>
-        <session-timeout>
-            30
-        </session-timeout>
+        <session-timeout>30</session-timeout>
     </session-config>
     <welcome-file>/</welcome-file>
 </web-app>

@@ -4,25 +4,25 @@
  */
 package core;
 
+import com.mysql.jdbc.ResultSet;
+import dbManagement.dbManager;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import logManagement.Log4k;
-import pdfManagement.pdfCreator;
 import userManagement.Paziente;
-import userManagement.User;
 
 /**
  *
- * @author administrator
+ * @author Lorenzo
  */
-@WebServlet(name = "Conferma", urlPatterns = {"/Conferma"})
-public class Conferma extends HttpServlet {
+public class VisualizzaVaccinazioni extends HttpServlet {
 
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -31,31 +31,38 @@ public class Conferma extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         
+        String checkboxname = "patients";//Assicurarsi che sia uguale anche in Conferma
+        String arrayPatientsName = "retrivedPatiens"; //idem sopra
+        
+        out.println("<HTML><HEAD><title>Richiamo</title></HEAD><BODY>");
+        
+               
         try {
-            String checkboxname = "patients";
-            String arrayName = "retrivedPatiens"; //DA SETTARE IN BASE ALLA FUNZIONE PRECEDENTE
-            int i = 0;
             
-            LinkedList <Paziente> choosedPatients = new LinkedList();
-            LinkedList <Paziente> allPatients = 
-                    (LinkedList <Paziente>) request.getSession().getAttribute(arrayName);//recupero i pazienti dalla sessione
-
-            String nomeFile = request.getSession().getId();//il nome del pdf sarà <IDsessione>.pdf
-            User doctor = (User) request.getSession().getAttribute("loggedUser");//recupero il profilo del medico
+            String seconds = "";
+                                
+            if(request.getParameter("date")!=null) //rileva se è già stata effettuata una ricerca
+                seconds = request.getParameter("date");
             
-            String[] patientsList = request.getParameterValues(checkboxname);//recupero gli id passati per POST
+            //Form di ricerca vaccinazioni
+            out.println("<form action=\"?action=list&\" method=\"GET\">");
+            out.println("<label for=\"date\">Vaccinazioni effettuate prima di (secondi)</label>"
+                    + "<input type=\"text\" id=\"date\" name=\"date\" value=\""+seconds+"\" />");
+            out.println("<input type=\"submit\" name=\"Submit\" value=\"Cerca\" />");
+            out.println("</form>");
             
-            /*Salvo i pazienti selezionati, dato che dovrei fare delle assunzioni su 
-             * come vengono estratti e/o trasmetti i nomi dei pazienti faccio una doppia scansione
-             * utilizzando l'id paziente per identificarli
-             */
-            out.println("<script type=\"text/javascript\" src=\"script.js\"></script>");
-            out.println("<TABLE>");
+            //Stampa risultato ricerca
+            if(request.getParameter("date")!=null){
+                dbManager db = new dbManager();
+                ResultSet r = db.getPreviousVaccinationsPatients(new Integer(seconds));
+                
+                //Prima riga della tabella
+                out.println("<TABLE>");
                 out.println("<TR>");
                 out.println("<TD>ID</TD>");
                 out.println("<TD>Username</TD>");
@@ -65,41 +72,34 @@ public class Conferma extends HttpServlet {
                 out.println("<TD>Foto</TD>");
                 out.println("<TD>Medico</TD>");
                 out.println("</TR>");
-            
-            while(i < patientsList.length){
-                int k = 0;
-                while(k<allPatients.size()){
-                    Paziente p = allPatients.get(k);
-                    String id = p.getId().toString();
-                   if(id.equals(patientsList[i]))
-                       if (choosedPatients.add(p)){//se l'id nella lista è uguale a quello recuperato dal post lo aggiungo e controllo il buon esito
-                           out.println("<TR>");
+                
+                try {
+  
+                    if(r.first()){
+                        while (!r.isAfterLast()) {
+                           
+                            Paziente p = new Paziente(r);
+                            out.println("<TR>");
                             out.println("<TD>"+p.getId()+"</TD>");
                             out.println("<TD>"+p.getUsername()+"</TD>");
-                            out.println("<TD>"+p.getName()+" "+p.getSurname()+"</TD>");
+                            out.println("<TD><a href=\"Profilo?id="+p.getId()+"\">"+p.getName()+" "+p.getSurname()+"</a></TD>");
                             out.println("<TD>"+p.getGender()+"</TD>");
                             out.println("<TD>"+p.getVaccination_date()+"</TD>");
                             out.println("<TD>"+"<img src=\"photo/"+p.getPicture()+"\" height=\"50\" width=\"50\" alt=\"Foto Paziente\" /></TD>");
                             out.println("<TD>"+p.getDoctor_id()+"</TD>");
                             out.println("</TR>");
-                       } else
-                           Log4k.warn(Conferma.class.getName(), 
-                                   "Il paziente selezionato non è stato aggiunto alla lista");
-                   k++;
-               }
-                i++;
+                            r.next();
+                        } 
+                    }
+                } catch (SQLException ex) {
+                    out.println("</BODY></HTML>");
+                    Log4k.error(Richiamo.class.getName(), ex.getMessage());
+                }
+                out.println("</TABLE>");                
+                out.println("<a href=\"Welcome\" title=\"Home\">Torna alla Home</a>");
             }
-            
-            out.println("<a href=\"EseguiVaccinazioni\" target=\"_blank\" onclick=\"javascript:showdiv('confirm');\">show a2</a>");
-            out.println("<div id='confirm' style=\"display:none;\"><form action=\"EseguiVaccinazioni\" method=\"POST\">"); 
-            out.println("<input type=\"submit\" name=\"Submit\" value=\"Conferma\" />");
-            out.println("</form></div>");
-            //Passo l'array di pazienti selezionati alla stampante PDF
-            String signature = doctor.getName()+" "+doctor.getSurname();
-            pdfCreator.createLetters(nomeFile, choosedPatients, signature);
-          
-            
-        } finally {            
+        } finally {
+            out.println("</BODY></HTML>");
             out.close();
         }
     }
