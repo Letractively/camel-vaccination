@@ -54,20 +54,23 @@ public class Login extends HttpServlet {
                     loggedUser = new User(res, isDoc);
                     session.setAttribute("loggedUser", loggedUser);
                     htmlPage += "Benvenuto " + ((loggedUser.getIsDoctor()) ? "Dr. " + loggedUser.getSurname() : loggedUser.getName()) + "<br>";
-                    htmlPage += "Verrai a breve reindirizzato alla tua pagina personale";
-                    htmlPage += htmlOutro;
-                    out.print(htmlPage);
-                    response.setHeader("Refresh", secsBeforeRefresh + "; url=Welcome");
+                    htmlPage += "Verrai a breve reindirizzato alla tua pagina personale";                                        
                     
                     /*INIZIO SETTAGGIO COOKIE*/
-                    String cookieName = "vaccination";//cambiare anche in welcome
+                    String cookieName = loggedUser.getUsername();//cambiare anche in welcome
                     Calendar cal = Calendar.getInstance();
                     String cookieValue = cal.getTime().toString();
                     int cookieExpire = 3600*24*7;//una settimana
                     
                     Cookie cookie = new Cookie(cookieName, cookieValue);
                     cookie.setMaxAge(cookieExpire);
+                    
+                    response.addCookie(cookie);
                     /*FINE SETTAGGIO COOKIE*/
+                    
+                    htmlPage += htmlOutro;
+                    out.print(htmlPage);
+                    response.setHeader("Refresh", secsBeforeRefresh + "; url=Welcome");
                     
                 } else {
                     Log4k.warn(Login.class.getName(), "un utente gia' loggato non dovrebbe essere qui\n");                    

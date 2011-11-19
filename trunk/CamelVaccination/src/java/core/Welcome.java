@@ -36,55 +36,72 @@ public class Welcome extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         
-        
-        
         try {
-            out.println("<HTML><HEAD><title>Welcome</title></HEAD><BODY>");
-            HttpSession session = request.getSession();  
+            String htmlPage = "";
+            String title = "Welcome";
+            String htmlIntro = "<HTML><HEAD><title>" + title + "</title></HEAD><BODY>";
+            String htmlOutro = "</BODY></HTML>";
             
-            /*INIZIO RECUPERO COOKIE*/
-            /*String cookieName = "vaccination";
+            htmlPage += htmlIntro;
             
-            Cookie[] cookieArray = request.getCookies(); 
-            
-            int i = 0;
-            while(!cookieArray[i].getName().equals(cookieName)) i++;
-                
-            if(i == cookieArray.length) 
-                Log4k.warn(Welcome.class.getName(),"Nessun cookie trovato");
-            
-            else{
-                Cookie c = cookieArray[i];
-                String message = c.getValue();
-                /*Stampa del valore del cookie da qualche parte*/
-                
-            //}
-            /*FINE RECUPERO COOKIE*/
-            
-            /*INIZIO LINK AL PDF*/
-            String fileName = request.getSession().getId();
-            String path = "";
-            File pdf = new File(path+fileName+".pdf");
-            if (pdf.exists())
-                /*Stampa link al pdf*/;
-            else /*Amen*/;
-            /*FINE LINK AL PDF*/
-            
+            HttpSession session = request.getSession();
             User loggedUser = (User) session.getAttribute("loggedUser");
+            
             if (loggedUser == null){
                 Log4k.warn(Welcome.class.getName(), "un utente non loggato non dovrebbe essere qui");
                 response.sendRedirect("login.jsp");
             } else {
-                if(loggedUser.getIsDoctor()){                    
-                    out.println("<a href=\"doctorFiles/Richiamo\"> Procedura richiamo paziente </a><BR>");
-                    out.println("<a href=\"doctorFiles/VisualizzaVaccinazioni\"> Visualizza pazienti richiamati </a><BR>");                    
-                } else {
-                    out.println("<a href=\"patientFiles/VaccinazioniPaziente\"> Visualizza dettagli vaccinazioni </a><BR>");
+                /*INIZIO RECUPERO COOKIE*/                
+                String cookieName = loggedUser.getUsername();
+                Cookie cookie = null;
+                Cookie[] cookieArray = request.getCookies();
+                
+                if (cookieArray!=null){
+                    
+                    for(int i=0; i<cookieArray.length; i++) {
+                        
+                        if (cookieArray[i].getName().equals(cookieName)) {
+                            cookie = cookieArray[i];
+                            break;
+                        }
+                    }
+                    if(cookie==null){
+                        Log4k.debug(Welcome.class.getName(),"Nessun cookie trovato");
+                    }
+                    
+                    else{
+                        String message = cookie.getValue();
+                        htmlPage += "Bentornato! Il tuo ultimo login risale al: " + message + "<br>";
+                    }
+                }
+                else {
+                    Log4k.warn(cookieName, cookieName);
                 }
                 
-                out.println("<a href=\"Logout\"> Logout </a><BR>");
+                /*FINE RECUPERO COOKIE*/
+                
+                /*INIZIO LINK AL PDF*/
+                String fileName = request.getSession().getId();
+                String path = "";
+                File pdf = new File(path+fileName+".pdf");
+                if (pdf.exists())
+                    /*Stampa link al pdf*/;
+                else /*Amen*/;
+                /*FINE LINK AL PDF*/
+                
+                
+                if(loggedUser.getIsDoctor()){
+                    htmlPage += "<a href=\"doctorFiles/Richiamo\"> Procedura richiamo paziente </a><BR>";
+                    htmlPage += "<a href=\"doctorFiles/Visualizza\"> Visualizza pazienti richiamati </a><BR>";
+                } else {
+                    htmlPage += "<a href=\"patientFiles/VaccinazioniPaziente\"> Visualizza dettagli vaccinazioni </a><BR>";
+                }
+                
+                htmlPage += "<a href=\"Logout\"> Logout </a><BR>";
             }
-            out.println("</BODY></HTML>");
+            
+            htmlPage += htmlOutro;
+            out.print(htmlPage);
         } finally {
             out.close();
         }
