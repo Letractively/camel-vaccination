@@ -4,12 +4,18 @@
  */
 package core;
 
+import com.mysql.jdbc.ResultSet;
+import dbManagement.dbManager;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import logManagement.Log4k;
+import userManagement.Paziente;
+import userManagement.User;
 
 /**
  *
@@ -29,16 +35,36 @@ public class Profilo extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            /* TODO output your page here
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Profilo</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet Profilo at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-             */
+            if(request.getParameter("id")!=null){
+                dbManager db = new dbManager();
+                ResultSet r1 = db.getPatient(new Integer(request.getParameter("id")));
+                ResultSet r2 = db.getPatientVaccinations(new Integer(request.getParameter("id")));
+
+                try {
+                    if(r1.first()){
+                            User p = new User(r1, false);
+                            out.println("<TR>");
+                            out.println("<TD>"+p.getId()+"</TD>");
+                            out.println("<TD>"+p.getUsername()+"</TD>");
+                            out.println("<TD><a href=\"Profilo?id="+p.getId()+"\">"+p.getName()+" "+p.getSurname()+"</a></TD>");
+                            out.println("<TD>"+p.getGender()+"</TD>");
+                            out.println("<TD>"+"<img src=\"photo/"+p.getPicture()+"\" height=\"50\" width=\"50\" alt=\"Foto Paziente\" /></TD>");
+                            out.println("</TR>");
+                        } 
+                    
+                    if(r2.first()){
+                        while (!r2.isAfterLast()) {
+                            out.println("<TR>");
+                            out.println("<TD>"+r2.getString("vaccination_date")+"</TD>");
+                            out.println("<TD>"+r2.getString("doctor_id")+"</TD>");
+                            out.println("</TR>");
+                            r2.next();
+                        } 
+                    }
+                } catch (SQLException ex) {
+                    out.println("</BODY></HTML>");
+                    Log4k.error(Richiamo.class.getName(), ex.getMessage());
+                }}
         } finally {            
             out.close();
         }
