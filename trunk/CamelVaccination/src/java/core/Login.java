@@ -81,7 +81,7 @@ public class Login extends HttpServlet {
                 htmlPage += "Verrai a breve reindirizzato alla pagina di login";
                 htmlPage += htmlOutro;
                 out.print(htmlPage);                
-                response.setHeader("Refresh", secsBeforeRefresh + "; url=index.jsp");                
+                response.setHeader("Refresh", secsBeforeRefresh + "; url=/CamelVaccination/Welcome");                
             }
         } catch (Exception ex) {
             out.print("Error");

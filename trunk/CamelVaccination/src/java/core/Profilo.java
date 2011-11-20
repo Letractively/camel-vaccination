@@ -39,10 +39,12 @@ public class Profilo extends HttpServlet {
                 dbManager db = new dbManager();
                 ResultSet r1 = db.getPatient(new Integer(request.getParameter("id")));
                 ResultSet r2 = db.getPatientVaccinations(new Integer(request.getParameter("id")));
-
+                
                 try {
+                    if(r1!=null && r2!=null){
                     if(r1.first()){
                             User p = new User(r1, false);
+                            out.println("<TABLE>");
                             out.println("<TR>");
                             out.println("<TD>"+p.getId()+"</TD>");
                             out.println("<TD>"+p.getUsername()+"</TD>");
@@ -50,21 +52,29 @@ public class Profilo extends HttpServlet {
                             out.println("<TD>"+p.getGender()+"</TD>");
                             out.println("<TD>"+"<img src=\"photo/"+p.getPicture()+"\" height=\"50\" width=\"50\" alt=\"Foto Paziente\" /></TD>");
                             out.println("</TR>");
+                            out.println("</TABLE>");
                         } 
                     
                     if(r2.first()){
                         while (!r2.isAfterLast()) {
+                            out.println("<TABLE>");
                             out.println("<TR>");
                             out.println("<TD>"+r2.getString("vaccination_date")+"</TD>");
                             out.println("<TD>"+r2.getString("doctor_id")+"</TD>");
                             out.println("</TR>");
+                            out.println("</TABLE>");
                             r2.next();
                         } 
+                    }
+                    }
+                    else{
+                        Log4k.warn(Profilo.class.getName(), "r1 = "+r1+"r2 = "+r2);
                     }
                 } catch (SQLException ex) {
                     out.println("</BODY></HTML>");
                     Log4k.error(Richiamo.class.getName(), ex.getMessage());
                 }}
+            else{out.println("errore su id");}
         } finally {            
             out.close();
         }

@@ -23,7 +23,7 @@ public class dbManager{
         ResultSet res = null;
         try {
             String command;
-            command = "SELECT * FROM patients WHERE patient = "+ patientID;
+            command = "SELECT * FROM patients WHERE id = "+ patientID;
             res = dbConn.executeQuery(command);
         } catch (Exception ex) {
             Log4k.error(dbManager.class.getName(), ex.getMessage());
