@@ -55,6 +55,7 @@ public class DoctorFilter implements Filter {
                 String errMsg = "Un visitatore ha cercato di accedere " + 
                         "indebitamente alla pagina" + webPage;
                 Log4k.warn(DoctorFilter.class.getName(), errMsg);
+                response.sendRedirect("login.jsp");
             } else {
                 if (!user.getIsDoctor()) {
                     String errMsg = "L'utente " + user.getUsername()
@@ -62,6 +63,7 @@ public class DoctorFilter implements Filter {
                             + ") ha cercato di accedere indebitamente " +
                             "alla pagina" + webPage;
                     Log4k.warn(DoctorFilter.class.getName(), errMsg);
+                    response.sendRedirect("/Welcome");
                 } else {
                     chain.doFilter(inRequest, inResponse);
                 }
