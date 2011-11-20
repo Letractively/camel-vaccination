@@ -29,67 +29,67 @@ public class User {
             
         }
     }
-
+    
     public Date getBirthdate() {
         return birthdate;
     }
-
+    
     public void setBirthdate(Date birthdate) {
         this.birthdate = birthdate;
     }
-
+    
     public String getGender() {
         return gender;
     }
-
+    
     public void setGender(String gender) {
         this.gender = gender;
     }
-
+    
     public Integer getId() {
         return id;
     }
-
+    
     public void setId(Integer id) {
         this.id = id;
     }
-
+    
     public Boolean getIsDoctor() {
         return isDoctor;
     }
-
+    
     public void setIsDoctor(Boolean isDoctor) {
         this.isDoctor = isDoctor;
     }
-
+    
     public String getName() {
         return name;
     }
-
+    
     public void setName(String name) {
         this.name = name;
     }
-
+    
     public String getPicture() {
         return picture;
     }
-
+    
     public void setPicture(String picture) {
         this.picture = picture;
     }
-
+    
     public String getSurname() {
         return surname;
     }
-
+    
     public void setSurname(String surname) {
         this.surname = surname;
     }
-
+    
     public String getUsername() {
         return username;
     }
-
+    
     public void setUsername(String username) {
         this.username = username;
     }
@@ -102,5 +102,5 @@ public class User {
     private String gender;
     private Date birthdate;
     private String picture;
-    private Boolean isDoctor;    
+    private Boolean isDoctor;
 }

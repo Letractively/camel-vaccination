@@ -27,10 +27,6 @@
         <servlet-class>core.Login</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Recupera</servlet-name>
-        <servlet-class>core.Recupera</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>jcaptcha</servlet-name>
         <servlet-class>com.octo.captcha.module.servlet.image.SimpleImageCaptchaServlet</servlet-class>
     </servlet>
@@ -69,10 +65,6 @@
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Recupera</servlet-name>
-        <url-pattern>/Recupera</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>jcaptcha</servlet-name>

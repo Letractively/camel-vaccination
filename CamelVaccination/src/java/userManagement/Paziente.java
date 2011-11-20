@@ -13,7 +13,7 @@ import java.sql.SQLException;
  * @author administrator
  */
 public class Paziente {
-
+    
     public Paziente(ResultSet userData) {
         try {
             this.id = userData.getInt("id");
@@ -25,79 +25,79 @@ public class Paziente {
             this.gender = userData.getString("gender");
             this.birthdate = userData.getDate("birthdate");
             this.picture = userData.getString("picture");
-
+            
         } catch (SQLException ex) {
         }
     }
-
+    
     public Date getBirthdate() {
         return birthdate;
     }
-
+    
     public void setBirthdate(Date birthdate) {
         this.birthdate = birthdate;
     }
-
+    
     public String getDoctor_id() {
         return doctor_id;
     }
-
+    
     public void setDoctor_id(String doctor_id) {
         this.doctor_id = doctor_id;
     }
-
+    
     public String getGender() {
         return gender;
     }
-
+    
     public void setGender(String gender) {
         this.gender = gender;
     }
-
+    
     public Integer getId() {
         return id;
     }
-
+    
     public void setId(Integer id) {
         this.id = id;
     }
-
+    
     public String getName() {
         return name;
     }
-
+    
     public void setName(String name) {
         this.name = name;
     }
-
+    
     public String getPicture() {
         return picture;
     }
-
+    
     public void setPicture(String picture) {
         this.picture = picture;
     }
-
+    
     public String getSurname() {
         return surname;
     }
-
+    
     public void setSurname(String surname) {
         this.surname = surname;
     }
-
+    
     public String getUsername() {
         return username;
     }
-
+    
     public void setUsername(String username) {
         this.username = username;
     }
-
+    
     public String getVaccination_date() {
         return vaccination_date;
     }
-
+    
     public void setVaccination_date(String vaccination_date) {
         this.vaccination_date = vaccination_date;
     }

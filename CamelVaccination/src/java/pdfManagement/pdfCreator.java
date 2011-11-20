@@ -21,7 +21,7 @@ public class pdfCreator {
     
     private static final String font = FontFactory.HELVETICA;
     private static final float size = 14;
-    private static final int align = Element.ALIGN_LEFT; 
+    private static final int align = Element.ALIGN_LEFT;
     
     private static String letter(String name, String surname, String doctorSign){
         return ""
@@ -37,9 +37,9 @@ public class pdfCreator {
         Paragraph p = new Paragraph(text,FontFactory.getFont(font, size));
         p.setAlignment(align);
         try {
-            if (!(doc.add(p) && doc.newPage())) 
+            if (!(doc.add(p) && doc.newPage()))
                 Log4k.warn(pdfCreator.class.getName(), "Attenzione! il paragrafo non è stato aggiunto o non è stata creata la nuova pagina");
-
+            
         } catch (DocumentException ex) {
             Log4k.error(pdfCreator.class.getName(), ex.getMessage());
         }
@@ -52,22 +52,22 @@ public class pdfCreator {
         try {
             PdfWriter.getInstance(document, new FileOutputStream(documentName+".pdf"));
             document.open();
-
-                while(patients.isEmpty()){
-                    Paziente p = patients.remove();
-                    String name = p.getName();
-                    String surname = p.getSurname();
-                    
-                    String l = letter(name, surname, docSign);
-                    createPage(document,l);                
-                }
-            } catch (DocumentException ex) {
-                Log4k.error(pdfCreator.class.getName(), ex.getMessage());
-            }
-            catch  (FileNotFoundException ex){
-                Log4k.error(pdfCreator.class.getName(), ex.getMessage());
-            }
             
-            document.close();       
-    } 
+            while(patients.isEmpty()){
+                Paziente p = patients.remove();
+                String name = p.getName();
+                String surname = p.getSurname();
+                
+                String l = letter(name, surname, docSign);
+                createPage(document,l);
+            }
+        } catch (DocumentException ex) {
+            Log4k.error(pdfCreator.class.getName(), ex.getMessage());
+        }
+        catch  (FileNotFoundException ex){
+            Log4k.error(pdfCreator.class.getName(), ex.getMessage());
+        }
+        
+        document.close();
+    }
 }

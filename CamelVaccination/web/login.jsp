@@ -28,7 +28,7 @@
             </form>
         </fieldset>
         <div id="login">
-        <p>Hai dimenticato la password? <a href="recupera.jsp" title="Registrati">Recupero password</a></p>
+        <!--<p>Hai dimenticato la password? <a href="recupera.jsp" title="Registrati">Recupero password</a></p>-->
         <p>Sei un nuovo utente? <a href="registrati.jsp" title="Registrati">Registrati</a></p>
         </div>
     </body>
