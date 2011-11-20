@@ -84,8 +84,10 @@ public class Welcome extends HttpServlet {
                 String fileName = request.getSession().getId();
                 String path = "";
                 File pdf = new File(path+fileName+".pdf");
-                if (pdf.exists())
-                    /*Stampa link al pdf*/;
+                if (pdf.exists()){
+                    //out.println("Scarica il pdf: <a href=\"path+fileName+\".pdf >Elenco Pazienti</a>");
+                }
+                    /*Stampa link al pdf*/
                 else /*Amen*/;
                 /*FINE LINK AL PDF*/
                 
