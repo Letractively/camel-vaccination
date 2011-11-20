@@ -63,9 +63,10 @@ public class dbManager{
     private String getDBtime(){
         String res = null;
         try {
-            String command = "SELECT NOW()";
+            String command = "SELECT NOW() AS N";
             ResultSet set = dbConn.executeQuery(command);
-            res = set.getString(1);
+            set.next();
+            res = set.getString("N");
         } catch (SQLException ex) {
             Log4k.error(dbManager.class.getName(), ex.getMessage());
         }
@@ -75,12 +76,10 @@ public class dbManager{
     private String getDBdiffTime(int sec) {
         String res = null;
         try {
-            String command = "SELECT NOW() - INTERVAL " + sec + " SECOND AS C";
-            System.out.println(command);
+            String command = "SELECT NOW() - INTERVAL " + sec + " SECOND AS C";            
             ResultSet set = dbConn.executeQuery(command);
             set.next();
-            res = set.getString("C");
-            System.out.println(res);
+            res = set.getString("C");            
         } catch (SQLException ex) {
             Log4k.error(dbManager.class.getName(), ex.getMessage());
         }
@@ -109,6 +108,17 @@ public class dbManager{
         return res;
     }
 
+    public void doVaccinate(int doctor_id, int patient_id){
+        try {
+            String command;
+            command = "INSERT INTO vaccinations(patient_id, doctor_id, vaccination_date)" + 
+                    " VALUES (" + patient_id + ", " + doctor_id + ", " + "(SELECT NOW())" + ")";
+            dbConn.executeStatement(command);
+        } catch (Exception ex) {
+            Log4k.error(dbManager.class.getName(), ex.getMessage());
+        }
+    }
+    
     public ResultSet userMatches(String userName, String pwd, boolean isDoctor){
         ResultSet res;
         String userKind = ((isDoctor) ? "doctor" : "patient");
