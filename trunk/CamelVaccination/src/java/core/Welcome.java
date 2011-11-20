@@ -4,11 +4,9 @@
  */
 package core;
 
-import com.mysql.jdbc.ResultSet;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -51,7 +49,7 @@ public class Welcome extends HttpServlet {
                 Log4k.warn(Welcome.class.getName(), "un utente non loggato non dovrebbe essere qui");
                 response.sendRedirect("login.jsp");
             } else {
-                /*INIZIO RECUPERO COOKIE*/                
+                /*INIZIO RECUPERO COOKIE*/
                 String cookieName = loggedUser.getUsername();
                 Cookie cookie = null;
                 Cookie[] cookieArray = request.getCookies();
@@ -87,7 +85,7 @@ public class Welcome extends HttpServlet {
                 if (pdf.exists()){
                     //out.println("Scarica il pdf: <a href=\"path+fileName+\".pdf >Elenco Pazienti</a>");
                 }
-                    /*Stampa link al pdf*/
+                /*Stampa link al pdf*/
                 else /*Amen*/;
                 /*FINE LINK AL PDF*/
                 

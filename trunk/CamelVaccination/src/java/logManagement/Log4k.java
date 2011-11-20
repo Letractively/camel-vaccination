@@ -14,12 +14,12 @@ import org.apache.log4j.*;
 
 public class Log4k {
     
-    private static final String logPropertiesFile = "log/log4j.properties";  
+    private static final String logPropertiesFile = "log/log4j.properties";
     
     public static org.apache.log4j.Logger log = Logger.getLogger(Log4k.class);
     private static boolean hasInit=false;
     
-    private static void init() {        
+    private static void init() {
         if (!hasInit){
             PropertyConfigurator.configure (
                     Log4k.class.getClassLoader().getResource(logPropertiesFile));
@@ -42,5 +42,5 @@ public class Log4k {
         log.error(className+": "+msg);
     }
     
-    
+
 }

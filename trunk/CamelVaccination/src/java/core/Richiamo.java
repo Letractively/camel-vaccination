@@ -44,12 +44,12 @@ public class Richiamo extends HttpServlet {
         
         out.println("<HTML><HEAD><title>Richiamo</title></HEAD><BODY>");
         
-               
+        
         try {
             LinkedList <Paziente> arrayPazienti = new LinkedList();
             
             String seconds = "";
-                                
+            
             if(request.getParameter("date")!=null) //rileva se è già stata effettuata una ricerca
                 seconds = request.getParameter("date");
             
@@ -81,13 +81,13 @@ public class Richiamo extends HttpServlet {
                 out.println("</TR>");
                 
                 try {
-  
+                    
                     if(r.first()){
                         while (!r.isAfterLast()) {
-                           
+                            
                             Paziente p = new Paziente(r);
                             
-                            if (!arrayPazienti.add(p)) 
+                            if (!arrayPazienti.add(p))
                                 Log4k.warn(Richiamo.class.getName(), "il paziente non e` stato inserito nel'array");
                             
                             out.println("<TR>");
@@ -101,7 +101,7 @@ public class Richiamo extends HttpServlet {
                             out.println("<TD><input type=\"checkbox\" name=\""+checkboxname+"\" value=\""+p.getId()+"\" /></TD>");
                             out.println("</TR>");
                             r.next();
-                        } 
+                        }
                     }
                 } catch (SQLException ex) {
                     out.println("</BODY></HTML>");

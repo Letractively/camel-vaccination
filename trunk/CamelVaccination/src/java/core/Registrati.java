@@ -13,8 +13,8 @@ import com.octo.captcha.module.servlet.image.SimpleImageCaptchaServlet;
  * @author administrator
  */
 public class Registrati extends HttpServlet {
-
-    /** 
+    
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
@@ -40,20 +40,20 @@ public class Registrati extends HttpServlet {
                 htmlPage += "OK it matches";
                 // proceed to submit action
             } else {
-                htmlPage += "not OK you typed wrong letters";                
+                htmlPage += "not OK you typed wrong letters";
                 // return error to user
-            }            
+            }
             
-            String htmlOutro = "</BODY></HTML>";            
+            String htmlOutro = "</BODY></HTML>";
             htmlPage += htmlOutro;
             out.print(htmlPage);
-        } finally {            
+        } finally {
             out.close();
         }
     }
-
+    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -65,8 +65,8 @@ public class Registrati extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
-    /** 
+    
+    /**
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -78,8 +78,8 @@ public class Registrati extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
-    /** 
+    
+    /**
      * Returns a short description of the servlet.
      * @return a String containing servlet description
      */

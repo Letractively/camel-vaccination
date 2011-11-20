@@ -20,7 +20,7 @@ import userManagement.User;
  */
 public class Login extends HttpServlet {
     private final int secsBeforeRefresh = 4;
-    /** 
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
@@ -40,21 +40,21 @@ public class Login extends HttpServlet {
             String htmlOutro = "</BODY></HTML>";
             
             htmlPage += htmlIntro;
-
+            
             String usr = request.getParameter("user");
             String psw = request.getParameter("password");
             boolean isDoc = request.getParameter("type").equals("medico");
             
             ResultSet res = dbM.userMatches(usr, psw, isDoc);
-                     
+            
             if (res.first()){
-                HttpSession session = request.getSession();                
+                HttpSession session = request.getSession();
                 User loggedUser = (User) session.getAttribute("loggedUser");
                 if (loggedUser == null){
                     loggedUser = new User(res, isDoc);
                     session.setAttribute("loggedUser", loggedUser);
                     htmlPage += "Benvenuto " + ((loggedUser.getIsDoctor()) ? "Dr. " + loggedUser.getSurname() : loggedUser.getName()) + "<br>";
-                    htmlPage += "Verrai a breve reindirizzato alla tua pagina personale";                                        
+                    htmlPage += "Verrai a breve reindirizzato alla tua pagina personale";
                     
                     /*INIZIO SETTAGGIO COOKIE*/
                     String cookieName = loggedUser.getUsername();//cambiare anche in welcome
@@ -73,25 +73,25 @@ public class Login extends HttpServlet {
                     response.setHeader("Refresh", secsBeforeRefresh + "; url=Welcome");
                     
                 } else {
-                    Log4k.warn(Login.class.getName(), "un utente gia' loggato non dovrebbe essere qui\n");                    
+                    Log4k.warn(Login.class.getName(), "un utente gia' loggato non dovrebbe essere qui\n");
                 }
             }
             else {
                 htmlPage += "Hai inserito un nome utente o una password sbagliati<br>";
                 htmlPage += "Verrai a breve reindirizzato alla pagina di login";
                 htmlPage += htmlOutro;
-                out.print(htmlPage);                
-                response.setHeader("Refresh", secsBeforeRefresh + "; url=/CamelVaccination/Welcome");                
+                out.print(htmlPage);
+                response.setHeader("Refresh", secsBeforeRefresh + "; url=/CamelVaccination/Welcome");
             }
         } catch (Exception ex) {
             out.print("Error");
-        } finally {            
+        } finally {
             out.close();
         }
     }
-
+    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -103,8 +103,8 @@ public class Login extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
-    /** 
+    
+    /**
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -116,8 +116,8 @@ public class Login extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
-    /** 
+    
+    /**
      * Returns a short description of the servlet.
      * @return a String containing servlet description
      */

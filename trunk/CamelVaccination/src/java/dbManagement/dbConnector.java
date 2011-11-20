@@ -16,10 +16,10 @@ class dbConnector{
     private final String host = "localhost:3306";
     private final int port = 3306;
     private final String dbName = "medical_db";
-    private final String user = "root";//"DBuzzer";
-    private final String psw = "ricordati";//"user";
+    private final String user = "DBuzzer";
+    private final String psw = "user";
     private Connection conn = null;
-
+    
     dbConnector() {
         try {
             System.out.print("jdbc:mysql://" + host + "/" + dbName);
@@ -37,7 +37,7 @@ class dbConnector{
             Log4k.error(dbConnector.class.getName(), ex.getMessage());
         }
     }
-
+    
     void closeConnection(){
         try {
             conn.close();
@@ -45,7 +45,7 @@ class dbConnector{
             Log4k.error(dbConnector.class.getName(), ex.getMessage());
         }
     }
-
+    
     void executeStatement(String command){
         try {
             Statement statement = (Statement) conn.createStatement();
@@ -55,7 +55,7 @@ class dbConnector{
             Log4k.error(dbConnector.class.getName(), ex.getMessage());
         }
     }
-
+    
     ResultSet executeQuery(String query){
         ResultSet res = null;
         try {
@@ -67,7 +67,7 @@ class dbConnector{
         }
         return res;
     }
-
+    
     @Override
     protected void finalize() throws Throwable {
         closeConnection();
