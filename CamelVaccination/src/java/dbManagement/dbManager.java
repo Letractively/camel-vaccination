@@ -1,6 +1,7 @@
 package dbManagement;
 
 import com.mysql.jdbc.ResultSet;
+import dbManagement.YetRegisteredException;
 import java.sql.SQLException;
 import logManagement.Log4k;
 
@@ -114,7 +115,6 @@ public class dbManager{
             command = "SELECT * " +
                     "FROM (" + JT2 + ") AS JT2 " +
                     "WHERE (max <= '" + getDBdiffTime(sec) + "' OR max IS NULL)";            
-            System.out.println(command);
             res = dbConn.executeQuery(command);
         } catch (Exception ex) {
             Log4k.error(dbManager.class.getName(), ex.getMessage());
@@ -122,15 +122,14 @@ public class dbManager{
         return res;
     }
     
-        public ResultSet getFollowingVaccinationsPatients(int sec){
+    public ResultSet getFollowingVaccinationsPatients(int sec){
         ResultSet res = null;
         try {
             String command;
             /* Select the last vaccination of each vaccinated patient after sec seconds ago*/            
             String lastVaccinations = "SELECT DISTINCT MAX(vaccination_date) AS 'vaccination_date', patient_id FROM vaccinations GROUP BY patient_id";
             command = "SELECT * FROM (" + lastVaccinations + ") AS last_vaccinations" +
-                    " WHERE vacciantion_date >= '" + getDBdiffTime(sec) + "'";            
-            System.out.println(command);
+                    " WHERE vaccination_date >= '" + getDBdiffTime(sec) + "'";            
             res = dbConn.executeQuery(command);
         } catch (Exception ex) {
             Log4k.error(dbManager.class.getName(), ex.getMessage());
@@ -149,12 +148,25 @@ public class dbManager{
         }
     }
     
-    public void doRegister(int patient_id, String new_pwd){
+    public void doRegister(String username, String new_pwd) throws NotInDBException, YetRegisteredException{
         try {
             String command;
+            ResultSet resSet;
+            
+            { /* Check wheter a user is both present and already registered into the DB */
+                command = "SELECT registered FROM patients WHERE username = " + username;
+                resSet = dbConn.executeQuery(command);
+                if (resSet.first()){                    
+                    String isYetRegistered_str = resSet.getString("registered").toUpperCase();
+                    if (isYetRegistered_str.equals("TRUE")) throw new YetRegisteredException();
+                } else {
+                    throw new NotInDBException();
+                }                    
+            }
+            
             command = "UPDATE patients" + 
                     " SET password = " + new_pwd + ", registered = TRUE" +
-                    " WHERE patient_id = " + patient_id;
+                    " WHERE username = " + username;
             dbConn.executeStatement(command);
         } catch (Exception ex) {
             Log4k.error(dbManager.class.getName(), ex.getMessage());
@@ -170,5 +182,5 @@ public class dbManager{
                 + ((isDoctor) ? " TRUE" : "registered");
         res = dbConn.executeQuery(command);        
         return res;
-    }
+    }        
 }

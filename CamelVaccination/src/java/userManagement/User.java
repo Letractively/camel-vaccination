@@ -7,6 +7,7 @@ package userManagement;
 import com.mysql.jdbc.ResultSet;
 import java.sql.Date;
 import java.sql.SQLException;
+import logManagement.Log4k;
 
 /**
  *
@@ -27,7 +28,7 @@ public class User {
                 this.picture = userData.getString("picture");
             }
         } catch (SQLException ex) {
-            
+            Log4k.error(User.class.getName(), ex.getMessage());
         }
     }
 
