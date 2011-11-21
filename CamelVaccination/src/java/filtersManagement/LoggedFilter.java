@@ -14,7 +14,7 @@ import userManagement.*;
  *
  * @author FastLDL
  */
-public class DoctorFilter implements Filter {
+public class LoggedFilter implements Filter {
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
     // configured. 
@@ -51,20 +51,13 @@ public class DoctorFilter implements Filter {
 	Throwable problem = null;
 	try {
             User user = (User) request.getSession().getAttribute("loggedUser");
-            if (user == null){
-                String errMsg = "Non dovrebbero esserci utenti non loggati qui";
+            if (user == null){                
+                String errMsg = "Un visitatore ha cercato di accedere " + 
+                        "indebitamente alla pagina" + webPage;
                 Log4k.warn(DoctorFilter.class.getName(), errMsg);
+                response.sendRedirect("../login.jsp");
             } else {
-                if (!user.getIsDoctor()) {
-                    String errMsg = "L'utente " + user.getUsername()
-                            + " (id = " + user.getId()
-                            + ") ha cercato di accedere indebitamente " +
-                            "alla pagina" + webPage;
-                    Log4k.warn(DoctorFilter.class.getName(), errMsg);
-                    response.sendRedirect("../Welcome");
-                } else {
-                    chain.doFilter(inRequest, inResponse);
-                }
+                chain.doFilter(inRequest, inResponse);
             }
 	}
 	catch(Throwable t) {
@@ -72,7 +65,7 @@ public class DoctorFilter implements Filter {
 	    // we still want to execute our after processing, and then
 	    // rethrow the problem after that.
 	    problem = t;
-	    Log4k.warn(DoctorFilter.class.getName(), t.getMessage());
+	    Log4k.warn(LoggedFilter.class.getName(), t.getMessage());
 	}
 
 	doAfterProcessing(inRequest, inResponse);
@@ -123,8 +116,8 @@ public class DoctorFilter implements Filter {
      */
     @Override
     public String toString() {
-	if (filterConfig == null) return ("DoctorFilter()");
-	StringBuffer sb = new StringBuffer("DoctorFilter(");
+	if (filterConfig == null) return ("LoggedFilter()");
+	StringBuffer sb = new StringBuffer("LoggedFilter(");
 	sb.append(filterConfig);
 	sb.append(")");
 	return (sb.toString());

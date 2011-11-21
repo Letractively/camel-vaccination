@@ -8,15 +8,45 @@
         <filter-name>PatientFilter</filter-name>
         <filter-class>filtersManagement.PatientFilter</filter-class>
     </filter>
+    <filter>
+        <filter-name>LoginFilter</filter-name>
+        <filter-class>filtersManagement.PublicFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>loggedFilter</filter-name>
+        <filter-class>filtersManagement.LoggedFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>loggedFilter</filter-name>
+        <url-pattern>/logged/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/public/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+    </filter-mapping>
     <filter-mapping>
         <filter-name>PatientFilter</filter-name>
         <url-pattern>/patientFiles/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>ERROR</dispatcher>
     </filter-mapping>
     <filter-mapping>
         <filter-name>DoctorFilter</filter-name>
         <url-pattern>/doctorFiles/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>ERROR</dispatcher>
     </filter-mapping>
     <servlet>
         <servlet-name>Registrati</servlet-name>
@@ -64,26 +94,26 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>Registrati</servlet-name>
-        <url-pattern>/Registrati</url-pattern>
+        <url-pattern>/public/Registrati</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
-        <url-pattern>/Login</url-pattern>
+        <url-pattern>/public/Login</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>jcaptcha</servlet-name>
-        <url-pattern>/jcaptcha.jpg</url-pattern>
+        <url-pattern>/public/jcaptcha.jpg</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Welcome</servlet-name>
-        <url-pattern>/Welcome</url-pattern>
+        <url-pattern>/logged/Welcome</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>Welcome</welcome-file>
     </welcome-file-list>
     <servlet-mapping>
         <servlet-name>Logout</servlet-name>
-        <url-pattern>/Logout</url-pattern>
+        <url-pattern>/logged/Logout</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Richiamo</servlet-name>
@@ -111,6 +141,5 @@
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
-    </session-config>
-    <welcome-file>/</welcome-file>
+    </session-config>    
 </web-app>
