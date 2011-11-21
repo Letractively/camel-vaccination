@@ -35,7 +35,12 @@ public class VaccinazioniPaziente extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            out.println("<HTML><HEAD><title>Welcome</title></HEAD><BODY>");
+            String title = "Welcome";
+            String htmlPage = "";
+            String htmlIntro="<HTML><HEAD><title>"+title+"</title></HEAD><BODY>\n";
+            String htmlOutro="</BODY></HTML>";
+            htmlPage+=htmlIntro;
+            
             HttpSession session = request.getSession();
             
             User loggedUser = (User) session.getAttribute("loggedUser");
@@ -48,12 +53,12 @@ public class VaccinazioniPaziente extends HttpServlet {
                     Log4k.warn(VaccinazioniPaziente.class.getName(), "un dottore non dovrebbe essere qui");
                     response.sendRedirect("");
                 } else {
-                    out.println("Benvenuto "/*+username*/+" queste sono le vaccinazioni che hai effettuato.<BR>");
-                    out.print("<TABLE>");
-                    out.println("<TR>");
-                    out.println("<TD>Medico</TD>");
-                    out.println("<TD>Data di vaccinazione</TD>");
-                    out.println("</TR>");
+                    htmlPage+="Benvenuto "/*+username*/+" queste sono le vaccinazioni che hai effettuato.<BR>";
+                    htmlPage+="<TABLE>";
+                    htmlPage+="<TR>";
+                    htmlPage+="<TD>Medico</TD>";
+                    htmlPage+="<TD>Data di vaccinazione</TD>";
+                    htmlPage+="</TR>";
                     
                     
                     User paziente = loggedUser;
@@ -63,12 +68,25 @@ public class VaccinazioniPaziente extends HttpServlet {
                     try{
                         if(res.first()){
                             while(!res.isAfterLast()){
-                                String med = ""+res.getString("doctor_id");
+                                int medId = res.getInt("doctor_id");
                                 String date = res.getString("vaccination_date");
-                                out.println("<TR>");
-                                out.println("<TD>"+med+"</TD>");
-                                out.println("<TD>"+date+"</TD>");
-                                out.println("</TR>");
+                                
+                                dbManager dbMed = new dbManager();
+                                ResultSet doctor = dbMed.getDoctor(medId);
+                                dbMed.releaseConnection();
+                                
+                                String doctorName="";
+                                if(doctor.first()){
+                                    while(!doctor.isAfterLast()){
+                                        doctorName = doctor.getString("name")+" "+doctor.getString("surname");
+                                        doctor.next();
+                                    }
+                                }
+                                
+                                htmlPage+="<TR>\n";
+                                htmlPage+="<TD>"+doctorName+"</TD>\n";
+                                htmlPage+="<TD>"+date+"</TD>\n";
+                                htmlPage+="</TR>\n";
                                 res.next();
                             }
                         }
@@ -77,12 +95,13 @@ public class VaccinazioniPaziente extends HttpServlet {
                         Log4k.error(Welcome.class.getName(), e.getMessage());
                     }
                     
-                    out.print("</TABLE>");
+                    htmlPage+="</TABLE>\n";
                     
                 }
-                out.println("<a href=\"../Welcome\" title=\"Home\">Torna alla Home</a>");
+                htmlPage+="<a href=\"../Welcome\" title=\"Home\">Torna alla Home</a>\n";
             }
-            out.println("</BODY></HTML>");
+            htmlPage+=htmlOutro;
+            out.print(htmlPage);
         } finally {
             out.close();
         }

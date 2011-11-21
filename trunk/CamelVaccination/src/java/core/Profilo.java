@@ -41,28 +41,37 @@ public class Profilo extends HttpServlet {
                 db.releaseConnection();
                 
                 try {
+                    String htmlPage = "";
+                    String title = "Profilo";
+                    String htmlIntro = "<HTML><HEAD>"
+                    + "<title>" + title + "</title>"
+                    + "</HEAD><BODY>";
+                    String htmlOutro = "</BODY></HTML>";
+                    
+                    htmlPage+=htmlIntro;
+
                     if(r1!=null && r2!=null){
                         if(r1.first()){
                             User p = new User(r1, false);
-                            out.println("<TABLE>");
-                            out.println("<TR>");
-                            out.println("<TD>"+p.getId()+"</TD>");
-                            out.println("<TD>"+p.getUsername()+"</TD>");
-                            out.println("<TD><a href=\"Profilo?id="+p.getId()+"\">"+p.getName()+" "+p.getSurname()+"</a></TD>");
-                            out.println("<TD>"+p.getGender()+"</TD>");
-                            out.println("<TD>"+"<img src=\"photo/"+p.getPicture()+"\" height=\"50\" width=\"50\" alt=\"Foto Paziente\" /></TD>");
-                            out.println("</TR>");
-                            out.println("</TABLE>");
+                            htmlPage+="<TABLE>\n";
+                            htmlPage+="<TR>\n";
+                            htmlPage+="<TD>"+p.getId()+"</TD>\n";
+                            htmlPage+="<TD>"+p.getUsername()+"</TD>\n";
+                            htmlPage+="<TD><a href=\"Profilo?id="+p.getId()+"\">"+p.getName()+" "+p.getSurname()+"</a></TD>\n";
+                            htmlPage+="<TD>"+p.getGender()+"</TD>";
+                            htmlPage+="<TD>"+"<img src=\"photo/"+p.getPicture()+"\" height=\"50\" width=\"50\" alt=\"Foto Paziente\" /></TD>\n";
+                            htmlPage+="</TR>\n";
+                            htmlPage+="</TABLE>\n";
                         }
                         
                         if(r2.first()){
                             while (!r2.isAfterLast()) {
-                                out.println("<TABLE>");
-                                out.println("<TR>");
-                                out.println("<TD>"+r2.getString("vaccination_date")+"</TD>");
-                                out.println("<TD>"+r2.getString("doctor_id")+"</TD>");
-                                out.println("</TR>");
-                                out.println("</TABLE>");
+                                htmlPage+="<TABLE>\n";
+                                htmlPage+="<TR>\n";
+                                htmlPage+="<TD>"+r2.getString("vaccination_date")+"</TD>\n";
+                                htmlPage+="<TD>"+r2.getString("doctor_id")+"</TD>\n";
+                                htmlPage+="</TR>\n";
+                                htmlPage+="</TABLE>\n";
                                 r2.next();
                             }
                         }
@@ -70,11 +79,13 @@ public class Profilo extends HttpServlet {
                     else{
                         Log4k.warn(Profilo.class.getName(), "r1 = "+r1+"r2 = "+r2);
                     }
+                    htmlPage+=htmlOutro;
                 } catch (SQLException ex) {
-                    out.println("</BODY></HTML>");
                     Log4k.error(Richiamo.class.getName(), ex.getMessage());
                 }}
-            else{out.println("errore su id");}
+            else{
+                Log4k.error(Richiamo.class.getName(),"errore su id");
+            }
         } finally {
             out.close();
         }
