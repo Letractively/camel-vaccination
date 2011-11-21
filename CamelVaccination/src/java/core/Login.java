@@ -19,7 +19,7 @@ import userManagement.User;
  * @author administrator
  */
 public class Login extends HttpServlet {
-    private final int secsBeforeRefresh = 4;
+    private final int secsBeforeRefresh = 2;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request

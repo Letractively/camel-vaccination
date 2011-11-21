@@ -16,8 +16,8 @@ class dbConnector{
     private final String host = "localhost:3306";
     private final int port = 3306;
     private final String dbName = "medical_db";
-    private final String user = "DBuzzer";
-    private final String psw = "user";
+    private final String user = "root";//"DBuzzer";
+    private final String psw = "ricordati";//"user";
     private Connection conn = null;
     
     dbConnector() {

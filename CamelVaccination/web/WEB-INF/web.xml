@@ -58,6 +58,10 @@
         <servlet-name>Profilo</servlet-name>
         <servlet-class>core.Profilo</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EseguiVaccinazioni</servlet-name>
+        <servlet-class>core.EseguiVaccinazioni</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Registrati</servlet-name>
         <url-pattern>/Registrati</url-pattern>
@@ -100,6 +104,10 @@
     <servlet-mapping>
         <servlet-name>Profilo</servlet-name>
         <url-pattern>/doctorFiles/Profilo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EseguiVaccinazioni</servlet-name>
+        <url-pattern>/doctorFiles/EseguiVaccinazioni</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

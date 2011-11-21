@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import logManagement.Log4k;
 import pdfManagement.pdfCreator;
 import userManagement.Paziente;
@@ -41,11 +42,12 @@ public class Conferma extends HttpServlet {
             String arrayName = "retrivedPatiens"; //DA SETTARE IN BASE ALLA FUNZIONE PRECEDENTE
             int i = 0;
             
-            LinkedList <Paziente> choosedPatients = new LinkedList();
+            LinkedList <Paziente> chosenPatients = new LinkedList();
             LinkedList <Paziente> allPatients =
                     (LinkedList <Paziente>) request.getSession().getAttribute(arrayName);//recupero i pazienti dalla sessione
             
-            String nomeFile = request.getSession().getId();//il nome del pdf sarà <IDsessione>.pdf
+            HttpSession session = request.getSession();
+            
             User doctor = (User) request.getSession().getAttribute("loggedUser");//recupero il profilo del medico
             
             String[] patientsList = request.getParameterValues(checkboxname);//recupero gli id passati per POST
@@ -72,7 +74,7 @@ public class Conferma extends HttpServlet {
                     Paziente p = allPatients.get(k);
                     String id = p.getId().toString();
                     if(id.equals(patientsList[i]))
-                        if (choosedPatients.add(p)){//se l'id nella lista è uguale a quello recuperato dal post lo aggiungo e controllo il buon esito
+                        if (chosenPatients.add(p)){//se l'id nella lista è uguale a quello recuperato dal post lo aggiungo e controllo il buon esito
                             out.println("<TR>");
                             out.println("<TD>"+p.getId()+"</TD>");
                             out.println("<TD>"+p.getUsername()+"</TD>");
@@ -90,13 +92,15 @@ public class Conferma extends HttpServlet {
                 i++;
             }
             
-            out.println("<a href=\"EseguiVaccinazioni\" target=\"_blank\" onclick=\"javascript:showdiv('confirm');\">show a2</a>");
+            session.setAttribute("chosenPatients", chosenPatients);   
+            /*out.println("<a href=\"EseguiVaccinazioni\" target=\"_blank\" onclick=\"javascript:showdiv('confirm');\">show a2</a>");
             out.println("<div id='confirm' style=\"display:none;\"><form action=\"EseguiVaccinazioni\" method=\"POST\">");
+            */
+            out.println("<form action=\"EseguiVaccinazioni\" method=\"POST\">");
             out.println("<input type=\"submit\" name=\"Submit\" value=\"Conferma\" />");
-            out.println("</form></div>");
+            out.println("</form>");
             //Passo l'array di pazienti selezionati alla stampante PDF
-            String signature = doctor.getName()+" "+doctor.getSurname();
-            pdfCreator.createLetters(nomeFile, choosedPatients, signature);
+
             
             
         } finally {
