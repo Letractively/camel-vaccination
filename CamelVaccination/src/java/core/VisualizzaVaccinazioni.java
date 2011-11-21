@@ -41,10 +41,13 @@ public class VisualizzaVaccinazioni extends HttpServlet {
             String checkboxname = "patients";//Assicurarsi che sia uguale anche in Conferma
             String arrayPatientsName = "retrivedPatiens"; //idem sopra
             
-            String htmlPage="";
-            String htmlIntro="<HTML><HEAD><title>Richiamo</title></HEAD><BODY>";
-            String htmlOutro="</BODY></HTML>";
-            
+            String htmlPage = "";
+            String title = "Visualizza Vaccinazioni";
+            String htmlIntro = "<HTML><HEAD>"
+                        + "<title>" + title + "</title>"
+                        + "<link rel=\"stylesheet\" type =\"text/css\" href=\"../style.css\" />"
+                        + "</HEAD><BODY>";
+            String htmlOutro = "</BODY></HTML>";
             htmlPage+=htmlIntro;
             
             String seconds = "";
@@ -53,29 +56,32 @@ public class VisualizzaVaccinazioni extends HttpServlet {
                 seconds = request.getParameter("date");
             
             //Form di ricerca vaccinazioni
+            htmlPage += "<div class=\"container\">";
+            htmlPage += "<div class=\"header\">";
             htmlPage+="<form action=\"?action=list&\" method=\"GET\">\n";
-            htmlPage+="<label for=\"date\">Vaccinazioni effettuate prima di (secondi)</label>"
-                    + "<input type=\"text\" id=\"date\" name=\"date\" value=\""+seconds+"\" />\n";
-            htmlPage+="<input type=\"submit\" name=\"Submit\" value=\"Cerca\" />\n";
+            htmlPage+="<label for=\"date\" class=\"searchBar\">Vaccinazioni effettuate prima di (secondi)</label>";
+            htmlPage+="<p class=\"searchBar\"><input type=\"text\" id=\"date\" name=\"date\" value=\""+seconds+"\" />\n";
+            htmlPage+="<input class=\"submit\" type=\"submit\" name=\"Submit\" value=\"Cerca\" /></p>\n";
             htmlPage+="</form>\n";
+            htmlPage+="<p class=\"headerInfo\"><a href=\"../Welcome\" title=\"Home\">Torna alla Home</a></p>\n";
+            htmlPage += "</div>";  //div header end
             
             //Stampa risultato ricerca
             if(request.getParameter("date")!=null){
                 dbManager db = new dbManager();
                 ResultSet r = db.getPreviousVaccinationsPatients(new Integer(seconds));
                 db.releaseConnection();
+                htmlPage += "<div class=\"content\">";
                 
                 //Prima riga della tabella
                 htmlPage+="<TABLE>\n";
-                htmlPage+="<TR>\n";
-                htmlPage+="<TD>ID</TD>\n";
-                htmlPage+="<TD>Username</TD>\n";
-                htmlPage+="<TD>Paziente</TD>\n";
-                htmlPage+="<TD>M/F</TD>\n";
-                htmlPage+="<TD>Data di vaccinazione</TD>\n";
-                htmlPage+="<TD>Foto</TD>\n";
-                htmlPage+="<TD>Medico</TD>\n";
-                htmlPage+="</TR>\n";
+                htmlPage+="<tr>\n";
+                htmlPage+="<th></th>\n";
+                htmlPage+="<th>Nome e Cognome</th>\n";
+                htmlPage+="<th>M/F</th>\n";
+                htmlPage+="<th>Data di vaccinazione</th>\n";
+                htmlPage+="<th>Medico</th>\n";
+                htmlPage+="</tr>\n";
                 
                 try {
                     
@@ -84,25 +90,24 @@ public class VisualizzaVaccinazioni extends HttpServlet {
                             
                             Paziente p = new Paziente(r);
                             htmlPage+="<TR>\n";
-                            htmlPage+="<TD>"+p.getId()+"</TD>\n";
-                            htmlPage+="<TD>"+p.getUsername()+"</TD>\n";
+                            htmlPage+="<TD>"+"<img src=\"photo/"+p.getPicture()+"\" height=\"50\" width=\"50\" alt=\"Foto Paziente\" /></TD>\n";
                             htmlPage+="<TD><a href=\"Profilo?id="+p.getId()+"\">"+p.getName()+" "+p.getSurname()+"</a></TD>\n";
                             htmlPage+="<TD>"+p.getGender()+"</TD>\n";
                             htmlPage+="<TD>"+p.getVaccination_date()+"</TD>\n";
-                            htmlPage+="<TD>"+"<img src=\"photo/"+p.getPicture()+"\" height=\"50\" width=\"50\" alt=\"Foto Paziente\" /></TD>\n";
                             htmlPage+="<TD>"+p.getDoctor_id()+"</TD>\n";
                             htmlPage+="</TR>\n";
                             r.next();
                         }
                     }
                 } catch (SQLException ex) {
-                    htmlPage+="</BODY></HTML>\n";
+                    htmlPage+="</div></div></BODY></HTML>\n";
                     Log4k.error(Richiamo.class.getName(), ex.getMessage());
                 }
                 htmlPage+="</TABLE>\n";
-                htmlPage+="<a href=\"Welcome\" title=\"Home\">Torna alla Home</a>\n";
+                htmlPage+="<p class=\"headerInfo\"><a href=\"../Welcome\" title=\"Home\">Torna alla Home</a></p>\n";
+                htmlPage += "</div>"; //div content end
             }
-            
+            htmlPage += "</div>";
             htmlPage+=htmlOutro;
             out.print(htmlPage);
         } finally {
