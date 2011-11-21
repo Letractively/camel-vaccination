@@ -109,9 +109,10 @@ public class Richiamo extends HttpServlet {
                 }
                 out.println("</TABLE>");
                 
+                
                 //Salvo la lista di pazienti nella sessione
                 HttpSession session = request.getSession();
-                session.setAttribute(arrayPatientsName, arrayPazienti);//Assicurarsi che il nome sia uguale anceh in Conferma
+                session.setAttribute(arrayPatientsName, arrayPazienti);//Assicurarsi che il nome sia uguale anceh in Conferma                
                 
                 out.println("<BR><input type=\"submit\" name=\"Conferma\" value=\"Conferma\" />");
                 out.println("</form>");
