@@ -1,20 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package core;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Calendar;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import logManagement.Log4k;
 import userManagement.User;
 
 /**
@@ -40,19 +33,14 @@ public class Welcome extends HttpServlet {
             String title = "Welcome";
             String htmlIntro = "<HTML><HEAD>"
                     + "<title>" + title + "</title>"
-                    + "<link rel=\"stylesheet\" type =\"text/css\" href=\"style.css\" />"
+                    + "<link rel=\"stylesheet\" type =\"text/css\" href=\"/style.css\" />"
                     + "</HEAD><BODY>";
             String htmlOutro = "</BODY></HTML>";
             htmlPage += htmlIntro;
             
             HttpSession session = request.getSession();
             User loggedUser = (User) session.getAttribute("loggedUser");
-            
-            if (loggedUser == null){
-                Log4k.warn(Welcome.class.getName(), "un utente non loggato non dovrebbe essere qui");
-                response.sendRedirect("login.jsp");
-            } else {
-                
+                            
                  /*INIZIO LINK AL PDF*/
                 String pdfName = session.getId()+".pdf";
                 String realPath =getServletContext().getRealPath(File.separator+"doctorFiles"+File.separator+pdfName);
@@ -90,7 +78,7 @@ public class Welcome extends HttpServlet {
                 htmlPage += "</p>";
                 htmlPage += "</div>"; //div content end
                 htmlPage += "</div>"; //div container end
-            }
+            
             
             htmlPage += htmlOutro;
             out.print(htmlPage);

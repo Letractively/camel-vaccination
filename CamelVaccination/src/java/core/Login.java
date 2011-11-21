@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package core;
 
 import com.mysql.jdbc.ResultSet;
@@ -37,7 +33,7 @@ public class Login extends HttpServlet {
             String title = "Login";
             String htmlIntro = "<HTML><HEAD>"
                     + "<title>" + title + "</title>"
-                    + "<link rel=\"stylesheet\" type =\"text/css\" href=\"style.css\" />"
+                    + "<link rel=\"stylesheet\" type =\"text/css\" href=\"/style.css\" />"
                     + "</HEAD><BODY>";
             String htmlOutro = "</BODY></HTML>";
             
@@ -115,7 +111,7 @@ public class Login extends HttpServlet {
                 htmlPage += "<div class=\"jump\">";
                 htmlPage += "<p class=\"jump\">Hai inserito un nome utente o una password sbagliati<br>";
                 htmlPage += "Verrai a breve reindirizzato alla tua pagina personale</p>";
-                htmlPage += "<p class=\"jump\"><a href=\"Welcome\">Oppure clicca qui per continuare...</a></p>";
+                htmlPage += "<p class=\"jump\"><a href=\"/logged/Welcome\">Oppure clicca qui per continuare...</a></p>";
                 htmlPage += "</div>";                 
                 htmlPage += htmlOutro;
                 

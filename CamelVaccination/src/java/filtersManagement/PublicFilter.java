@@ -59,7 +59,7 @@ public class PublicFilter implements Filter {
                             + ") ha cercato di accedere indebitamente " +
                             "alla pagina" + webPage;
                 Log4k.warn(DoctorFilter.class.getName(), errMsg);
-                response.sendRedirect("../Welcome");
+                response.sendRedirect("/logged/Welcome");
             }
 	}
 	catch(Throwable t) {

@@ -61,7 +61,7 @@ public class DoctorFilter implements Filter {
                             + ") ha cercato di accedere indebitamente " +
                             "alla pagina" + webPage;
                     Log4k.warn(DoctorFilter.class.getName(), errMsg);
-                    response.sendRedirect("../Welcome");
+                    response.sendRedirect("/logged/Welcome");
                 } else {
                     chain.doFilter(inRequest, inResponse);
                 }

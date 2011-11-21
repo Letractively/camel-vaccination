@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package core;
 
 import com.mysql.jdbc.ResultSet;
@@ -45,7 +41,7 @@ public class VisualizzaVaccinazioni extends HttpServlet {
             String title = "Visualizza Vaccinazioni";
             String htmlIntro = "<HTML><HEAD>"
                         + "<title>" + title + "</title>"
-                        + "<link rel=\"stylesheet\" type =\"text/css\" href=\"../style.css\" />"
+                        + "<link rel=\"stylesheet\" type =\"text/css\" href=\"/style.css\" />"
                         + "</HEAD><BODY>";
             String htmlOutro = "</BODY></HTML>";
             htmlPage+=htmlIntro;
@@ -104,7 +100,7 @@ public class VisualizzaVaccinazioni extends HttpServlet {
                     Log4k.error(Richiamo.class.getName(), ex.getMessage());
                 }
                 htmlPage+="</TABLE>\n";
-                htmlPage+="<p class=\"headerInfo\"><a href=\"../Welcome\" title=\"Home\">Torna alla Home</a></p>\n";
+                htmlPage+="<p class=\"headerInfo\"><a href=\"/\" title=\"Home\">Torna alla Home</a></p>\n";
                 htmlPage += "</div>"; //div content end
             }
             htmlPage += "</div>";

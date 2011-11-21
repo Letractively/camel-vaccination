@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package core;
 
 import com.mysql.jdbc.ResultSet;
@@ -44,11 +40,7 @@ public class VaccinazioniPaziente extends HttpServlet {
             HttpSession session = request.getSession();
             
             User loggedUser = (User) session.getAttribute("loggedUser");
-            if (loggedUser == null){
-                Log4k.warn(VaccinazioniPaziente.class.getName(), "un utente non loggato non dovrebbe essere qui");
-                response.sendRedirect("");
-            }
-            else {
+
                 if(loggedUser.getIsDoctor()){
                     Log4k.warn(VaccinazioniPaziente.class.getName(), "un dottore non dovrebbe essere qui");
                     response.sendRedirect("");
@@ -98,8 +90,8 @@ public class VaccinazioniPaziente extends HttpServlet {
                     htmlPage+="</TABLE>\n";
                     
                 }
-                htmlPage+="<a href=\"../Welcome\" title=\"Home\">Torna alla Home</a>\n";
-            }
+                htmlPage+="<a href=\"/\" title=\"Home\">Torna alla Home</a>\n";
+            
             htmlPage+=htmlOutro;
             out.print(htmlPage);
         } finally {

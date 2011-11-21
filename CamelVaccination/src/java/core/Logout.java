@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package core;
 
 import java.io.IOException;
@@ -33,7 +29,7 @@ public class Logout extends HttpServlet {
             String title = "Logout";
             String htmlIntro = "<HTML><HEAD>"
                     + "<title>" + title + "</title>"
-                    + "<link rel=\"stylesheet\" type =\"text/css\" href=\"style.css\" />"
+                    + "<link rel=\"stylesheet\" type =\"text/css\" href=\"/style.css\" />"
                     + "</HEAD><BODY>";
             String htmlOutro = "</BODY></HTML>";
             
@@ -44,7 +40,7 @@ public class Logout extends HttpServlet {
             htmlPage += "<div class=\"jump\">";
             htmlPage += "<p class=\"jump\">Sei stato sloggato con successo. <br />";
             htmlPage += "Verrai a breve reindirizzato alla Home Page</p>";
-            htmlPage += "<p class=\"jump\"><a href=\"Welcome\">Oppure clicca qui per continuare...</a></p>";
+            htmlPage += "<p class=\"jump\"><a href=\"/\">Oppure clicca qui per continuare...</a></p>";
             htmlPage += "</div>";
             htmlPage += htmlOutro;
             out.print(htmlPage);
