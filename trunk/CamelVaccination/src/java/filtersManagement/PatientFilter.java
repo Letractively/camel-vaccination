@@ -52,10 +52,8 @@ public class PatientFilter implements Filter {
 	try {
             User user = (User) request.getSession().getAttribute("loggedUser");
             if (user == null){
-                String errMsg = "Un visitatore ha cercato di accedere " +
-                        "indebitamente alla pagina" + webPage;
-                Log4k.warn(PatientFilter.class.getName(), errMsg);
-                response.sendRedirect("../login.jsp");
+                String errMsg = "Non dovrebbero esserci utenti non loggati qui";
+                Log4k.warn(DoctorFilter.class.getName(), errMsg);
             } else {
                 if (user.getIsDoctor()) {
                     String errMsg = "Il dottor " + user.getUsername()
