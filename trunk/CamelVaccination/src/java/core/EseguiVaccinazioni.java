@@ -4,16 +4,23 @@
  */
 package core;
 
+import dbManagement.dbManager;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.LinkedList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import pdfManagement.*;
+import userManagement.Paziente;
+import userManagement.User;
 
 /**
  *
- * @author Lorenzo
+ * @author alessandro
  */
 public class EseguiVaccinazioni extends HttpServlet {
 
@@ -28,17 +35,34 @@ public class EseguiVaccinazioni extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        
         try {
-            /* TODO output your page here
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet EseguiVaccinazioni</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet EseguiVaccinazioni at " + request.getContextPath () + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-             */
+            String htmlCode="";
+            String title = "Esegui Vaccinazioni";
+            String htmlIntro = "<HTML><HEAD><title>" + title + "</title></HEAD><BODY>";
+            String htmlOutro = "</BODY></HTML>";
+            
+            htmlCode+=htmlIntro;
+            
+            HttpSession session = request.getSession();
+            String pdfName = session.getId()+".pdf";//il nome del pdf sarà <IDsessione>.pdf
+            String realPath =getServletContext().getRealPath(File.separator+"doctorFiles"+File.separator+pdfName);
+            String virtualPath =getServletContext().getContextPath()+"/doctorFiles/"+pdfName;
+            User doctor = (User) request.getSession().getAttribute("loggedUser");//recupero il profilo del medico
+            dbManager db = new dbManager();
+                   
+            LinkedList <Paziente> chosenPatients = (LinkedList<Paziente>)session.getAttribute("chosenPatients");
+               
+            for(Paziente p : chosenPatients){
+                db.doVaccinate(doctor.getId(),p.getId());
+            }
+            String signature = doctor.getName()+" "+doctor.getSurname();
+                        
+            pdfCreator.createLetters(realPath, chosenPatients, signature);
+            htmlCode+="I pazienti sono stati vaccinati.<BR>";
+            htmlCode+="<a href=\""+ virtualPath +"\">Scarica il file PDF con le lettere per i pazienti</a><BR>";
+            htmlCode+=htmlOutro;
+            out.println(htmlCode);
         } finally {            
             out.close();
         }
