@@ -47,9 +47,9 @@ public class Richiamo extends HttpServlet {
             String title = "Richiamo";
             String htmlIntro = "<HTML><HEAD>"
                         + "<title>" + title + "</title>"
+                        + "<link rel=\"stylesheet\" type =\"text/css\" href=\"../style.css\" />"
                         + "</HEAD><BODY>";
             String htmlOutro = "</BODY></HTML>";
-                    
             htmlPage+=htmlIntro;
         
             LinkedList <Paziente> arrayPazienti = new LinkedList();
@@ -60,32 +60,36 @@ public class Richiamo extends HttpServlet {
                 seconds = request.getParameter("date");
             
             //Form di ricerca vaccinazioni
+            htmlPage += "<div class=\"container\">";
+            htmlPage += "<div class=\"header\">";
             htmlPage+="<form action=\"?action=list&\" method=\"GET\">\n";
-            htmlPage+="<label for=\"date\">Vaccinazioni effettuate prima di (secondi)</label>"
-                    + "<input type=\"text\" id=\"date\" name=\"date\" value=\""+seconds+"\" />\n";
-            htmlPage+="<input type=\"submit\" name=\"Submit\" value=\"Cerca\" />\n";
+            htmlPage+="<label for=\"date\" class=\"searchBar\">Vaccinazioni effettuate prima di (secondi)</label>";
+            htmlPage+="<p class=\"searchBar\"><input type=\"text\" id=\"date\" name=\"date\" value=\""+seconds+"\" />\n";
+            htmlPage+="<input class=\"submit\" type=\"submit\" name=\"Submit\" value=\"Cerca\" /></p>\n";
             htmlPage+="</form>\n";
+            htmlPage+="<p class=\"headerInfo\"><a href=\"../Welcome\" title=\"Home\">Torna alla Home</a></p>\n";
+            htmlPage += "</div>";  //div header end
             
             //Stampa risultato ricerca
             if(request.getParameter("date")!=null){
                 dbManager db = new dbManager();
                 ResultSet r = db.getPreviousVaccinationsPatients(new Integer(seconds));
                 db.releaseConnection();
-                
+                htmlPage += "<div class=\"content\">";
                 htmlPage+="<form action=\"Conferma\" method=\"POST\">\n";
+                htmlPage+="<p class=\"submit\"><input type=\"submit\" name=\"Conferma\" value=\"Conferma\" /></p>\n";
                 
                 //Prima riga della tabella
                 htmlPage+="<TABLE>\n";
-                htmlPage+="<TR>\n";
-                htmlPage+="<TD>ID</TD>\n";
-                htmlPage+="<TD>Username</TD>\n";
-                htmlPage+="<TD>Paziente</TD>\n";
-                htmlPage+="<TD>M/F</TD>\n";
-                htmlPage+="<TD>Data di vaccinazione</TD>\n";
-                htmlPage+="<TD>Foto</TD>\n";
-                htmlPage+="<TD>Medico</TD>\n";
-                htmlPage+="<TD>Seleziona</TD>\n";
-                htmlPage+="</TR>\n";
+                htmlPage+="<tr>\n";
+                htmlPage+="<th></th>\n";
+                htmlPage+="<th>Nome</th>\n";
+                htmlPage+="<th>Cognome</th>\n";
+                htmlPage+="<th>M/F</th>\n";
+                htmlPage+="<th>Data di vaccinazione</th>\n";
+                htmlPage+="<th>Medico</th>\n";
+                htmlPage+="<th>Seleziona</th>\n";
+                htmlPage+="</tr>\n";
                 
                 try {
                     
@@ -98,12 +102,11 @@ public class Richiamo extends HttpServlet {
                                 Log4k.warn(Richiamo.class.getName(), "il paziente non e` stato inserito nel'array");
                             
                             htmlPage+="<TR>\n";
-                            htmlPage+="<TD>"+p.getId()+"</TD>\n";
-                            htmlPage+="<TD>"+p.getUsername()+"</TD>\n";
-                            htmlPage+="<TD>"+p.getName()+" "+p.getSurname()+"</TD\n>";
+                            htmlPage+="<TD><img src=\"photo/"+p.getPicture()+"\" height=\"50\" width=\"50\" alt=\"Foto Paziente\" /></TD>\n";
+                            htmlPage+="<TD>"+p.getName()+"</TD>\n";
+                            htmlPage+="<TD>"+p.getSurname()+"</TD\n>";
                             htmlPage+="<TD>"+p.getGender()+"</TD>\n";
                             htmlPage+="<TD>"+p.getVaccination_date()+"</TD>\n";
-                            htmlPage+="<TD>"+"<img src=\"photo/"+p.getPicture()+"\" height=\"50\" width=\"50\" alt=\"Foto Paziente\" /></TD>\n";
                             htmlPage+="<TD>"+p.getDoctor_id()+"</TD>\n";
                             htmlPage+="<TD><input type=\"checkbox\" name=\""+checkboxname+"\" value=\""+p.getId()+"\" /></TD>\n";
                             htmlPage+="</TR>\n";
@@ -111,20 +114,20 @@ public class Richiamo extends HttpServlet {
                         }
                     }
                 } catch (SQLException ex) {
-                    htmlPage+="</BODY></HTML>\n";
+                    htmlPage+="</div></div></BODY></HTML>\n";
                     Log4k.error(Richiamo.class.getName(), ex.getMessage());
                 }
                 htmlPage+="</TABLE>\n";
-                
+                htmlPage+="<p class=\"submit\"><input type=\"submit\" name=\"Conferma\" value=\"Conferma\" /></p>\n";
+                htmlPage+="</form>\n";
+                htmlPage+="<p class=\"headerInfo\"><a href=\"../Welcome\" title=\"Home\">Torna alla Home</a></p>\n";
+                htmlPage += "</div>"; //div content end
                 
                 //Salvo la lista di pazienti nella sessione
                 HttpSession session = request.getSession();
                 session.setAttribute(arrayPatientsName, arrayPazienti);//Assicurarsi che il nome sia uguale anceh in Conferma                
-                
-                htmlPage+="<BR><input type=\"submit\" name=\"Conferma\" value=\"Conferma\" />\n";
-                htmlPage+="</form>\n";
-                htmlPage+="<a href=\"../Welcome\" title=\"Home\">Torna alla Home</a>\n";
             }
+            htmlPage += "</div>"; //div container end
             htmlPage+=htmlOutro;
             out.print(htmlPage);
         } finally {

@@ -43,7 +43,6 @@ public class Welcome extends HttpServlet {
                     + "<link rel=\"stylesheet\" type =\"text/css\" href=\"style.css\" />"
                     + "</HEAD><BODY>";
             String htmlOutro = "</BODY></HTML>";
-            
             htmlPage += htmlIntro;
             
             HttpSession session = request.getSession();

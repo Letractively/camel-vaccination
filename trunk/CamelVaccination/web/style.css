@@ -41,6 +41,14 @@ fieldset
     padding-bottom: 0px;
 }
 
+table
+{
+    width: 40em;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
 div#login
 {
     width: 19em;
@@ -81,10 +89,26 @@ p#pdfLink
 #pdfLink:visited {text-decoration: none; color:#700000;}
 #pdfLink:hover {text-decoration: none; color:#000000;}  /* mouse over link */
 #pdfLink:active {text-decoration: none; color:#700000;}  /* selected link */
+
 p.content
 {
     padding: 1em;
     text-align: left;
+}
+
+p.searchBar
+{
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1em;
+    text-align: center;
+}
+label.searchBar
+{
+    width: auto;
+    margin-left: 2em;
+    float: none;
+    text-align: center;
 }
 
 img#welcomeImage

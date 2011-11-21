@@ -41,6 +41,7 @@ public class Conferma extends HttpServlet {
             String title = "Conferma";
             String htmlIntro = "<HTML><HEAD>"
                     + "<title>" + title + "</title>"
+                    + "<link rel=\"stylesheet\" type =\"text/css\" href=\"../style.css\" />"
                     + "</HEAD><BODY>";
             String htmlOutro = "</BODY></HTML>";
             htmlPage+=htmlIntro;
@@ -59,20 +60,28 @@ public class Conferma extends HttpServlet {
             
             String[] patientsList = request.getParameterValues(checkboxname);//recupero gli id passati per POST
             
+            htmlPage += "<div class=\"container\">";
+            htmlPage += "<div class=\"header\">";
+            htmlPage+="<p class=\"headerInfo\"><a href=\"../Welcome\" title=\"Home\">Torna alla Home</a></p>\n";
+            htmlPage += "</div>";  //div header end
+            
             /*Salvo i pazienti selezionati, dato che dovrei fare delle assunzioni su
              * come vengono estratti e/o trasmetti i nomi dei pazienti faccio una doppia scansione
              * utilizzando l'id paziente per identificarli
              */
-            htmlPage+="<script type=\"text/javascript\" src=\"script.js\"></script>\n";
+            
+            htmlPage += "<div class=\"content\">";
+            htmlPage+="<form action=\"EseguiVaccinazioni\" method=\"POST\">\n";
+            htmlPage+="<p class=\"submit\"><input type=\"submit\" name=\"Conferma\" value=\"Conferma\" /></p>\n";
             htmlPage+="<TABLE>\n";
             htmlPage+="<TR>\n";
-            htmlPage+="<TD>ID</TD>\n";
-            htmlPage+="<TD>Username</TD>\n";
-            htmlPage+="<TD>Paziente</TD>\n";
-            htmlPage+="<TD>M/F</TD>\n";
-            htmlPage+="<TD>Data di vaccinazione</TD>\n";
-            htmlPage+="<TD>Foto</TD>\n";
-            htmlPage+="<TD>Medico</TD>\n";
+            htmlPage+="<th>ID</th>\n";
+            htmlPage+="<th>Username</th>\n";
+            htmlPage+="<th>Paziente</th>\n";
+            htmlPage+="<th>M/F</th>\n";
+            htmlPage+="<th>Data di vaccinazione</th>\n";
+            htmlPage+="<th>Foto</th>\n";
+            htmlPage+="<th>Medico</th>\n";
             htmlPage+="</TR>\n";
             
             while(i < patientsList.length){
@@ -101,10 +110,11 @@ public class Conferma extends HttpServlet {
             
             session.setAttribute("chosenPatients", chosenPatients);
             
-            htmlPage+="<form action=\"EseguiVaccinazioni\" method=\"POST\">\n";
-            htmlPage+="<input type=\"submit\" name=\"Submit\" value=\"Conferma\" />\n";
+            htmlPage+="</TABLE>\n";
+            htmlPage+="<p class=\"submit\"><input type=\"submit\" name=\"Conferma\" value=\"Conferma\" /></p>\n";
             htmlPage+="</form>\n";
-            
+            htmlPage += "</div>"; //div content end
+            htmlPage += "</div>"; //div container end
             htmlPage+=htmlOutro;
             
             out.print(htmlPage);
