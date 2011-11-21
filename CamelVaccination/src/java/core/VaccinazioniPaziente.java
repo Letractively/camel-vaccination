@@ -35,8 +35,6 @@ public class VaccinazioniPaziente extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            dbManager db = new dbManager();
-            
             out.println("<HTML><HEAD><title>Welcome</title></HEAD><BODY>");
             HttpSession session = request.getSession();
             
@@ -59,30 +57,30 @@ public class VaccinazioniPaziente extends HttpServlet {
                     
                     
                     User paziente = loggedUser;
-                    
-                        ResultSet res = db.getPatientVaccinations(paziente.getId());
-                        
-                        try{
-                            if(res.first()){
-                                while(!res.isAfterLast()){
-                                    String med = ""+res.getString("doctor_id");
-                                    String date = res.getString("vaccination_date");
-                                    out.println("<TR>");
-                                    out.println("<TD>"+med+"</TD>");
-                                    out.println("<TD>"+date+"</TD>");
-                                    out.println("</TR>");
-                                    res.next();
-                                }                            
+                    dbManager db = new dbManager();
+                    ResultSet res = db.getPatientVaccinations(paziente.getId());
+                    db.releaseConnection();
+                    try{
+                        if(res.first()){
+                            while(!res.isAfterLast()){
+                                String med = ""+res.getString("doctor_id");
+                                String date = res.getString("vaccination_date");
+                                out.println("<TR>");
+                                out.println("<TD>"+med+"</TD>");
+                                out.println("<TD>"+date+"</TD>");
+                                out.println("</TR>");
+                                res.next();
                             }
                         }
-                        catch(SQLException e){
-                            Log4k.error(Welcome.class.getName(), e.getMessage());
-                        }
-                        
-                        out.print("</TABLE>");
+                    }
+                    catch(SQLException e){
+                        Log4k.error(Welcome.class.getName(), e.getMessage());
+                    }
+                    
+                    out.print("</TABLE>");
                     
                 }
-                out.println("<a href=\"Welcome\">Torna</a><BR>");
+                out.println("<a href=\"../Welcome\" title=\"Home\">Torna alla Home</a>");
             }
             out.println("</BODY></HTML>");
         } finally {

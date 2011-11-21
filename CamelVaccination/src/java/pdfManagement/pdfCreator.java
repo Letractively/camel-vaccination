@@ -23,6 +23,7 @@ public class pdfCreator {
     private static final float size = 14;
     private static final int align = Element.ALIGN_LEFT;
     
+    /* Private: does not need synchronization */
     private static String letter(String name, String surname, String doctorSign){
         return ""
                 + "Gentile signor/a "+name+" "+surname+", \n"
@@ -32,6 +33,7 @@ public class pdfCreator {
                 + "dr. "+doctorSign+"\n";
     }
     
+    /* Private: does not need synchronization */
     private static void createPage(Document doc, String text){
         
         Paragraph p = new Paragraph(text,FontFactory.getFont(font, size));

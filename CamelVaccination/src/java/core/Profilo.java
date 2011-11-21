@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import logManagement.Log4k;
-import userManagement.Paziente;
 import userManagement.User;
 
 /**
@@ -39,6 +38,7 @@ public class Profilo extends HttpServlet {
                 dbManager db = new dbManager();
                 ResultSet r1 = db.getPatient(new Integer(request.getParameter("id")));
                 ResultSet r2 = db.getPatientVaccinations(new Integer(request.getParameter("id")));
+                db.releaseConnection();
                 
                 try {
                     if(r1!=null && r2!=null){

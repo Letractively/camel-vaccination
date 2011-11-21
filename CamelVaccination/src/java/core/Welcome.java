@@ -79,11 +79,12 @@ public class Welcome extends HttpServlet {
                 /*FINE RECUPERO COOKIE*/
                 
                 /*INIZIO LINK AL PDF*/
-                String fileName = request.getSession().getId();
-                String path = "";
-                File pdf = new File(path+fileName+".pdf");
+                String pdfName = session.getId()+".pdf";
+                String realPath =getServletContext().getRealPath(File.separator+"doctorFiles"+File.separator+pdfName);
+                String virtualPath =getServletContext().getContextPath()+"/doctorFiles/"+pdfName;
+                File pdf = new File(realPath+pdfName);
                 if (pdf.exists()){
-                    //out.println("Scarica il pdf: <a href=\"path+fileName+\".pdf >Elenco Pazienti</a>");
+                    htmlPage+="Scarica il pdf: <a href="+virtualPath+pdfName+">Lettere Pazienti</a>";
                 }
                 /*Stampa link al pdf*/
                 else /*Amen*/;

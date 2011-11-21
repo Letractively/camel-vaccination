@@ -60,6 +60,7 @@ public class VisualizzaVaccinazioni extends HttpServlet {
             if(request.getParameter("date")!=null){
                 dbManager db = new dbManager();
                 ResultSet r = db.getPreviousVaccinationsPatients(new Integer(seconds));
+                db.releaseConnection();
                 
                 //Prima riga della tabella
                 out.println("<TABLE>");

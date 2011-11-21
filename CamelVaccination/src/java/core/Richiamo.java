@@ -64,6 +64,7 @@ public class Richiamo extends HttpServlet {
             if(request.getParameter("date")!=null){
                 dbManager db = new dbManager();
                 ResultSet r = db.getPreviousVaccinationsPatients(new Integer(seconds));
+                db.releaseConnection();
                 
                 out.println("<form action=\"Conferma\" method=\"POST\">");
                 
