@@ -20,6 +20,7 @@ public class User {
             this.name = userData.getString("name");
             this.surname = userData.getString("surname");
             this.isDoctor = isDoctor;
+            this.lastLogin = null;
             if (!isDoctor){
                 this.gender = userData.getString("gender");
                 this.birthdate = userData.getDate("birthdate");
@@ -28,6 +29,14 @@ public class User {
         } catch (SQLException ex) {
             
         }
+    }
+
+    public String getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(String lastLogin) {
+        this.lastLogin = lastLogin;
     }
     
     public Date getBirthdate() {
@@ -103,4 +112,5 @@ public class User {
     private Date birthdate;
     private String picture;
     private Boolean isDoctor;
+    private String lastLogin;
 }

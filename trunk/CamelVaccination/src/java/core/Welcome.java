@@ -7,6 +7,7 @@ package core;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Calendar;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -37,7 +38,10 @@ public class Welcome extends HttpServlet {
         try {
             String htmlPage = "";
             String title = "Welcome";
-            String htmlIntro = "<HTML><HEAD><title>" + title + "</title></HEAD><BODY>";
+            String htmlIntro = "<HTML><HEAD>"
+                    + "<title>" + title + "</title>"
+                    + "<link rel=\"stylesheet\" type =\"text/css\" href=\"style.css\" />"
+                    + "</HEAD><BODY>";
             String htmlOutro = "</BODY></HTML>";
             
             htmlPage += htmlIntro;
@@ -65,11 +69,8 @@ public class Welcome extends HttpServlet {
                     }
                     if(cookie==null){
                         Log4k.debug(Welcome.class.getName(),"Nessun cookie trovato");
-                    }
-                    
-                    else{
-                        String message = cookie.getValue();
-                        htmlPage += "Bentornato! Il tuo ultimo login risale al: " + message + "<br>";
+                    } else {
+                        htmlPage += "Bentornato! Il tuo ultimo login risale al: " + loggedUser.getLastLogin() + "<br>";
                     }
                 }
                 else {
