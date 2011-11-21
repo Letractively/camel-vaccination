@@ -7,6 +7,7 @@ package userManagement;
 import com.mysql.jdbc.ResultSet;
 import java.sql.Date;
 import java.sql.SQLException;
+import logManagement.Log4k;
 
 /**
  *
@@ -27,6 +28,7 @@ public class Paziente {
             this.picture = userData.getString("picture");
             
         } catch (SQLException ex) {
+            Log4k.error(Paziente.class.getName(), ex.getMessage());
         }
     }
     
@@ -101,7 +103,7 @@ public class Paziente {
     public void setVaccination_date(String vaccination_date) {
         this.vaccination_date = vaccination_date;
     }
-    //User Parameters
+    //Patient Parameters
     private Integer id;
     private String username;
     private String name;
