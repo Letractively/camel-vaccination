@@ -31,7 +31,6 @@ public class Login extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        dbManager dbM = new dbManager();
         
         try {
             String htmlPage = "";
@@ -48,7 +47,9 @@ public class Login extends HttpServlet {
             String psw = request.getParameter("password");
             boolean isDoc = request.getParameter("type").equals("medico");
             
+            dbManager dbM = new dbManager();
             ResultSet res = dbM.userMatches(usr, psw, isDoc);
+            dbM.releaseConnection();
             
             if (res.first()){
                 HttpSession session = request.getSession();

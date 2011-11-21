@@ -49,12 +49,13 @@ public class EseguiVaccinazioni extends HttpServlet {
             String realPath =getServletContext().getRealPath(File.separator+"doctorFiles"+File.separator+pdfName);
             String virtualPath =getServletContext().getContextPath()+"/doctorFiles/"+pdfName;
             User doctor = (User) request.getSession().getAttribute("loggedUser");//recupero il profilo del medico
-            dbManager db = new dbManager();
-                   
+                               
             LinkedList <Paziente> chosenPatients = (LinkedList<Paziente>)session.getAttribute("chosenPatients");
                
             for(Paziente p : chosenPatients){
+                dbManager db = new dbManager();
                 db.doVaccinate(doctor.getId(),p.getId());
+                db.releaseConnection();
             }
             String signature = doctor.getName()+" "+doctor.getSurname();
                         
