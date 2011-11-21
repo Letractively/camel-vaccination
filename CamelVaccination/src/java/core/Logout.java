@@ -33,15 +33,21 @@ public class Logout extends HttpServlet {
         try {
             String htmlPage = "";
             String title = "Logout";
-            String htmlIntro = "<HTML><HEAD><title>" + title + "</title></HEAD><BODY>";
+            String htmlIntro = "<HTML><HEAD>"
+                    + "<title>" + title + "</title>"
+                    + "<link rel=\"stylesheet\" type =\"text/css\" href=\"style.css\" />"
+                    + "</HEAD><BODY>";
             String htmlOutro = "</BODY></HTML>";
             
             htmlPage += htmlIntro;
             /* Cancellare anche i cookie */
             
             request.getSession().invalidate();
-            htmlPage += "Sei stato sloggato con successo. <br />";
-            htmlPage += "Verrai a breve reindirizzato alla Home Page";
+            htmlPage += "<div class=\"jump\">";
+            htmlPage += "<p class=\"jump\">Sei stato sloggato con successo. <br />";
+            htmlPage += "Verrai a breve reindirizzato alla Home Page</p>";
+            htmlPage += "<p class=\"jump\"><a href=\"Welcome\">Oppure clicca qui per continuare...</a></p>";
+            htmlPage += "</div>";
             htmlPage += htmlOutro;
             out.print(htmlPage);
             response.setHeader("Refresh", "4; url=Welcome");

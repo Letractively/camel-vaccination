@@ -35,7 +35,7 @@ public class Login extends HttpServlet {
         
         try {
             String htmlPage = "";
-            String title = "Login result";
+            String title = "Login";
             String htmlIntro = "<HTML><HEAD>"
                     + "<title>" + title + "</title>"
                     + "<link rel=\"stylesheet\" type =\"text/css\" href=\"style.css\" />"
