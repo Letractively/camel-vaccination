@@ -116,7 +116,7 @@ public class Richiamo extends HttpServlet {
                 
                 out.println("<BR><input type=\"submit\" name=\"Conferma\" value=\"Conferma\" />");
                 out.println("</form>");
-                out.println("<a href=\"Welcome\" title=\"Home\">Torna alla Home</a>");
+                out.println("<a href=\"../Welcome\" title=\"Home\">Torna alla Home</a>");
             }
         } finally {
             out.println("</BODY></HTML>");
