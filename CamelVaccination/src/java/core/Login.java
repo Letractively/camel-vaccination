@@ -65,24 +65,51 @@ public class Login extends HttpServlet {
                     htmlPage += "</div>";
                     
                     /*INIZIO SETTAGGIO COOKIE*/
-                    String cookieName = loggedUser.getUsername();//cambiare anche in welcome
-                    Calendar cal = Calendar.getInstance();
-                    String cookieValue = cal.getTime().toString();
-                    int cookieExpire = 3600*24*7;//una settimana
-                    
-                    Cookie cookie = new Cookie(cookieName, cookieValue);
-                    cookie.setMaxAge(cookieExpire);
-                    
-                    response.addCookie(cookie);
-                    /*FINE SETTAGGIO COOKIE*/
-                    
-                    htmlPage += htmlOutro;
-                    out.print(htmlPage);
-                    response.setHeader("Refresh", secsBeforeRefresh + "; url=Welcome");
-                    
-                } else {
-                    Log4k.warn(Login.class.getName(), "un utente gia' loggato non dovrebbe essere qui\n");
-                }
+                    String cookieName = loggedUser.getUsername();
+                    Cookie cookie = null;
+                    Cookie[] cookieArray = request.getCookies();
+
+                    if (cookieArray!=null){
+
+                        for(int i=0; i<cookieArray.length; i++) {
+
+                            if (cookieArray[i].getName().equals(cookieName)) {
+                                cookie = cookieArray[i];
+                                break;
+                            }
+                        }
+                        if(cookie==null){
+                             Calendar cal = Calendar.getInstance();
+                             String cookieValue = cal.getTime().toString();
+                             int cookieExpire = 3600*24*7;//una settimana
+                             loggedUser.setLastLogin(cookieValue);
+                             cookie = new Cookie(cookieName, cookieValue);
+                             cookie.setMaxAge(cookieExpire);
+
+                             response.addCookie(cookie);
+                        }
+
+                        else{
+                            String message = cookie.getValue();
+                            loggedUser.setLastLogin(message);
+                            Calendar cal = Calendar.getInstance();
+                            String cookieValue = cal.getTime().toString();
+                            cookie.setValue(cookieValue);
+                            
+                            response.addCookie(cookie);
+                        }
+                    } else {
+                        Log4k.warn(cookieName, cookieName);
+                    }
+                        /*FINE SETTAGGIO COOKIE*/
+
+                        htmlPage += htmlOutro;
+                        out.print(htmlPage);
+                        response.setHeader("Refresh", secsBeforeRefresh + "; url=Welcome");
+
+                    } else {
+                        Log4k.warn(Login.class.getName(), "un utente gia' loggato non dovrebbe essere qui\n");
+                    }
             }
             else {
                 htmlPage += "<div class=\"jump\">";
