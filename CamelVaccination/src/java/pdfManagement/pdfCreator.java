@@ -46,20 +46,25 @@ public class pdfCreator {
         
     }
     
-    public static void createLetters(String documentName, LinkedList <Paziente> patients, String docSign){
+    synchronized public static void createLetters(String documentName, LinkedList <Paziente> patients, String docSign){
         Document document = new Document();
         
         try {
-            PdfWriter.getInstance(document, new FileOutputStream(documentName+".pdf"));
+            PdfWriter.getInstance(document, new FileOutputStream(documentName));
             document.open();
             
-            while(patients.isEmpty()){
+            while(!patients.isEmpty()){
                 Paziente p = patients.remove();
-                String name = p.getName();
-                String surname = p.getSurname();
+                if(p!=null){
+                    String name = p.getName();
+                    String surname = p.getSurname();
                 
-                String l = letter(name, surname, docSign);
-                createPage(document,l);
+                    String l = letter(name, surname, docSign);
+                    createPage(document,l);
+                }
+                else {
+                    Log4k.warn(pdfCreator.class.getName(), "Nessun paziente da richiamare trovato!");
+                }
             }
         } catch (DocumentException ex) {
             Log4k.error(pdfCreator.class.getName(), ex.getMessage());

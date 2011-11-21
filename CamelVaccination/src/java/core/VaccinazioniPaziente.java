@@ -58,17 +58,21 @@ public class VaccinazioniPaziente extends HttpServlet {
                     out.println("</TR>");
                     
                     
-                    User paziente = (User) request.getSession().getAttribute("loggedUser");
-                    if(paziente != null){
+                    User paziente = loggedUser;
+                    
                         ResultSet res = db.getPatientVaccinations(paziente.getId());
+                        
                         try{
-                            while(res.next()){
-                                String med = ""+res.getString("name")+" "+res.getString("surname");
-                                String date = res.getString("vaccination_date");
-                                out.println("<TR>");
-                                out.println("<TD>"+med+"</TD>");
-                                out.println("<TD>"+date+"</TD>");
-                                out.println("</TR>");
+                            if(res.first()){
+                                while(!res.isAfterLast()){
+                                    String med = ""+res.getString("doctor_id");
+                                    String date = res.getString("vaccination_date");
+                                    out.println("<TR>");
+                                    out.println("<TD>"+med+"</TD>");
+                                    out.println("<TD>"+date+"</TD>");
+                                    out.println("</TR>");
+                                    res.next();
+                                }                            
                             }
                         }
                         catch(SQLException e){
@@ -76,11 +80,6 @@ public class VaccinazioniPaziente extends HttpServlet {
                         }
                         
                         out.print("</TABLE>");
-                    }
-                    
-                    else {
-                        Log4k.warn(VaccinazioniPaziente.class.getName(), "Non è stato possibile recuperare il paziente");
-                    }
                     
                 }
                 out.println("<a href=\"Welcome\">Torna</a><BR>");
