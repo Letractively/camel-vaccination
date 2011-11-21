@@ -57,9 +57,11 @@ public class EseguiVaccinazioni extends HttpServlet {
                 db.doVaccinate(doctor.getId(),p.getId());
                 db.releaseConnection();
             }
+            dbManager db = new dbManager();
+            String date = db.getDBtime();
             String signature = doctor.getName()+" "+doctor.getSurname();
-                        
-            pdfCreator.createLetters(realPath, chosenPatients, signature);
+
+            pdfCreator.createLetters(realPath, chosenPatients, signature, date);
             htmlCode+="I pazienti sono stati vaccinati.<BR>";
             htmlCode+="<a href=\""+ virtualPath +"\" target=\"_blank\">Scarica il file PDF con le lettere per i pazienti</a><BR>";
             htmlCode+="<a href=\"../Welcome\" target=\"_self\">Torna alla Home</a><BR>";

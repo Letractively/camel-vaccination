@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.octo.captcha.module.servlet.image.SimpleImageCaptchaServlet;
+import dbManagement.dbManager;
 
 /**
  *
@@ -25,7 +26,9 @@ public class Registrati extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        
         try {
+            dbManager db = new dbManager();
             String htmlPage = "";
             String title = "Registrazione";
             String htmlIntro = "<HTML><HEAD><title>" + title + "</title></HEAD><BODY>";
@@ -38,6 +41,7 @@ public class Registrati extends HttpServlet {
             htmlPage += userCaptchaResponse;
             if (captchaPassed) {
                 htmlPage += "OK it matches";
+                
                 // proceed to submit action
             } else {
                 htmlPage += "not OK you typed wrong letters";

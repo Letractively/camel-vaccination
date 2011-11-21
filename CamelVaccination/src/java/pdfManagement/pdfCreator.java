@@ -14,6 +14,7 @@ import com.itextpdf.text.pdf.*;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.LinkedList;
+import javax.xml.crypto.Data;
 import logManagement.Log4k;
 import userManagement.Paziente;
 
@@ -24,10 +25,11 @@ public class pdfCreator {
     private static final int align = Element.ALIGN_LEFT;
     
     /* Private: does not need synchronization */
-    private static String letter(String name, String surname, String doctorSign){
-        return ""
+    private static String letter(String name, String surname, String doctorSign, String date){
+        
+        return date+"\n"
                 + "Gentile signor/a "+name+" "+surname+", \n"
-                + "con la presente la informiamo che in data odierna dovrà presentarsi presso il nostro"
+                + "con la presente la informiamo che in data "+date+" dovrà presentarsi presso il nostro "
                 + "centro medico per il richiamo della vaccinazione.\n\n"
                 + "Distinti saluti\n"
                 + "dr. "+doctorSign+"\n";
@@ -48,7 +50,7 @@ public class pdfCreator {
         
     }
     
-    synchronized public static void createLetters(String documentName, LinkedList <Paziente> patients, String docSign){
+    synchronized public static void createLetters(String documentName, LinkedList <Paziente> patients, String docSign, String date){
         Document document = new Document();
         
         try {
@@ -61,7 +63,7 @@ public class pdfCreator {
                     String name = p.getName();
                     String surname = p.getSurname();
                 
-                    String l = letter(name, surname, docSign);
+                    String l = letter(name, surname, docSign, date);
                     createPage(document,l);
                 }
                 else {

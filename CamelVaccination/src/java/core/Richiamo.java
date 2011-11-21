@@ -37,15 +37,21 @@ public class Richiamo extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        
-        String checkboxname = "patients";//Assicurarsi che sia uguale anche in Conferma
-        String arrayPatientsName = "retrivedPatiens"; //idem sopra
-        
-        out.println("<HTML><HEAD><title>Richiamo</title></HEAD><BODY>");
-        
+        PrintWriter out = response.getWriter();           
         
         try {
+            String checkboxname = "patients";//Assicurarsi che sia uguale anche in Conferma
+            String arrayPatientsName = "retrivedPatiens"; //idem sopra
+        
+            String htmlPage = "";
+            String title = "Richiamo";
+            String htmlIntro = "<HTML><HEAD>"
+                        + "<title>" + title + "</title>"
+                        + "</HEAD><BODY>";
+            String htmlOutro = "</BODY></HTML>";
+                    
+            htmlPage+=htmlIntro;
+        
             LinkedList <Paziente> arrayPazienti = new LinkedList();
             
             String seconds = "";
@@ -54,11 +60,11 @@ public class Richiamo extends HttpServlet {
                 seconds = request.getParameter("date");
             
             //Form di ricerca vaccinazioni
-            out.println("<form action=\"?action=list&\" method=\"GET\">");
-            out.println("<label for=\"date\">Vaccinazioni effettuate prima di (secondi)</label>"
-                    + "<input type=\"text\" id=\"date\" name=\"date\" value=\""+seconds+"\" />");
-            out.println("<input type=\"submit\" name=\"Submit\" value=\"Cerca\" />");
-            out.println("</form>");
+            htmlPage+="<form action=\"?action=list&\" method=\"GET\">\n";
+            htmlPage+="<label for=\"date\">Vaccinazioni effettuate prima di (secondi)</label>"
+                    + "<input type=\"text\" id=\"date\" name=\"date\" value=\""+seconds+"\" />\n";
+            htmlPage+="<input type=\"submit\" name=\"Submit\" value=\"Cerca\" />\n";
+            htmlPage+="</form>\n";
             
             //Stampa risultato ricerca
             if(request.getParameter("date")!=null){
@@ -66,20 +72,20 @@ public class Richiamo extends HttpServlet {
                 ResultSet r = db.getPreviousVaccinationsPatients(new Integer(seconds));
                 db.releaseConnection();
                 
-                out.println("<form action=\"Conferma\" method=\"POST\">");
+                htmlPage+="<form action=\"Conferma\" method=\"POST\">\n";
                 
                 //Prima riga della tabella
-                out.println("<TABLE>");
-                out.println("<TR>");
-                out.println("<TD>ID</TD>");
-                out.println("<TD>Username</TD>");
-                out.println("<TD>Paziente</TD>");
-                out.println("<TD>M/F</TD>");
-                out.println("<TD>Data di vaccinazione</TD>");
-                out.println("<TD>Foto</TD>");
-                out.println("<TD>Medico</TD>");
-                out.println("<TD>Seleziona</TD>");
-                out.println("</TR>");
+                htmlPage+="<TABLE>\n";
+                htmlPage+="<TR>\n";
+                htmlPage+="<TD>ID</TD>\n";
+                htmlPage+="<TD>Username</TD>\n";
+                htmlPage+="<TD>Paziente</TD>\n";
+                htmlPage+="<TD>M/F</TD>\n";
+                htmlPage+="<TD>Data di vaccinazione</TD>\n";
+                htmlPage+="<TD>Foto</TD>\n";
+                htmlPage+="<TD>Medico</TD>\n";
+                htmlPage+="<TD>Seleziona</TD>\n";
+                htmlPage+="</TR>\n";
                 
                 try {
                     
@@ -91,40 +97,39 @@ public class Richiamo extends HttpServlet {
                             if (!arrayPazienti.add(p))
                                 Log4k.warn(Richiamo.class.getName(), "il paziente non e` stato inserito nel'array");
                             
-                            out.println("<TR>");
-                            out.println("<TD>"+p.getId()+"</TD>");
-                            out.println("<TD>"+p.getUsername()+"</TD>");
-                            out.println("<TD>"+p.getName()+" "+p.getSurname()+"</TD>");
-                            out.println("<TD>"+p.getGender()+"</TD>");
-                            out.println("<TD>"+p.getVaccination_date()+"</TD>");
-                            out.println("<TD>"+"<img src=\"photo/"+p.getPicture()+"\" height=\"50\" width=\"50\" alt=\"Foto Paziente\" /></TD>");
-                            out.println("<TD>"+p.getDoctor_id()+"</TD>");
-                            out.println("<TD><input type=\"checkbox\" name=\""+checkboxname+"\" value=\""+p.getId()+"\" /></TD>");
-                            out.println("</TR>");
+                            htmlPage+="<TR>\n";
+                            htmlPage+="<TD>"+p.getId()+"</TD>\n";
+                            htmlPage+="<TD>"+p.getUsername()+"</TD>\n";
+                            htmlPage+="<TD>"+p.getName()+" "+p.getSurname()+"</TD\n>";
+                            htmlPage+="<TD>"+p.getGender()+"</TD>\n";
+                            htmlPage+="<TD>"+p.getVaccination_date()+"</TD>\n";
+                            htmlPage+="<TD>"+"<img src=\"photo/"+p.getPicture()+"\" height=\"50\" width=\"50\" alt=\"Foto Paziente\" /></TD>\n";
+                            htmlPage+="<TD>"+p.getDoctor_id()+"</TD>\n";
+                            htmlPage+="<TD><input type=\"checkbox\" name=\""+checkboxname+"\" value=\""+p.getId()+"\" /></TD>\n";
+                            htmlPage+="</TR>\n";
                             r.next();
                         }
                     }
                 } catch (SQLException ex) {
-                    out.println("</BODY></HTML>");
+                    htmlPage+="</BODY></HTML>\n";
                     Log4k.error(Richiamo.class.getName(), ex.getMessage());
                 }
-                out.println("</TABLE>");
+                htmlPage+="</TABLE>\n";
                 
                 
                 //Salvo la lista di pazienti nella sessione
                 HttpSession session = request.getSession();
                 session.setAttribute(arrayPatientsName, arrayPazienti);//Assicurarsi che il nome sia uguale anceh in Conferma                
                 
-                out.println("<BR><input type=\"submit\" name=\"Conferma\" value=\"Conferma\" />");
-                out.println("</form>");
-                out.println("<a href=\"../Welcome\" title=\"Home\">Torna alla Home</a>");
+                htmlPage+="<BR><input type=\"submit\" name=\"Conferma\" value=\"Conferma\" />\n";
+                htmlPage+="</form>\n";
+                htmlPage+="<a href=\"../Welcome\" title=\"Home\">Torna alla Home</a>\n";
             }
+            htmlPage+=htmlOutro;
+            out.print(htmlPage);
         } finally {
-            out.println("</BODY></HTML>");
             out.close();
         }
-        
-        out.println("</BODY></HTML>");
     }
     
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

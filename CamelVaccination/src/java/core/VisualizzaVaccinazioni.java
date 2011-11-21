@@ -9,12 +9,10 @@ import dbManagement.dbManager;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.LinkedList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import logManagement.Log4k;
 import userManagement.Paziente;
 
@@ -36,13 +34,18 @@ public class VisualizzaVaccinazioni extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         
-        String checkboxname = "patients";//Assicurarsi che sia uguale anche in Conferma
-        String arrayPatientsName = "retrivedPatiens"; //idem sopra
-        
-        out.println("<HTML><HEAD><title>Richiamo</title></HEAD><BODY>");
+
         
         
         try {
+            String checkboxname = "patients";//Assicurarsi che sia uguale anche in Conferma
+            String arrayPatientsName = "retrivedPatiens"; //idem sopra
+            
+            String htmlPage="";
+            String htmlIntro="<HTML><HEAD><title>Richiamo</title></HEAD><BODY>";
+            String htmlOutro="</BODY></HTML>";
+            
+            htmlPage+=htmlIntro;
             
             String seconds = "";
             
@@ -50,11 +53,11 @@ public class VisualizzaVaccinazioni extends HttpServlet {
                 seconds = request.getParameter("date");
             
             //Form di ricerca vaccinazioni
-            out.println("<form action=\"?action=list&\" method=\"GET\">");
-            out.println("<label for=\"date\">Vaccinazioni effettuate prima di (secondi)</label>"
-                    + "<input type=\"text\" id=\"date\" name=\"date\" value=\""+seconds+"\" />");
-            out.println("<input type=\"submit\" name=\"Submit\" value=\"Cerca\" />");
-            out.println("</form>");
+            htmlPage+="<form action=\"?action=list&\" method=\"GET\">\n";
+            htmlPage+="<label for=\"date\">Vaccinazioni effettuate prima di (secondi)</label>"
+                    + "<input type=\"text\" id=\"date\" name=\"date\" value=\""+seconds+"\" />\n";
+            htmlPage+="<input type=\"submit\" name=\"Submit\" value=\"Cerca\" />\n";
+            htmlPage+="</form>\n";
             
             //Stampa risultato ricerca
             if(request.getParameter("date")!=null){
@@ -63,16 +66,16 @@ public class VisualizzaVaccinazioni extends HttpServlet {
                 db.releaseConnection();
                 
                 //Prima riga della tabella
-                out.println("<TABLE>");
-                out.println("<TR>");
-                out.println("<TD>ID</TD>");
-                out.println("<TD>Username</TD>");
-                out.println("<TD>Paziente</TD>");
-                out.println("<TD>M/F</TD>");
-                out.println("<TD>Data di vaccinazione</TD>");
-                out.println("<TD>Foto</TD>");
-                out.println("<TD>Medico</TD>");
-                out.println("</TR>");
+                htmlPage+="<TABLE>\n";
+                htmlPage+="<TR>\n";
+                htmlPage+="<TD>ID</TD>\n";
+                htmlPage+="<TD>Username</TD>\n";
+                htmlPage+="<TD>Paziente</TD>\n";
+                htmlPage+="<TD>M/F</TD>\n";
+                htmlPage+="<TD>Data di vaccinazione</TD>\n";
+                htmlPage+="<TD>Foto</TD>\n";
+                htmlPage+="<TD>Medico</TD>\n";
+                htmlPage+="</TR>\n";
                 
                 try {
                     
@@ -80,27 +83,29 @@ public class VisualizzaVaccinazioni extends HttpServlet {
                         while (!r.isAfterLast()) {
                             
                             Paziente p = new Paziente(r);
-                            out.println("<TR>");
-                            out.println("<TD>"+p.getId()+"</TD>");
-                            out.println("<TD>"+p.getUsername()+"</TD>");
-                            out.println("<TD><a href=\"Profilo?id="+p.getId()+"\">"+p.getName()+" "+p.getSurname()+"</a></TD>");
-                            out.println("<TD>"+p.getGender()+"</TD>");
-                            out.println("<TD>"+p.getVaccination_date()+"</TD>");
-                            out.println("<TD>"+"<img src=\"photo/"+p.getPicture()+"\" height=\"50\" width=\"50\" alt=\"Foto Paziente\" /></TD>");
-                            out.println("<TD>"+p.getDoctor_id()+"</TD>");
-                            out.println("</TR>");
+                            htmlPage+="<TR>\n";
+                            htmlPage+="<TD>"+p.getId()+"</TD>\n";
+                            htmlPage+="<TD>"+p.getUsername()+"</TD>\n";
+                            htmlPage+="<TD><a href=\"Profilo?id="+p.getId()+"\">"+p.getName()+" "+p.getSurname()+"</a></TD>\n";
+                            htmlPage+="<TD>"+p.getGender()+"</TD>\n";
+                            htmlPage+="<TD>"+p.getVaccination_date()+"</TD>\n";
+                            htmlPage+="<TD>"+"<img src=\"photo/"+p.getPicture()+"\" height=\"50\" width=\"50\" alt=\"Foto Paziente\" /></TD>\n";
+                            htmlPage+="<TD>"+p.getDoctor_id()+"</TD>\n";
+                            htmlPage+="</TR>\n";
                             r.next();
                         }
                     }
                 } catch (SQLException ex) {
-                    out.println("</BODY></HTML>");
+                    htmlPage+="</BODY></HTML>\n";
                     Log4k.error(Richiamo.class.getName(), ex.getMessage());
                 }
-                out.println("</TABLE>");
-                out.println("<a href=\"Welcome\" title=\"Home\">Torna alla Home</a>");
+                htmlPage+="</TABLE>\n";
+                htmlPage+="<a href=\"Welcome\" title=\"Home\">Torna alla Home</a>\n";
             }
+            
+            htmlPage+=htmlOutro;
+            out.print(htmlPage);
         } finally {
-            out.println("</BODY></HTML>");
             out.close();
         }
     }

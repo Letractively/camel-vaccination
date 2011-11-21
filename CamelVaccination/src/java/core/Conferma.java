@@ -37,6 +37,14 @@ public class Conferma extends HttpServlet {
         PrintWriter out = response.getWriter();
         
         try {
+            String htmlPage = "";
+            String title = "Conferma";
+            String htmlIntro = "<HTML><HEAD>"
+                    + "<title>" + title + "</title>"
+                    + "</HEAD><BODY>";
+            String htmlOutro = "</BODY></HTML>";
+            htmlPage+=htmlIntro;
+     
             String checkboxname = "patients";
             String arrayName = "retrivedPatiens"; //DA SETTARE IN BASE ALLA FUNZIONE PRECEDENTE
             int i = 0;
@@ -55,17 +63,17 @@ public class Conferma extends HttpServlet {
              * come vengono estratti e/o trasmetti i nomi dei pazienti faccio una doppia scansione
              * utilizzando l'id paziente per identificarli
              */
-            out.println("<script type=\"text/javascript\" src=\"script.js\"></script>");
-            out.println("<TABLE>");
-            out.println("<TR>");
-            out.println("<TD>ID</TD>");
-            out.println("<TD>Username</TD>");
-            out.println("<TD>Paziente</TD>");
-            out.println("<TD>M/F</TD>");
-            out.println("<TD>Data di vaccinazione</TD>");
-            out.println("<TD>Foto</TD>");
-            out.println("<TD>Medico</TD>");
-            out.println("</TR>");
+            htmlPage+="<script type=\"text/javascript\" src=\"script.js\"></script>\n";
+            htmlPage+="<TABLE>\n";
+            htmlPage+="<TR>\n";
+            htmlPage+="<TD>ID</TD>\n";
+            htmlPage+="<TD>Username</TD>\n";
+            htmlPage+="<TD>Paziente</TD>\n";
+            htmlPage+="<TD>M/F</TD>\n";
+            htmlPage+="<TD>Data di vaccinazione</TD>\n";
+            htmlPage+="<TD>Foto</TD>\n";
+            htmlPage+="<TD>Medico</TD>\n";
+            htmlPage+="</TR>\n";
             
             while(i < patientsList.length){
                 int k = 0;
@@ -74,15 +82,15 @@ public class Conferma extends HttpServlet {
                     String id = p.getId().toString();
                     if(id.equals(patientsList[i]))
                         if (chosenPatients.add(p)){//se l'id nella lista è uguale a quello recuperato dal post lo aggiungo e controllo il buon esito
-                            out.println("<TR>");
-                            out.println("<TD>"+p.getId()+"</TD>");
-                            out.println("<TD>"+p.getUsername()+"</TD>");
-                            out.println("<TD>"+p.getName()+" "+p.getSurname()+"</TD>");
-                            out.println("<TD>"+p.getGender()+"</TD>");
-                            out.println("<TD>"+p.getVaccination_date()+"</TD>");
-                            out.println("<TD>"+"<img src=\"photo/"+p.getPicture()+"\" height=\"50\" width=\"50\" alt=\"Foto Paziente\" /></TD>");
-                            out.println("<TD>"+p.getDoctor_id()+"</TD>");
-                            out.println("</TR>");
+                            htmlPage+="<TR>\n";
+                            htmlPage+="<TD>"+p.getId()+"</TD>\n";
+                            htmlPage+="<TD>"+p.getUsername()+"</TD>\n";
+                            htmlPage+="<TD>"+p.getName()+" "+p.getSurname()+"</TD>\n";
+                            htmlPage+="<TD>"+p.getGender()+"</TD>\n";
+                            htmlPage+="<TD>"+p.getVaccination_date()+"</TD>\n";
+                            htmlPage+="<TD>"+"<img src=\"photo/"+p.getPicture()+"\" height=\"50\" width=\"50\" alt=\"Foto Paziente\" /></TD>\n";
+                            htmlPage+="<TD>"+p.getDoctor_id()+"</TD>\n";
+                            htmlPage+="</TR>\n";
                         } else
                             Log4k.warn(Conferma.class.getName(),
                                     "Il paziente selezionato non è stato aggiunto alla lista");
@@ -91,17 +99,16 @@ public class Conferma extends HttpServlet {
                 i++;
             }
             
-            session.setAttribute("chosenPatients", chosenPatients);   
-            /*out.println("<a href=\"EseguiVaccinazioni\" target=\"_blank\" onclick=\"javascript:showdiv('confirm');\">show a2</a>");
-            out.println("<div id='confirm' style=\"display:none;\"><form action=\"EseguiVaccinazioni\" method=\"POST\">");
-            */
-            out.println("<form action=\"EseguiVaccinazioni\" method=\"POST\">");
-            out.println("<input type=\"submit\" name=\"Submit\" value=\"Conferma\" />");
-            out.println("</form>");
-            //Passo l'array di pazienti selezionati alla stampante PDF
-
+            session.setAttribute("chosenPatients", chosenPatients);
             
+            htmlPage+="<form action=\"EseguiVaccinazioni\" method=\"POST\">\n";
+            htmlPage+="<input type=\"submit\" name=\"Submit\" value=\"Conferma\" />\n";
+            htmlPage+="</form>\n";
             
+            htmlPage+=htmlOutro;
+            
+            out.print(htmlPage);
+  
         } finally {
             out.close();
         }
