@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package core;
 
 import com.mysql.jdbc.ResultSet;
@@ -47,7 +43,7 @@ public class Richiamo extends HttpServlet {
             String title = "Richiamo";
             String htmlIntro = "<HTML><HEAD>"
                         + "<title>" + title + "</title>"
-                        + "<link rel=\"stylesheet\" type =\"text/css\" href=\"../style.css\" />"
+                        + "<link rel=\"stylesheet\" type =\"text/css\" href=\"/style.css\" />"
                         + "</HEAD><BODY>";
             String htmlOutro = "</BODY></HTML>";
             htmlPage+=htmlIntro;
@@ -67,7 +63,7 @@ public class Richiamo extends HttpServlet {
             htmlPage+="<p class=\"searchBar\"><input type=\"text\" id=\"date\" name=\"date\" value=\""+seconds+"\" />\n";
             htmlPage+="<input class=\"submit\" type=\"submit\" name=\"Submit\" value=\"Cerca\" /></p>\n";
             htmlPage+="</form>\n";
-            htmlPage+="<p class=\"headerInfo\"><a href=\"../Welcome\" title=\"Home\">Torna alla Home</a></p>\n";
+            htmlPage+="<p class=\"headerInfo\"><a href=\"/\" title=\"Home\">Torna alla Home</a></p>\n";
             htmlPage += "</div>";  //div header end
             
             //Stampa risultato ricerca
@@ -120,7 +116,7 @@ public class Richiamo extends HttpServlet {
                 htmlPage+="</TABLE>\n";
                 htmlPage+="<p class=\"submit\"><input type=\"submit\" name=\"Conferma\" value=\"Conferma\" /></p>\n";
                 htmlPage+="</form>\n";
-                htmlPage+="<p class=\"headerInfo\"><a href=\"../Welcome\" title=\"Home\">Torna alla Home</a></p>\n";
+                htmlPage+="<p class=\"headerInfo\"><a href=\"/\" title=\"Home\">Torna alla Home</a></p>\n";
                 htmlPage += "</div>"; //div content end
                 
                 //Salvo la lista di pazienti nella sessione

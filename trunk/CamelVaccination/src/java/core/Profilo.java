@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package core;
 
 import com.mysql.jdbc.ResultSet;
@@ -57,7 +53,6 @@ public class Profilo extends HttpServlet {
                             htmlPage+="<TR>\n";
                             htmlPage+="<TD>"+p.getId()+"</TD>\n";
                             htmlPage+="<TD>"+p.getUsername()+"</TD>\n";
-                            htmlPage+="<TD><a href=\"Profilo?id="+p.getId()+"\">"+p.getName()+" "+p.getSurname()+"</a></TD>\n";
                             htmlPage+="<TD>"+p.getGender()+"</TD>";
                             htmlPage+="<TD>"+"<img src=\"photo/"+p.getPicture()+"\" height=\"50\" width=\"50\" alt=\"Foto Paziente\" /></TD>\n";
                             htmlPage+="</TR>\n";

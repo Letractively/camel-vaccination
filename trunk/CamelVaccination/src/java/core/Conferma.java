@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package core;
 
 import java.io.IOException;
@@ -62,7 +58,7 @@ public class Conferma extends HttpServlet {
             
             htmlPage += "<div class=\"container\">";
             htmlPage += "<div class=\"header\">";
-            htmlPage+="<p class=\"headerInfo\"><a href=\"../Welcome\" title=\"Home\">Torna alla Home</a></p>\n";
+            htmlPage+="<p class=\"headerInfo\"><a href=\"/\" title=\"Home\">Torna alla Home</a></p>\n";
             htmlPage += "</div>";  //div header end
             
             /*Salvo i pazienti selezionati, dato che dovrei fare delle assunzioni su
