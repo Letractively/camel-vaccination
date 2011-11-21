@@ -19,7 +19,7 @@ import userManagement.User;
  * @author administrator
  */
 public class Login extends HttpServlet {
-    private final int secsBeforeRefresh = 2;
+    private final int secsBeforeRefresh = 3;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -36,7 +36,10 @@ public class Login extends HttpServlet {
         try {
             String htmlPage = "";
             String title = "Login result";
-            String htmlIntro = "<HTML><HEAD><title>" + title + "</title></HEAD><BODY>";
+            String htmlIntro = "<HTML><HEAD>"
+                    + "<title>" + title + "</title>"
+                    + "<link rel=\"stylesheet\" type =\"text/css\" href=\"style.css\" />"
+                    + "</HEAD><BODY>";
             String htmlOutro = "</BODY></HTML>";
             
             htmlPage += htmlIntro;
@@ -53,8 +56,12 @@ public class Login extends HttpServlet {
                 if (loggedUser == null){
                     loggedUser = new User(res, isDoc);
                     session.setAttribute("loggedUser", loggedUser);
-                    htmlPage += "Benvenuto " + ((loggedUser.getIsDoctor()) ? "Dr. " + loggedUser.getSurname() : loggedUser.getName()) + "<br>";
-                    htmlPage += "Verrai a breve reindirizzato alla tua pagina personale";
+                    
+                    htmlPage += "<div class=\"jump\">";
+                    htmlPage += "<p class=\"jump\">Benvenuto " + ((loggedUser.getIsDoctor()) ? "Dr. " + loggedUser.getSurname() : loggedUser.getName()) + "<br/>";
+                    htmlPage += "Verrai a breve reindirizzato alla tua pagina personale</p>";
+                    htmlPage += "<p class=\"jump\"><a href=\"Welcome\">Oppure clicca qui per continuare...</a></p>";
+                    htmlPage += "</div>";
                     
                     /*INIZIO SETTAGGIO COOKIE*/
                     String cookieName = loggedUser.getUsername();//cambiare anche in welcome
@@ -77,9 +84,13 @@ public class Login extends HttpServlet {
                 }
             }
             else {
-                htmlPage += "Hai inserito un nome utente o una password sbagliati<br>";
-                htmlPage += "Verrai a breve reindirizzato alla pagina di login";
+                htmlPage += "<div class=\"jump\">";
+                htmlPage += "<p class=\"jump\">Hai inserito un nome utente o una password sbagliati<br>";
+                htmlPage += "Verrai a breve reindirizzato alla tua pagina personale</p>";
+                htmlPage += "<p class=\"jump\"><a href=\"Welcome\">Oppure clicca qui per continuare...</a></p>";
+                htmlPage += "</div>";                 
                 htmlPage += htmlOutro;
+                
                 out.print(htmlPage);
                 response.setHeader("Refresh", secsBeforeRefresh + "; url=/CamelVaccination/Welcome");
             }
