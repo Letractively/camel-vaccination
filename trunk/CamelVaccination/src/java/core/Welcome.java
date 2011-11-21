@@ -53,40 +53,33 @@ public class Welcome extends HttpServlet {
                 Log4k.warn(Welcome.class.getName(), "un utente non loggato non dovrebbe essere qui");
                 response.sendRedirect("login.jsp");
             } else {
-                /*INIZIO RECUPERO COOKIE*/
-                String cookieName = loggedUser.getUsername();
-                Cookie cookie = null;
-                Cookie[] cookieArray = request.getCookies();
                 
-                if (cookieArray!=null){
-                    
-                    for(int i=0; i<cookieArray.length; i++) {
-                        
-                        if (cookieArray[i].getName().equals(cookieName)) {
-                            cookie = cookieArray[i];
-                            break;
-                        }
-                    }
-                    if(cookie==null){
-                        Log4k.debug(Welcome.class.getName(),"Nessun cookie trovato");
-                    } else {
-                        htmlPage += "Bentornato! Il tuo ultimo login risale al: " + loggedUser.getLastLogin() + "<br>";
-                    }
-                }
-                else {
-                    Log4k.warn(cookieName, cookieName);
-                }
-                
-                /*FINE RECUPERO COOKIE*/
-                
-                /*INIZIO LINK AL PDF*/
+                 /*INIZIO LINK AL PDF*/
                 String pdfName = session.getId()+".pdf";
                 String realPath =getServletContext().getRealPath(File.separator+"doctorFiles"+File.separator+pdfName);
                 String virtualPath =getServletContext().getContextPath()+"/doctorFiles/"+pdfName;
                 File pdf = new File(realPath);
+                
+                htmlPage += "<div class=\"container\">";
+                htmlPage += "<div class=\"header\">";
+                htmlPage += (loggedUser.getIsDoctor() ? "" : "<img id=\"welcomeImage\" src=\"photo/"+loggedUser.getPicture()+"\" />");
+                htmlPage += "<p class=\"headerInfo\">Sei loggato come: "+loggedUser.getName()+" "+loggedUser.getSurname()+"<br>";
+                htmlPage += "Username: "+loggedUser.getUsername()+"</p>";
+                htmlPage += "<p class=\"headerInfo\">Ultimo Login: "+loggedUser.getLastLogin()+"<BR>";
+                htmlPage += "<a href=\"Logout\"> Logout </a></p>";
+                htmlPage += "</div>";  //div header end
+                
+                htmlPage += "<div class=\"content\">";
+
                 if (pdf.exists()){
-                    htmlPage+="Scarica il pdf: <a href="+virtualPath+">Lettere Pazienti</a>";
-                }                
+                    htmlPage += "<p id=\"pdfLink\">"; 
+                    htmlPage += "<img src=\"photo/pdf_ico.gif\" height=\"16px\" width=\"16px\"/>"
+                            + "<a href="+virtualPath+" id=\"pdfLink\" target=\"_blank\"> Lettere Ultima Vaccinazione</a>";
+                    htmlPage += "</p>"; 
+                } 
+                
+                htmlPage += "<p class=\"headerInfo\">Menu</p>";
+                htmlPage += "<p class=\"content\">";               
                 
                 if(loggedUser.getIsDoctor()){
                     htmlPage += "<a href=\"doctorFiles/Richiamo\"> Procedura richiamo paziente </a><BR>";
@@ -95,7 +88,9 @@ public class Welcome extends HttpServlet {
                     htmlPage += "<a href=\"patientFiles/VaccinazioniPaziente\"> Visualizza dettagli vaccinazioni </a><BR>";
                 }
                 
-                htmlPage += "<a href=\"Logout\"> Logout </a><BR>";
+                htmlPage += "</p>";
+                htmlPage += "</div>"; //div content end
+                htmlPage += "</div>"; //div container end
             }
             
             htmlPage += htmlOutro;
