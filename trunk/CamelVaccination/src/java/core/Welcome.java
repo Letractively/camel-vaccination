@@ -83,14 +83,10 @@ public class Welcome extends HttpServlet {
                 String pdfName = session.getId()+".pdf";
                 String realPath =getServletContext().getRealPath(File.separator+"doctorFiles"+File.separator+pdfName);
                 String virtualPath =getServletContext().getContextPath()+"/doctorFiles/"+pdfName;
-                File pdf = new File(realPath+pdfName);
+                File pdf = new File(realPath);
                 if (pdf.exists()){
-                    htmlPage+="Scarica il pdf: <a href="+virtualPath+pdfName+">Lettere Pazienti</a>";
-                }
-                /*Stampa link al pdf*/
-                else /*Amen*/;
-                /*FINE LINK AL PDF*/
-                
+                    htmlPage+="Scarica il pdf: <a href="+virtualPath+">Lettere Pazienti</a>";
+                }                
                 
                 if(loggedUser.getIsDoctor()){
                     htmlPage += "<a href=\"doctorFiles/Richiamo\"> Procedura richiamo paziente </a><BR>";
