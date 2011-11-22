@@ -1,5 +1,7 @@
 package core;
 
+import dbManagement.NotInDBException;
+import dbManagement.YetRegisteredException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -8,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.octo.captcha.module.servlet.image.SimpleImageCaptchaServlet;
 import dbManagement.dbManager;
+import logManagement.Log4k;
 
 /**
  *
@@ -28,23 +31,50 @@ public class Registrati extends HttpServlet {
         PrintWriter out = response.getWriter();
         
         try {
-            dbManager db = new dbManager();
+            
             String htmlPage = "";
             String title = "Registrazione";
             String htmlIntro = "<HTML><HEAD><title>" + title + "</title></HEAD><BODY>";
             
             htmlPage += htmlIntro;
             
+            String usr = request.getParameter("user");
+            String psw1 = request.getParameter("password");
+            String psw2 = request.getParameter("confirm_password");
             String userCaptchaResponse = request.getParameter("jcaptcha");
             boolean captchaPassed = SimpleImageCaptchaServlet.validateResponse(request, userCaptchaResponse);
-            
-            htmlPage += userCaptchaResponse;
+            out.println(""
+                    + "captcha = "+ userCaptchaResponse+"<BR>"
+                    +"username = "+ usr+"<BR>"
+                    +"password: "+psw1+" "+psw2+"<BR>");
             if (captchaPassed) {
-                htmlPage += "OK it matches";
+                if(psw1.equals(psw2)){
+                    
+                    try {
+                        dbManager db = new dbManager();
+                        db.doRegister(usr, psw1);
+                        db.releaseConnection();   
+                        htmlPage += "Hai completato la registrazione<BR>";
+                        htmlPage += "<a href=\"" + Macro.BASE + "login.jsp\" title=\"login\">Effettua il login</a>";                     
+                    } catch (NotInDBException ex) {
+                        htmlPage+="Username errato!<BR>\n";
+                        htmlPage+="<a href=\"registrati.jsp\" title=\"Registrati\">Torna alla registrazione</a>";
+                        Log4k.debug(Registrati.class.getName(), ex.getMessage());
+                    } catch (YetRegisteredException ex) {
+                        htmlPage+="Il tuo nome utente risulta già registrato!<BR>\n";
+                        htmlPage+="<a href=\"registrati.jsp\" title=\"Registrati\">Torna alla registrazione</a>";
+                        Log4k.debug(Registrati.class.getName(), ex.getMessage());
+                    }
+                }
+                else{
+                    htmlPage+="Le password che hai inserito non corrispondono!<BR>\n";
+                    htmlPage+="<a href=\"registrati.jsp\" title=\"Registrati\">Torna alla registrazione</a>";
+                }    
+                    
                 
-                // proceed to submit action
             } else {
-                htmlPage += "not OK you typed wrong letters";
+                htmlPage += "Captcha errato<BR>\n";
+                htmlPage+="<a href=\"registrati.jsp\" title=\"Registrati\">Torna alla registrazione</a>";
                 // return error to user
             }
             

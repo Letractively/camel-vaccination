@@ -41,10 +41,7 @@ public class VaccinazioniPaziente extends HttpServlet {
             
             User loggedUser = (User) session.getAttribute("loggedUser");
 
-                if(loggedUser.getIsDoctor()){
-                    Log4k.warn(VaccinazioniPaziente.class.getName(), "un dottore non dovrebbe essere qui");
-                    response.sendRedirect("");
-                } else {
+             
                     htmlPage+="Benvenuto "/*+username*/+" queste sono le vaccinazioni che hai effettuato.<BR>";
                     htmlPage+="<TABLE>";
                     htmlPage+="<TR>";
@@ -87,10 +84,9 @@ public class VaccinazioniPaziente extends HttpServlet {
                         Log4k.error(Welcome.class.getName(), e.getMessage());
                     }
                     
-                    htmlPage+="</TABLE>\n";
-                    
-                }
-                htmlPage+="<a href=\"/\" title=\"Home\">Torna alla Home</a>\n";
+                    htmlPage+="</TABLE>\n";                    
+                
+                htmlPage+="<a href=\"" + Macro.BASE + "\" title=\"Home\">Torna alla Home</a>\n";
             
             htmlPage+=htmlOutro;
             out.print(htmlPage);

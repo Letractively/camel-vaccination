@@ -30,18 +30,12 @@ public class VisualizzaVaccinazioni extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         
-
-        
-        
         try {
-            String checkboxname = "patients";//Assicurarsi che sia uguale anche in Conferma
-            String arrayPatientsName = "retrivedPatiens"; //idem sopra
-            
             String htmlPage = "";
             String title = "Visualizza Vaccinazioni";
             String htmlIntro = "<HTML><HEAD>"
                         + "<title>" + title + "</title>"
-                        + "<link rel=\"stylesheet\" type =\"text/css\" href=\"/style.css\" />"
+                        + "<link rel=\"stylesheet\" type =\"text/css\" href=\"" + Macro.BASE + "style.css\" />"
                         + "</HEAD><BODY>";
             String htmlOutro = "</BODY></HTML>";
             htmlPage+=htmlIntro;
@@ -59,13 +53,13 @@ public class VisualizzaVaccinazioni extends HttpServlet {
             htmlPage+="<p class=\"searchBar\"><input type=\"text\" id=\"date\" name=\"date\" value=\""+seconds+"\" />\n";
             htmlPage+="<input class=\"submit\" type=\"submit\" name=\"Submit\" value=\"Cerca\" /></p>\n";
             htmlPage+="</form>\n";
-            htmlPage+="<p class=\"headerInfo\"><a href=\"../Welcome\" title=\"Home\">Torna alla Home</a></p>\n";
+            htmlPage+="<p class=\"headerInfo\"><a href=\"" + Macro.BASE + "\" title=\"Home\">Torna alla Home</a></p>\n";
             htmlPage += "</div>";  //div header end
             
             //Stampa risultato ricerca
             if(request.getParameter("date")!=null){
                 dbManager db = new dbManager();
-                ResultSet r = db.getPreviousVaccinationsPatients(new Integer(seconds));
+                ResultSet r = db.getFollowingVaccinationsPatients(new Integer(seconds));
                 db.releaseConnection();
                 htmlPage += "<div class=\"content\">";
                 
@@ -100,7 +94,7 @@ public class VisualizzaVaccinazioni extends HttpServlet {
                     Log4k.error(Richiamo.class.getName(), ex.getMessage());
                 }
                 htmlPage+="</TABLE>\n";
-                htmlPage+="<p class=\"headerInfo\"><a href=\"/\" title=\"Home\">Torna alla Home</a></p>\n";
+                htmlPage+="<p class=\"headerInfo\"><a href=\"" + Macro.BASE + "\" title=\"Home\">Torna alla Home</a></p>\n";
                 htmlPage += "</div>"; //div content end
             }
             htmlPage += "</div>";

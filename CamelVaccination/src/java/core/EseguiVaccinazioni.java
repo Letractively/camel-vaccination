@@ -60,7 +60,7 @@ public class EseguiVaccinazioni extends HttpServlet {
             pdfCreator.createLetters(realPath, chosenPatients, signature, date);
             htmlCode+="I pazienti sono stati vaccinati.<BR>";
             htmlCode+="<a href=\""+ virtualPath +"\" target=\"_blank\">Scarica il file PDF con le lettere per i pazienti</a><BR>";
-            htmlCode+="<a href=\"/\" target=\"_self\">Torna alla Home</a><BR>";
+            htmlCode+="<a href=\"" + Macro.BASE + "\" target=\"_self\">Torna alla Home</a><BR>";
             htmlCode+=htmlOutro;
             out.println(htmlCode);
         } finally {            
