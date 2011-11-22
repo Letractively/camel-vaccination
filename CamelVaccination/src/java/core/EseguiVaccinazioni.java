@@ -67,7 +67,7 @@ public class EseguiVaccinazioni extends HttpServlet {
             htmlCode += "<div class=\"content\">";
             htmlCode += "<p id=\"pdfLink\">"; 
             htmlCode += "<img src=\"photo/pdf_ico.gif\" height=\"16px\" width=\"16px\"/>"
-                    + "<a href="+virtualPath+" id=\"pdfLink\" target=\"_blank\"> Lettere Ultima Vaccinazione</a>";
+                    + "<a href="+virtualPath+" id=\"pdfLink\" target=\"_blank\"> Stampa Lettere per i Pazienti</a>";
             htmlCode += "</p>"; 
             htmlCode += "<p class=\"headerInfo\">I pazienti sono stati vaccinati.</p>";
             htmlCode += "</div>"; //div content end
