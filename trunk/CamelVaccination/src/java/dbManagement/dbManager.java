@@ -49,7 +49,8 @@ public class dbManager{
         ResultSet res = null;
         try {
             String command;
-            command = "SELECT doctor_id, vaccination_date FROM vaccinations WHERE patient_id = " + patientID;
+            command = "SELECT * FROM (SELECT * FROM vaccinations LEFT JOIN doctors ON id = doctor_id ) AS X "
+                    + "WHERE patient_id = " + patientID;
             res = dbConn.executeQuery(command);
         } catch (Exception ex) {
             Log4k.error(dbManager.class.getName(), ex.getMessage());

@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type ="text/css" href="/style.css" />
+        <link rel="stylesheet" type ="text/css" href="../style.css" />
         <title>Registrazione</title>
     </head>
     <body>
@@ -28,6 +28,5 @@
                 <p class="submit"><input type="submit" value="Invia" /></p>
             </form>
         </fieldset>
-        <a href="/CamelVaccination/" title="Home">Torna alla Home</a>";
     </body>
 </html>

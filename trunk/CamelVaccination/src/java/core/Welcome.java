@@ -52,7 +52,7 @@ public class Welcome extends HttpServlet {
                 htmlPage += (loggedUser.getIsDoctor() ? "" : "<img id=\"welcomeImage\" src=\"" + Macro.BASE + "photo/"+loggedUser.getPicture()+"\" />");
                 htmlPage += "<p class=\"headerInfo\">Sei loggato come: "+loggedUser.getName()+" "+loggedUser.getSurname()+"<br>";
                 htmlPage += "Username: "+loggedUser.getUsername()+"</p>";
-                htmlPage += "<p class=\"headerInfo\">Ultimo Login: "+loggedUser.getLastLogin()+"<BR>";
+                htmlPage += "<p class=\"headerInfo\">Ultimo Login: "+loggedUser.getLastLogin()+"<br>";
                 htmlPage += "<a href=\"" + Macro.BASE + "logged/Logout\"> Logout </a></p>";
                 htmlPage += "</div>";  //div header end
                 
