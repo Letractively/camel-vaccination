@@ -30,6 +30,14 @@ public class Profilo extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
+             String htmlPage = "";
+                    String title = "Profilo";
+                    String htmlIntro = "<HTML><HEAD>"
+                    + "<title>" + title + "</title>"
+                    + "<link rel=\"stylesheet\" type =\"text/css\" href=\"" + Macro.BASE + "style.css\" />"
+                    + "</HEAD><BODY>";
+            String htmlOutro = "</BODY></HTML>";
+            
             if(request.getParameter("id")!=null){
                 dbManager db = new dbManager();
                 ResultSet r1 = db.getPatient(new Integer(request.getParameter("id")));
@@ -37,13 +45,7 @@ public class Profilo extends HttpServlet {
                 db.releaseConnection();
                 
                 try {
-                    String htmlPage = "";
-                    String title = "Profilo";
-                    String htmlIntro = "<HTML><HEAD>"
-                    + "<title>" + title + "</title>"
-                    + "<link rel=\"stylesheet\" type =\"text/css\" href=\"" + Macro.BASE + "style.css\" />"
-                    + "</HEAD><BODY>";
-            String htmlOutro = "</BODY></HTML>";
+                   
                     
                 htmlPage+=htmlIntro;
                 htmlPage += "<div class=\"container\">";
@@ -100,7 +102,17 @@ public class Profilo extends HttpServlet {
                 } catch (SQLException ex) {
                     Log4k.error(Richiamo.class.getName(), ex.getMessage());
                 }}
-            else{
+            else {
+                htmlPage += "<div class=\"jump\">";
+                htmlPage += "<p class=\"jump\">Errore nel processare la pagina<br>";
+                htmlPage += "Verrai a breve reindirizzato alla tua pagina personale</p>";
+                htmlPage += "<p class=\"jump\"><a href=\"" + Macro.BASE + "logged/Welcome\">Oppure clicca qui per continuare...</a></p>";
+                htmlPage += "</div>";                 
+                htmlPage += htmlOutro;
+                
+                out.print(htmlPage);
+                response.setHeader("Refresh", "4; url=" + Macro.BASE + "logged/Welcome");
+
                 Log4k.error(Richiamo.class.getName(),"errore su id");
             }
         } finally {
