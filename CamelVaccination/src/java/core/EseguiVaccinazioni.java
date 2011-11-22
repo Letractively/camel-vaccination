@@ -35,10 +35,12 @@ public class EseguiVaccinazioni extends HttpServlet {
         try {
             String htmlCode="";
             String title = "Esegui Vaccinazioni";
-            String htmlIntro = "<HTML><HEAD><title>" + title + "</title></HEAD><BODY>";
+            String htmlIntro = "<HTML><HEAD>"
+                    + "<title>" + title + "</title>"
+                    + "<link rel=\"stylesheet\" type =\"text/css\" href=\"" + Macro.BASE + "style.css\" />"
+                    + "</HEAD><BODY>";
             String htmlOutro = "</BODY></HTML>";
-            
-            htmlCode+=htmlIntro;
+            htmlCode += htmlIntro;
             
             HttpSession session = request.getSession();
             String pdfName = session.getId()+".pdf";//il nome del pdf sarà <IDsessione>.pdf
@@ -58,9 +60,18 @@ public class EseguiVaccinazioni extends HttpServlet {
             String signature = doctor.getName()+" "+doctor.getSurname();
 
             pdfCreator.createLetters(realPath, chosenPatients, signature, date);
-            htmlCode+="I pazienti sono stati vaccinati.<BR>";
-            htmlCode+="<a href=\""+ virtualPath +"\" target=\"_blank\">Scarica il file PDF con le lettere per i pazienti</a><BR>";
-            htmlCode+="<a href=\"" + Macro.BASE + "\" target=\"_self\">Torna alla Home</a><BR>";
+            htmlCode += "<div class=\"container\">";
+            htmlCode += "<div class=\"header\">";
+            htmlCode += "<p class=\"headerInfo\"><a href=\"" + Macro.BASE + "\" target=\"_self\">Torna alla Home</a><BR>";
+            htmlCode += "</div>";  //div header end
+            htmlCode += "<div class=\"content\">";
+            htmlCode += "<p id=\"pdfLink\">"; 
+            htmlCode += "<img src=\"photo/pdf_ico.gif\" height=\"16px\" width=\"16px\"/>"
+                    + "<a href="+virtualPath+" id=\"pdfLink\" target=\"_blank\"> Lettere Ultima Vaccinazione</a>";
+            htmlCode += "</p>"; 
+            htmlCode += "<p class=\"headerInfo\">I pazienti sono stati vaccinati.</p>";
+            htmlCode += "</div>"; //div content end
+            htmlCode += "</div>"; //div container end 
             htmlCode+=htmlOutro;
             out.println(htmlCode);
         } finally {            
