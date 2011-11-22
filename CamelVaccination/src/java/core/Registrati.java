@@ -55,7 +55,7 @@ public class Registrati extends HttpServlet {
                         db.doRegister(usr, psw1);
                         db.releaseConnection();   
                         htmlPage += "Hai completato la registrazione<BR>";
-                        htmlPage += "<a href=\"" + Macro.BASE + "login.jsp\" title=\"login\">Effettua il login</a>";                     
+                        htmlPage += "<a href=\"login.jsp\" title=\"login\">Effettua il login</a>";                     
                     } catch (NotInDBException ex) {
                         htmlPage+="Username errato!<BR>\n";
                         htmlPage+="<a href=\"registrati.jsp\" title=\"Registrati\">Torna alla registrazione</a>";

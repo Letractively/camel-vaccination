@@ -43,13 +43,13 @@ public class Welcome extends HttpServlet {
                             
                  /*INIZIO LINK AL PDF*/
                 String pdfName = session.getId()+".pdf";
-                String realPath =getServletContext().getRealPath(File.separator+"doctorFiles"+File.separator+pdfName);
-                String virtualPath =getServletContext().getContextPath()+"/doctorFiles/"+pdfName;
+                String realPath =getServletContext().getRealPath(File.separator+"logged"+File.separator+"doctorFiles"+File.separator+pdfName);            
+                String virtualPath ="doctorFiles/"+pdfName;
                 File pdf = new File(realPath);
                 
                 htmlPage += "<div class=\"container\">";
                 htmlPage += "<div class=\"header\">";
-                htmlPage += (loggedUser.getIsDoctor() ? "" : "<img id=\"welcomeImage\" src=\"photo/"+loggedUser.getPicture()+"\" />");
+                htmlPage += (loggedUser.getIsDoctor() ? "" : "<img id=\"welcomeImage\" src=\"" + Macro.BASE + "photo/"+loggedUser.getPicture()+"\" />");
                 htmlPage += "<p class=\"headerInfo\">Sei loggato come: "+loggedUser.getName()+" "+loggedUser.getSurname()+"<br>";
                 htmlPage += "Username: "+loggedUser.getUsername()+"</p>";
                 htmlPage += "<p class=\"headerInfo\">Ultimo Login: "+loggedUser.getLastLogin()+"<BR>";

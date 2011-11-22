@@ -44,8 +44,8 @@ public class EseguiVaccinazioni extends HttpServlet {
             
             HttpSession session = request.getSession();
             String pdfName = session.getId()+".pdf";//il nome del pdf sarà <IDsessione>.pdf
-            String realPath =getServletContext().getRealPath(File.separator+"doctorFiles"+File.separator+pdfName);
-            String virtualPath =getServletContext().getContextPath()+"/doctorFiles/"+pdfName;
+            String realPath =getServletContext().getRealPath(File.separator+"logged"+File.separator+"doctorFiles"+File.separator+pdfName);
+            String virtualPath =pdfName;
             User doctor = (User) request.getSession().getAttribute("loggedUser");//recupero il profilo del medico
                                
             LinkedList <Paziente> chosenPatients = (LinkedList<Paziente>)session.getAttribute("chosenPatients");
