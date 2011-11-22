@@ -36,7 +36,7 @@ public class Profilo extends HttpServlet {
                     + "<title>" + title + "</title>"
                     + "<link rel=\"stylesheet\" type =\"text/css\" href=\"" + Macro.BASE + "style.css\" />"
                     + "</HEAD><BODY>";
-            String htmlOutro = "</BODY></HTML>";
+                String htmlOutro = "</BODY></HTML>";
             
             if(request.getParameter("id")!=null){
                 dbManager db = new dbManager();
@@ -46,7 +46,6 @@ public class Profilo extends HttpServlet {
                 
                 try {
                    
-                    
                 htmlPage+=htmlIntro;
                 htmlPage += "<div class=\"container\">";
                 htmlPage += "<div class=\"header\">";
@@ -103,6 +102,7 @@ public class Profilo extends HttpServlet {
                     Log4k.error(Richiamo.class.getName(), ex.getMessage());
                 }}
             else {
+                htmlPage+=htmlIntro;
                 htmlPage += "<div class=\"jump\">";
                 htmlPage += "<p class=\"jump\">Errore nel processare la pagina<br>";
                 htmlPage += "Verrai a breve reindirizzato alla tua pagina personale</p>";
