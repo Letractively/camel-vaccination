@@ -43,8 +43,8 @@ public class Welcome extends HttpServlet {
                             
                  /*INIZIO LINK AL PDF*/
                 String pdfName = session.getId()+".pdf";
-                String realPath =getServletContext().getRealPath(File.separator+"logged"+File.separator+"doctorFiles"+File.separator+pdfName);            
-                String virtualPath ="doctorFiles/"+pdfName;
+                String realPath = getServletContext().getRealPath(File.separator+"logged"+File.separator+"doctorFiles"+File.separator+"PDFs"+File.separator+pdfName);            
+                String virtualPath ="doctorFiles/PDFs/"+pdfName;
                 File pdf = new File(realPath);
                 
                 htmlPage += "<div class=\"container\">";
