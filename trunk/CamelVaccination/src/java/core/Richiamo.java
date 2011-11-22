@@ -7,7 +7,6 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +19,6 @@ import userManagement.*;
  *
  * @author administrator
  */
-@WebServlet(name = "Richiamo", urlPatterns = {"/Richiamo"})
 public class Richiamo extends HttpServlet {
     
     /**
@@ -43,7 +41,7 @@ public class Richiamo extends HttpServlet {
             String title = "Richiamo";
             String htmlIntro = "<HTML><HEAD>"
                         + "<title>" + title + "</title>"
-                        + "<link rel=\"stylesheet\" type =\"text/css\" href=\"/style.css\" />"
+                        + "<link rel=\"stylesheet\" type =\"text/css\" href=\"" + Macro.BASE + "style.css\" />"
                         + "</HEAD><BODY>";
             String htmlOutro = "</BODY></HTML>";
             htmlPage+=htmlIntro;
@@ -63,7 +61,7 @@ public class Richiamo extends HttpServlet {
             htmlPage+="<p class=\"searchBar\"><input type=\"text\" id=\"date\" name=\"date\" value=\""+seconds+"\" />\n";
             htmlPage+="<input class=\"submit\" type=\"submit\" name=\"Submit\" value=\"Cerca\" /></p>\n";
             htmlPage+="</form>\n";
-            htmlPage+="<p class=\"headerInfo\"><a href=\"/\" title=\"Home\">Torna alla Home</a></p>\n";
+            htmlPage+="<p class=\"headerInfo\"><a href=\"" + Macro.BASE + "\" title=\"Home\">Torna alla Home</a></p>\n";
             htmlPage += "</div>";  //div header end
             
             //Stampa risultato ricerca
@@ -116,7 +114,7 @@ public class Richiamo extends HttpServlet {
                 htmlPage+="</TABLE>\n";
                 htmlPage+="<p class=\"submit\"><input type=\"submit\" name=\"Conferma\" value=\"Conferma\" /></p>\n";
                 htmlPage+="</form>\n";
-                htmlPage+="<p class=\"headerInfo\"><a href=\"/\" title=\"Home\">Torna alla Home</a></p>\n";
+                htmlPage+="<p class=\"headerInfo\"><a href=\"" + Macro.BASE + "\" title=\"Home\">Torna alla Home</a></p>\n";
                 htmlPage += "</div>"; //div content end
                 
                 //Salvo la lista di pazienti nella sessione

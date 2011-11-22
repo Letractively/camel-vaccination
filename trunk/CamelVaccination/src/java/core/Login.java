@@ -33,7 +33,7 @@ public class Login extends HttpServlet {
             String title = "Login";
             String htmlIntro = "<HTML><HEAD>"
                     + "<title>" + title + "</title>"
-                    + "<link rel=\"stylesheet\" type =\"text/css\" href=\"/style.css\" />"
+                    + "<link rel=\"stylesheet\" type =\"text/css\" href=\"" + Macro.BASE + "style.css\" />"
                     + "</HEAD><BODY>";
             String htmlOutro = "</BODY></HTML>";
             
@@ -57,7 +57,7 @@ public class Login extends HttpServlet {
                     htmlPage += "<div class=\"jump\">";
                     htmlPage += "<p class=\"jump\">Benvenuto " + ((loggedUser.getIsDoctor()) ? "Dr. " + loggedUser.getSurname() : loggedUser.getName()) + "<br/>";
                     htmlPage += "Verrai a breve reindirizzato alla tua pagina personale</p>";
-                    htmlPage += "<p class=\"jump\"><a href=\"Welcome\">Oppure clicca qui per continuare...</a></p>";
+                    htmlPage += "<p class=\"jump\"><a href=\"" + Macro.BASE + "logged/Welcome\">Oppure clicca qui per continuare...</a></p>";
                     htmlPage += "</div>";
                     
                     /*INIZIO SETTAGGIO COOKIE*/
@@ -101,7 +101,7 @@ public class Login extends HttpServlet {
 
                         htmlPage += htmlOutro;
                         out.print(htmlPage);
-                        response.setHeader("Refresh", secsBeforeRefresh + "; url=Welcome");
+                        response.setHeader("Refresh", secsBeforeRefresh + "; url=" + Macro.BASE + "logged/Welcome");
 
                     } else {
                         Log4k.warn(Login.class.getName(), "un utente gia' loggato non dovrebbe essere qui\n");
@@ -111,12 +111,12 @@ public class Login extends HttpServlet {
                 htmlPage += "<div class=\"jump\">";
                 htmlPage += "<p class=\"jump\">Hai inserito un nome utente o una password sbagliati<br>";
                 htmlPage += "Verrai a breve reindirizzato alla tua pagina personale</p>";
-                htmlPage += "<p class=\"jump\"><a href=\"/logged/Welcome\">Oppure clicca qui per continuare...</a></p>";
+                htmlPage += "<p class=\"jump\"><a href=\"" + Macro.BASE + "logged/Welcome\">Oppure clicca qui per continuare...</a></p>";
                 htmlPage += "</div>";                 
                 htmlPage += htmlOutro;
                 
                 out.print(htmlPage);
-                response.setHeader("Refresh", secsBeforeRefresh + "; url=/CamelVaccination/Welcome");
+                response.setHeader("Refresh", secsBeforeRefresh + "; url=" + Macro.BASE + "logged/Welcome");
             }
         } catch (Exception ex) {
             out.print("Error");

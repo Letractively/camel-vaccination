@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.LinkedList;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,7 +16,6 @@ import userManagement.User;
  *
  * @author administrator
  */
-@WebServlet(name = "Conferma", urlPatterns = {"/Conferma"})
 public class Conferma extends HttpServlet {
     
     /**
@@ -37,7 +35,7 @@ public class Conferma extends HttpServlet {
             String title = "Conferma";
             String htmlIntro = "<HTML><HEAD>"
                     + "<title>" + title + "</title>"
-                    + "<link rel=\"stylesheet\" type =\"text/css\" href=\"../style.css\" />"
+                    + "<link rel=\"stylesheet\" type =\"text/css\" href=\"" + Macro.BASE + "style.css\" />"
                     + "</HEAD><BODY>";
             String htmlOutro = "</BODY></HTML>";
             htmlPage+=htmlIntro;
@@ -58,7 +56,7 @@ public class Conferma extends HttpServlet {
             
             htmlPage += "<div class=\"container\">";
             htmlPage += "<div class=\"header\">";
-            htmlPage+="<p class=\"headerInfo\"><a href=\"/\" title=\"Home\">Torna alla Home</a></p>\n";
+            htmlPage+="<p class=\"headerInfo\"><a href=\"" + Macro.BASE + "\" title=\"Home\">Torna alla Home</a></p>\n";
             htmlPage += "</div>";  //div header end
             
             /*Salvo i pazienti selezionati, dato che dovrei fare delle assunzioni su

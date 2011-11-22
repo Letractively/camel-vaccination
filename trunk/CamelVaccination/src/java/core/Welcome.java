@@ -33,7 +33,7 @@ public class Welcome extends HttpServlet {
             String title = "Welcome";
             String htmlIntro = "<HTML><HEAD>"
                     + "<title>" + title + "</title>"
-                    + "<link rel=\"stylesheet\" type =\"text/css\" href=\"/style.css\" />"
+                    + "<link rel=\"stylesheet\" type =\"text/css\" href=\"" + Macro.BASE + "style.css\" />"
                     + "</HEAD><BODY>";
             String htmlOutro = "</BODY></HTML>";
             htmlPage += htmlIntro;
@@ -53,7 +53,7 @@ public class Welcome extends HttpServlet {
                 htmlPage += "<p class=\"headerInfo\">Sei loggato come: "+loggedUser.getName()+" "+loggedUser.getSurname()+"<br>";
                 htmlPage += "Username: "+loggedUser.getUsername()+"</p>";
                 htmlPage += "<p class=\"headerInfo\">Ultimo Login: "+loggedUser.getLastLogin()+"<BR>";
-                htmlPage += "<a href=\"Logout\"> Logout </a></p>";
+                htmlPage += "<a href=\"" + Macro.BASE + "logged/Logout\"> Logout </a></p>";
                 htmlPage += "</div>";  //div header end
                 
                 htmlPage += "<div class=\"content\">";
@@ -61,7 +61,7 @@ public class Welcome extends HttpServlet {
                 if (pdf.exists()){
                     htmlPage += "<p id=\"pdfLink\">"; 
                     htmlPage += "<img src=\"photo/pdf_ico.gif\" height=\"16px\" width=\"16px\"/>"
-                            + "<a href="+virtualPath+" id=\"pdfLink\" target=\"_blank\"> Lettere Ultima Vaccinazione</a>";
+                            + "<a href=" + Macro.BASE + "logged/"+virtualPath+" id=\"pdfLink\" target=\"_blank\"> Lettere Ultima Vaccinazione</a>";
                     htmlPage += "</p>"; 
                 } 
                 
@@ -69,27 +69,22 @@ public class Welcome extends HttpServlet {
                 htmlPage += "<p class=\"content\">";               
                 
                 if(loggedUser.getIsDoctor()){
-                    htmlPage += "<a href=\"doctorFiles/Richiamo\"> Procedura richiamo paziente </a><BR>";
-                    htmlPage += "<a href=\"doctorFiles/VisualizzaVaccinazioni\"> Visualizza pazienti richiamati </a><BR>";
+                    htmlPage += "<a href=\"" + Macro.BASE + "logged/doctorFiles/Richiamo\"> Procedura richiamo paziente </a><BR>";
+                    htmlPage += "<a href=\"" + Macro.BASE + "logged/doctorFiles/VisualizzaVaccinazioni\"> Visualizza pazienti richiamati </a><BR>";
                 } else {
-                    htmlPage += "<a href=\"patientFiles/VaccinazioniPaziente\"> Visualizza dettagli vaccinazioni </a><BR>";
+                    htmlPage += "<a href=\"" + Macro.BASE + "logged/patientFiles/VaccinazioniPaziente\"> Visualizza dettagli vaccinazioni </a><BR>";
                 }
                 
                 htmlPage += "</p>";
                 htmlPage += "</div>"; //div content end
-                htmlPage += "</div>"; //div container end
-            
+                htmlPage += "</div>"; //div container end            
             
             htmlPage += htmlOutro;
             out.print(htmlPage);
         } finally {
             out.close();
         }
-        
-        
-        
-    }
-    
+    }    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

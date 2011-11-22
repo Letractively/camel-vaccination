@@ -1,5 +1,6 @@
 package filtersManagement;
 
+import core.Macro;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -54,8 +55,9 @@ public class LoggedFilter implements Filter {
             if (user == null){                
                 String errMsg = "Un visitatore ha cercato di accedere " + 
                         "indebitamente alla pagina" + webPage;
-                Log4k.warn(DoctorFilter.class.getName(), errMsg);
-                response.sendRedirect("/public/login.jsp");
+                Log4k.debug(DoctorFilter.class.getName(), errMsg);
+                System.out.println("PROVAAAAAAAAAAAAAA        " + webPage);
+                response.sendRedirect(Macro.BASE + "public/login.jsp");
             } else {
                 chain.doFilter(inRequest, inResponse);
             }
@@ -65,7 +67,7 @@ public class LoggedFilter implements Filter {
 	    // we still want to execute our after processing, and then
 	    // rethrow the problem after that.
 	    problem = t;
-	    Log4k.warn(LoggedFilter.class.getName(), t.getMessage());
+	    Log4k.error(LoggedFilter.class.getName(), t.getMessage());
 	}
 
 	doAfterProcessing(inRequest, inResponse);

@@ -1,5 +1,6 @@
 package filtersManagement;
 
+import core.Macro;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -58,8 +59,8 @@ public class PublicFilter implements Filter {
                             + " (id = " + user.getId()
                             + ") ha cercato di accedere indebitamente " +
                             "alla pagina" + webPage;
-                Log4k.warn(DoctorFilter.class.getName(), errMsg);
-                response.sendRedirect("/logged/Welcome");
+                Log4k.debug(DoctorFilter.class.getName(), errMsg);
+                response.sendRedirect(Macro.BASE + "logged/Welcome");
             }
 	}
 	catch(Throwable t) {
@@ -67,7 +68,7 @@ public class PublicFilter implements Filter {
 	    // we still want to execute our after processing, and then
 	    // rethrow the problem after that.
 	    problem = t;
-	    Log4k.warn(PublicFilter.class.getName(), t.getMessage());
+	    Log4k.error(PublicFilter.class.getName(), t.getMessage());
 	}
 
 	doAfterProcessing(inRequest, inResponse);

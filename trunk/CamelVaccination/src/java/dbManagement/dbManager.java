@@ -154,21 +154,21 @@ public class dbManager{
             ResultSet resSet;
             
             { /* Check wheter a user is both present and already registered into the DB */
-                command = "SELECT registered FROM patients WHERE username = " + username;
+                command = "SELECT registered FROM patients WHERE username = '" + username + "'";
                 resSet = dbConn.executeQuery(command);
-                if (resSet.first()){                    
-                    String isYetRegistered_str = resSet.getString("registered").toUpperCase();
-                    if (isYetRegistered_str.equals("TRUE")) throw new YetRegisteredException();
+                if (resSet.first()){
+                    boolean isYetRegistered_str = resSet.getBoolean("registered");
+                    if (isYetRegistered_str) throw new YetRegisteredException();
                 } else {
                     throw new NotInDBException();
-                }                    
+                }
             }
-            
+            System.out.println("Nessun errore riscontrato.\n Inizio la query.");
             command = "UPDATE patients" + 
-                    " SET password = " + new_pwd + ", registered = TRUE" +
-                    " WHERE username = " + username;
-            dbConn.executeStatement(command);
-        } catch (Exception ex) {
+                    " SET password = '" + new_pwd + "', registered = TRUE" +
+                    " WHERE username = '" + username + "'";
+            dbConn.executeStatement(command);        
+        } catch (SQLException ex) {
             Log4k.error(dbManager.class.getName(), ex.getMessage());
         }
     }
