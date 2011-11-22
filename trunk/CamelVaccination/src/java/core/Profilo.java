@@ -74,7 +74,9 @@ public class Profilo extends HttpServlet {
                     else{
                         Log4k.warn(Profilo.class.getName(), "r1 = "+r1+"r2 = "+r2);
                     }
+                    htmlPage+="<a href=\"" + Macro.BASE + "\" title=\"Home\">Torna alla Home</a>\n";
                     htmlPage+=htmlOutro;
+                    out.println(htmlPage);
                 } catch (SQLException ex) {
                     Log4k.error(Richiamo.class.getName(), ex.getMessage());
                 }}

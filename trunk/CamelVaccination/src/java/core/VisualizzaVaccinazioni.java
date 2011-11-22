@@ -49,7 +49,7 @@ public class VisualizzaVaccinazioni extends HttpServlet {
             htmlPage += "<div class=\"container\">";
             htmlPage += "<div class=\"header\">";
             htmlPage+="<form action=\"?action=list&\" method=\"GET\">\n";
-            htmlPage+="<label for=\"date\" class=\"searchBar\">Vaccinazioni effettuate prima di (secondi)</label>";
+            htmlPage+="<label for=\"date\" class=\"searchBar\">Vaccinazioni effettuate dopo (secondi) fa</label>";
             htmlPage+="<p class=\"searchBar\"><input type=\"text\" id=\"date\" name=\"date\" value=\""+seconds+"\" />\n";
             htmlPage+="<input class=\"submit\" type=\"submit\" name=\"Submit\" value=\"Cerca\" /></p>\n";
             htmlPage+="</form>\n";
@@ -77,8 +77,8 @@ public class VisualizzaVaccinazioni extends HttpServlet {
                     
                     if(r.first()){
                         while (!r.isAfterLast()) {
-                            
                             Paziente p = new Paziente(r);
+                            
                             htmlPage+="<TR>\n";
                             htmlPage+="<TD>"+"<img src=\"photo/"+p.getPicture()+"\" height=\"50\" width=\"50\" alt=\"Foto Paziente\" /></TD>\n";
                             htmlPage+="<TD><a href=\"Profilo?id="+p.getId()+"\">"+p.getName()+" "+p.getSurname()+"</a></TD>\n";

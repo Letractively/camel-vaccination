@@ -126,10 +126,25 @@ public class dbManager{
         ResultSet res = null;
         try {
             String command;
+            String lastVaccinations = "SELECT DISTINCT MAX(vaccination_date) AS 'max', patient_id AS 'pid' FROM vaccinations GROUP BY patient_id";
+            String JT1 = "SELECT * " +
+                    "FROM patients LEFT JOIN (" + lastVaccinations + ") AS last_vaccinations " +
+                    "ON patients.id = last_vaccinations.pid";
+            String JT2 = "SELECT JT1.*, V.doctor_id " +
+                    "FROM (" + JT1 + ") AS JT1 LEFT JOIN vaccinations AS V " +
+                    "ON JT1.id = V.patient_id AND JT1.max = V.vaccination_date";
+            command = "SELECT * " +
+                    "FROM (" + JT2 + ") AS JT2 " +
+                    "WHERE (max >= '" + getDBdiffTime(sec) + "')";            
+
             /* Select the last vaccination of each vaccinated patient after sec seconds ago*/            
-            String lastVaccinations = "SELECT DISTINCT MAX(vaccination_date) AS 'vaccination_date', patient_id FROM vaccinations GROUP BY patient_id";
-            command = "SELECT * FROM (" + lastVaccinations + ") AS last_vaccinations" +
-                    " WHERE vaccination_date >= '" + getDBdiffTime(sec) + "'";            
+/*            String lastVaccinations = "SELECT DISTINCT MAX(vaccination_date) AS 'vaccination_date', patient_id"
+                    + "FROM vaccinations GROUP BY patient_id HAVING vaccination_date >= '" + getDBdiffTime(sec) + "'";
+            String J1 = "SELECT * FROM vaccinations AS V JOIN (" + lastVaccinations + ") AS last_vaccinations"
+                    + "ON V.patient_id = last_vaccinations.patient_id AND V.vaccination_date = last_vacciantions.vaccination_date";
+            command = "SELECT * FROM patients AS P JOIN (" + J1 + ") AS J1 ON P.patient_id = J1.patient_id" ;                                
+             * 
+             */
             res = dbConn.executeQuery(command);
         } catch (Exception ex) {
             Log4k.error(dbManager.class.getName(), ex.getMessage());
