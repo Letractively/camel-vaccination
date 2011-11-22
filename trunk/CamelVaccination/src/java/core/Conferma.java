@@ -1,5 +1,6 @@
 package core;
 
+import dbManagement.dbManager;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.LinkedList;
@@ -49,14 +50,18 @@ public class Conferma extends HttpServlet {
                     (LinkedList <Paziente>) request.getSession().getAttribute(arrayName);//recupero i pazienti dalla sessione
             
             HttpSession session = request.getSession();
-            
+            dbManager db = new dbManager();
+            String date = db.getDBtime();
+            db.releaseConnection();
+            session.setAttribute("date", date);
             User doctor = (User) request.getSession().getAttribute("loggedUser");//recupero il profilo del medico
             
             String[] patientsList = request.getParameterValues(checkboxname);//recupero gli id passati per POST
             
             htmlPage += "<div class=\"container\">";
             htmlPage += "<div class=\"header\">";
-            htmlPage+="<p class=\"headerInfo\"><a href=\"" + Macro.BASE + "\" title=\"Home\">Torna alla Home</a></p>\n";
+            htmlPage += "<p class=\"headerInfo\">" + date + "</p>";
+            htmlPage += "<p class=\"headerInfo\"><a href=\"" + Macro.BASE + "\" title=\"Home\">Torna alla Home</a></p>\n";
             htmlPage += "</div>";  //div header end
             
             /*Salvo i pazienti selezionati, dato che dovrei fare delle assunzioni su

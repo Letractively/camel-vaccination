@@ -55,8 +55,8 @@ public class EseguiVaccinazioni extends HttpServlet {
                 db.doVaccinate(doctor.getId(),p.getId());
                 db.releaseConnection();
             }
-            dbManager db = new dbManager();
-            String date = db.getDBtime();
+            
+            String date = (String)request.getSession().getAttribute("date");
             String signature = doctor.getName()+" "+doctor.getSurname();
 
             pdfCreator.createLetters(realPath, chosenPatients, signature, date);
