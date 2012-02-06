@@ -54,7 +54,7 @@ public class PatientFilter implements Filter {
             User user = (User) request.getSession().getAttribute("loggedUser");
             if (user == null){
                 String errMsg = "Non dovrebbero esserci utenti non loggati qui";
-                Log4k.warn(DoctorFilter.class.getName(), errMsg);
+                Log4k.trace(PatientFilter.class.getName(), errMsg);
             } else {
                 if (user.getIsDoctor()) {
                     String errMsg = "Il dottor " + user.getUsername()
