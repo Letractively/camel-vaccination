@@ -34,7 +34,7 @@
     </filter-mapping>
     <filter-mapping>
         <filter-name>PatientFilter</filter-name>
-        <url-pattern>/patientFiles/*</url-pattern>
+        <url-pattern>/logged/patientFiles/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>FORWARD</dispatcher>
         <dispatcher>INCLUDE</dispatcher>
@@ -42,7 +42,7 @@
     </filter-mapping>
     <filter-mapping>
         <filter-name>DoctorFilter</filter-name>
-        <url-pattern>/doctorFiles/*</url-pattern>
+        <url-pattern>/logged/doctorFiles/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>FORWARD</dispatcher>
         <dispatcher>INCLUDE</dispatcher>

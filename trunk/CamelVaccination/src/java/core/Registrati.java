@@ -59,11 +59,11 @@ public class Registrati extends HttpServlet {
                     } catch (NotInDBException ex) {
                         htmlPage+="Username errato!<BR>\n";
                         htmlPage+="<a href=\"registrati.jsp\" title=\"Registrati\">Torna alla registrazione</a>";
-                        Log4k.debug(Registrati.class.getName(), ex.getMessage());
+                        Log4k.trace(Registrati.class.getName(), ex.getMessage());
                     } catch (YetRegisteredException ex) {
                         htmlPage+="Il tuo nome utente risulta già registrato!<BR>\n";
                         htmlPage+="<a href=\"registrati.jsp\" title=\"Registrati\">Torna alla registrazione</a>";
-                        Log4k.debug(Registrati.class.getName(), ex.getMessage());
+                        Log4k.trace(Registrati.class.getName(), ex.getMessage());
                     }
                 }
                 else{

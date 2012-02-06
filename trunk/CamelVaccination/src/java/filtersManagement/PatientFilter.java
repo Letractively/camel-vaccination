@@ -61,7 +61,7 @@ public class PatientFilter implements Filter {
                             + " (id = " + user.getId()
                             + ") ha cercato di accedere indebitamente " +
                             "alla pagina" + webPage;
-                    Log4k.debug(PatientFilter.class.getName(), errMsg);
+                    Log4k.trace(PatientFilter.class.getName(), errMsg);
                     response.sendRedirect(Macro.BASE + "logged/Welcome");
                 } else {
                     chain.doFilter(inRequest, inResponse);
