@@ -55,8 +55,7 @@ public class LoggedFilter implements Filter {
             if (user == null){                
                 String errMsg = "Un visitatore ha cercato di accedere " + 
                         "indebitamente alla pagina" + webPage;
-                Log4k.trace(DoctorFilter.class.getName(), errMsg);
-                System.out.println("PROVAAAAAAAAAAAAAA        " + webPage);
+                Log4k.trace(LoggedFilter.class.getName(), errMsg);                
                 response.sendRedirect(Macro.BASE + "public/login.jsp");
             } else {
                 chain.doFilter(inRequest, inResponse);
