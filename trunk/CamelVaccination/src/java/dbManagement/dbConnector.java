@@ -14,7 +14,7 @@ import logManagement.Log4k;
  */
 class dbConnector{
     private final String host = "localhost:3306";
-    private final String dbName = "mcr_db";
+    private final String dbName = "medical_db";
     private final String user = "root";
     private final String psw = "ricordati";
     private Connection conn = null;
