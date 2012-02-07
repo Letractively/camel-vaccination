@@ -179,7 +179,7 @@ public class dbManager{
                     throw new NotInDBException();
                 }
             }
-            System.out.println("Nessun errore riscontrato.\n Inizio la query.");
+            Log4k.debug(this.getClass().getName(), "Nessun errore riscontrato.\n Inizio la query in doRegister.");
             command = "UPDATE patients" + 
                     " SET password = '" + new_pwd + "', registered = TRUE" +
                     " WHERE username = '" + username + "'";
