@@ -43,10 +43,7 @@ public class Registrati extends HttpServlet {
             String psw2 = request.getParameter("confirm_password");
             String userCaptchaResponse = request.getParameter("jcaptcha");
             boolean captchaPassed = SimpleImageCaptchaServlet.validateResponse(request, userCaptchaResponse);
-            out.println(""
-                    + "captcha = "+ userCaptchaResponse+"<BR>"
-                    +"username = "+ usr+"<BR>"
-                    +"password: "+psw1+" "+psw2+"<BR>");
+
             if (captchaPassed) {
                 if(psw1.equals(psw2)){
                     
